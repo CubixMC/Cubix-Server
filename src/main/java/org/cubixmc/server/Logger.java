@@ -10,15 +10,15 @@ private Logger l;
 private String name;
 
 
-public Logger getLogger(){
+public Logger getLogger() {
 	return l;
 }
-public String getName(){
+
+public String getName() {
 	return name;
 }
-public void info(String paramString){
+
+public void info(String paramString) { 
 	System.out.println(getName() + " " + paramString);
-}
-
-
+   }
 }
