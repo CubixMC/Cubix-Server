@@ -22,8 +22,6 @@ public class MainThread extends Thread {
             try {
                 Thread.sleep(sleepTime);
             } catch(InterruptedException e) {
-                // TODO: Logger
-                e.printStackTrace();
             }
         }
     }

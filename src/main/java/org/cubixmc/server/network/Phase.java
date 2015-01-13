@@ -2,10 +2,12 @@ package org.cubixmc.server.network;
 
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.packets.PacketIn;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public enum Phase {
     HANDSHAKE,
@@ -26,8 +28,7 @@ public enum Phase {
                 }
             }
         } catch(Exception e) {
-            // TODO: Logger
-            e.printStackTrace();
+            CubixServer.getLogger().log(Level.SEVERE, "Failed to detect packet classes for phase "+ toString(), e);
         }
     }
 
