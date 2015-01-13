@@ -17,20 +17,19 @@ public interface Server {
      *
      * @return All online players
      */
-     public Collection<?> getOnlinePlayers();
+    public Collection<?> getOnlinePlayers();
 
     /**
      * Get the maximum amount of players that can be online on the server.
      *
      * @return Max players on server
      */
-     public int getMaxPlayers();
-     
-     
+    public int getMaxPlayers();
+
     /**
      * Get the server's port
      *
      * @return Server's port
      */
-     public int getPort();
+    public int getPort();
 }
