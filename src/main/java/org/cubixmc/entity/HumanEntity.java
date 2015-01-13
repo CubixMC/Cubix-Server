@@ -17,6 +17,15 @@ public interface HumanEntity extends LivingEntity {
      * @return Display name of player
      */
     String getDisplayName();
+    
+        /**
+     * Get the name of the player itself.
+     *
+     * @return The Player's In-game name.
+     */
+    String getName();
+    
+    
 
     /**
      * Set the display name of the player for chat messages.
