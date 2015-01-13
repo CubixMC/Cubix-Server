@@ -30,4 +30,14 @@ public interface LivingEntity extends Entity {
      * @return Max health of entity
      */
     public double getMaxHealth();
+    
+    /**
+     * Sets the customname of above a mobs head and sets it visible or not 
+     *
+     * No need for .setCustomNameVisible(true);
+     * Thats handled all in one using .customName("name", true/false);
+     *
+     * @param flag name or not
+     */
+    public void customName(String name, boolean flag);
 }
