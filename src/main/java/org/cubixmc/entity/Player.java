@@ -1,16 +1,43 @@
 package org.cubixmc.entity;
 
+import org.cubixmc.inventory.PlayerInventory;
+
 import java.net.InetSocketAddress;
 
 public interface Player extends HumanEntity {
 
+    /**
+     * Get the name of the player.
+     *
+     * @return Name of player
+     */
+    String getName();
+
+    /**
+     * Get display name of the player used in chat messages.
+     *
+     * @return Display name of player
+     */
+    String getDisplayName();
+
+    /**
+     * Set the display name of the player for chat messages.
+     *
+     * @param displayName Display name for the player
+     */
+    void setDisplayName(String displayName);
+
+    /**
+     * @return The Player's inventory in inventory form
+     */
+    PlayerInventory getInventory();
 
     /**
      * Gets the socket address of this player
      *
      * @return the player's address
      */
-    public InetSocketAddress getAddress();
+    InetSocketAddress getAddress();
 
 
     /**
@@ -18,7 +45,7 @@ public interface Player extends HumanEntity {
      *
      * @param message kick message
      */
-    public void kickPlayer(String message);
+    void kickPlayer(String message);
 
 
     /**
@@ -26,7 +53,7 @@ public interface Player extends HumanEntity {
      *
      * @param msg message to print
      */
-    public void chat(String msg);
+    void chat(String msg);
 
 
     /**
@@ -34,7 +61,7 @@ public interface Player extends HumanEntity {
      * including; location, health, inventory, motion, and
      * other information into the players data file.
      */
-    public void saveData();
+    void saveData();
 
 
     /**
@@ -44,7 +71,7 @@ public interface Player extends HumanEntity {
      * Note: This should overwrite the players current inventory, health,
      * motion, etc, with the state from the saved data file.
      */
-    public void loadData();
+    void loadData();
 
 
     /**
@@ -53,42 +80,42 @@ public interface Player extends HumanEntity {
      * @param command Command to perform
      * @return true if the command was successful, otherwise false
      */
-    public boolean performCommand(String command);
+    boolean performCommand(String command);
 
     /**
      * Returns if the player is in sneak mode
      *
      * @return true if player is in sneak mode
      */
-    public boolean isSneaking();
+    boolean isSneaking();
 
     /**
      * Sets the sneak mode the player
      *
      * @param sneak true if player should appear sneaking
      */
-    public void setSneaking(boolean sneak);
+    void setSneaking(boolean sneak);
 
     /**
      * Gets whether the player is sprinting or not.
      *
      * @return true if player is sprinting.
      */
-    public boolean isSprinting();
+    boolean isSprinting();
 
     /**
      * Sets whether the player is sprinting or not.
      *
      * @param sprinting true if the player should be sprinting
      */
-    public void setSprinting(boolean sprinting);
+    void setSprinting(boolean sprinting);
 
     /**
      * Gives the player the amount of experience specified.
      *
      * @param amount Exp amount to give
      */
-    public void giveExp(int amount);
+    void giveExp(int amount);
 
     /**
      * Gives the player the amount of experience levels specified. Levels can
@@ -96,7 +123,7 @@ public interface Player extends HumanEntity {
      *
      * @param amount amount of experience levels to give or take
      */
-    public void giveExpLevels(int amount);
+    void giveExpLevels(int amount);
 
     /**
      * Gets the players current experience points towards the next level.
@@ -105,7 +132,7 @@ public interface Player extends HumanEntity {
      *
      * @return Current experience points
      */
-    public float getExp();
+    float getExp();
 
     /**
      * Sets the players current experience points towards the next level
@@ -114,57 +141,54 @@ public interface Player extends HumanEntity {
      *
      * @param exp New experience points
      */
-    public void setExp(float exp);
+    void setExp(float exp);
 
     /**
      * Gets the players current experience level
      *
      * @return Current experience level
      */
-    public int getLevel();
+    int getLevel();
 
     /**
      * Sets the players current experience level
      *
      * @param level New experience level
      */
-    public void setLevel(int level);
+    void setLevel(int level);
 
     /**
      * Gets the players total experience points
      *
      * @return Current total experience points
      */
-    public int getTotalExperience();
+    int getTotalExperience();
 
     /**
      * Sets the players current experience level
      *
      * @param exp New experience level
      */
-    public void setTotalExperience(int exp);
+    void setTotalExperience(int exp);
 
     /**
      * Will request if the player would like to use the texture pack
      *
      * @param url The url of the pack
      */
-    public void askResourcePack(String url);
-
+    void askResourcePack(String url);
 
     /**
      * Will force the player to use the texture pack
      *
      * @param url The url of the pack
      */
-    public void setResourcePack(String url);
+    void setResourcePack(String url);
     
     /**
      * Will send a message to the player
      *
      * @return to the player a message
     */
-    public void sendMessage(String message);
-    
-    
+    void sendMessage(String message);
 }

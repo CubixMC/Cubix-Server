@@ -1,39 +1,39 @@
 package org.cubixmc.inventory;
 
-public interface Inventory {
+import org.cubixmc.entity.LivingEntity;
 
+public interface Inventory {
 
     /**
      * Returns the size of the inventory
      *
      * @return The size of the inventory
      */
-    public int getSize();
-
+    int size();
 
     /**
      * Returns the name of the inventory
      *
      * @return The String with the name of the inventory
      */
-    public String getName();
+    String getName();
 
     /**
      * Clears out the whole Inventory.
      */
-    public void clear();
+    void clear();
 
     /**
      * Returns what type of inventory this is.
      *
      * @return The InventoryType representing the type of inventory.
      */
-    public InventoryType getType();
+    InventoryType getType();
 
     /**
      * Gets the block or entity belonging to the open inventory
      *
      * @return The holder of the inventory; null if it has no holder.
      */
-    public InventoryHolder getHolder();
+    LivingEntity getHolder();
 }
