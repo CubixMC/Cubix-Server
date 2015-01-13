@@ -3,7 +3,7 @@ package org.cubixmc.server;
 import java.util.logging.Logger;
 
 
-public class Logger {
+public class CubixLogger {
 
 private Logger l;
 
