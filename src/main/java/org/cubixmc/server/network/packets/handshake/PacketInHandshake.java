@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.handshake;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInHandshake extends PacketIn {
     private String serverAddress;
     private int protocolVersion;
@@ -21,6 +23,7 @@ public class PacketInHandshake extends PacketIn {
         this.serverPort = codec.readShort();
     }
 
+    @Override
     public void handle() {
     }
 }

@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInClickWindow extends PacketIn {
     private int button;
     private int mode;
@@ -25,6 +27,7 @@ public class PacketInClickWindow extends PacketIn {
         this.windowID = codec.readByte();
     }
 
+    @Override
     public void handle() {
     }
 }

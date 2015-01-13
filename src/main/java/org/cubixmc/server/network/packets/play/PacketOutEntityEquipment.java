@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityEquipment extends PacketOut {
     private // TODO: Slot item;
     private int entityID;
     private short slot;
+
+    public PacketOutEntityEquipment() {
+        super(0x04);
+    }
 
     public PacketOutEntityEquipment(// TODO: Slot itemint entityIDshort slot) {
                                     super(0x04);

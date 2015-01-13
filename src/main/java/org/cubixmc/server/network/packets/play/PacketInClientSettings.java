@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInClientSettings extends PacketIn {
     private boolean chatColours;
     private int chatFlags;
@@ -23,6 +25,7 @@ public class PacketInClientSettings extends PacketIn {
         this.displayedSkinParts = codec.readByte();
     }
 
+    @Override
     public void handle() {
     }
 }

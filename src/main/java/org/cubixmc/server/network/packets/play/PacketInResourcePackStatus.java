@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInResourcePackStatus extends PacketIn {
     private int result;
     private String hash;
@@ -17,6 +19,7 @@ public class PacketInResourcePackStatus extends PacketIn {
         this.hash = codec.readString();
     }
 
+    @Override
     public void handle() {
     }
 }

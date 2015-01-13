@@ -1,13 +1,19 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityLook extends PacketOut {
     private boolean onGround;
     private int entityID;
     private int pitch;
     private int yaw;
+
+    public PacketOutEntityLook() {
+        super(0x16);
+    }
 
     public PacketOutEntityLook(boolean onGroundint entityIDint pitchint yaw) {
         super(0x16);

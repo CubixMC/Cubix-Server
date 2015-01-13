@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInAnimation extends PacketIn {
     private int actionID;
     private int entityID;
@@ -19,6 +21,7 @@ public class PacketInAnimation extends PacketIn {
         this.jumpBoost = codec.readVarInt();
     }
 
+    @Override
     public void handle() {
     }
 }

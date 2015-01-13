@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutAttachEntity extends PacketOut {
     private int entityID;
     private int vehicleID;
     private boolean leash;
+
+    public PacketOutAttachEntity() {
+        super(0x1B);
+    }
 
     public PacketOutAttachEntity(int entityIDint vehicleIDboolean leash) {
         super(0x1B);

@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutParticle extends PacketOut {
     private float offsetX;
     private float offsetZ;
@@ -15,6 +17,10 @@ public class PacketOutParticle extends PacketOut {
     private int particleId;
     private boolean longDistance;
     private int numberOfParticles;
+
+    public PacketOutParticle() {
+        super(0x2A);
+    }
 
     public PacketOutParticle(float offsetXfloat offsetZfloat offsetYint[]datafloat particleDatafloat xfloat yfloat zint particleIdboolean longDistanceint numberOfParticles) {
         super(0x2A);

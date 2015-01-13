@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInPlayerBlockPlacement extends PacketIn {
     private int cursorPositionX;
     private int cursorPositionZ;
@@ -25,6 +27,7 @@ public class PacketInPlayerBlockPlacement extends PacketIn {
         this.direction = codec.readByte();
     }
 
+    @Override
     public void handle() {
     }
 }

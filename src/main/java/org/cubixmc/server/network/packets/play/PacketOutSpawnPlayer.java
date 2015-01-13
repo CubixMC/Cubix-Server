@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutSpawnPlayer extends PacketOut {
     private UUID playerUUID;
     private Metadata metadata;
@@ -13,6 +15,10 @@ public class PacketOutSpawnPlayer extends PacketOut {
     private int pitch;
     private short currentItem;
     private int yaw;
+
+    public PacketOutSpawnPlayer() {
+        super(0x0C);
+    }
 
     public PacketOutSpawnPlayer(UUID playerUUIDMetadata metadataint xint yint entityIDint zint pitchshort currentItemint yaw) {
         super(0x0C);

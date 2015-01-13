@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutSoundEffect extends PacketOut {
     private float volume;
     private int effectPositionZ;
@@ -10,6 +12,10 @@ public class PacketOutSoundEffect extends PacketOut {
     private int effectPositionX;
     private int pitch;
     private String soundName;
+
+    public PacketOutSoundEffect() {
+        super(0x29);
+    }
 
     public PacketOutSoundEffect(float volumeint effectPositionZint effectPositionYint effectPositionXint pitchString soundName) {
         super(0x29);

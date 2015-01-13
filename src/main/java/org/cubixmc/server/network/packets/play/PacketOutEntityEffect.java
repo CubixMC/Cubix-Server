@@ -1,14 +1,20 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityEffect extends PacketOut {
     private int duration;
     private boolean hideParticles;
     private int effectID;
     private int entityID;
     private int amplifier;
+
+    public PacketOutEntityEffect() {
+        super(0x1D);
+    }
 
     public PacketOutEntityEffect(int durationboolean hideParticlesint effectIDint entityIDint amplifier) {
         super(0x1D);

@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutConfirmTransaction extends PacketOut {
     private short actionNumber;
     private boolean accepted;
     private int windowID;
+
+    public PacketOutConfirmTransaction() {
+        super(0x32);
+    }
 
     public PacketOutConfirmTransaction(short actionNumberboolean acceptedint windowID) {
         super(0x32);

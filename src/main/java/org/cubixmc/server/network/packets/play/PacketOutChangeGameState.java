@@ -1,11 +1,17 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutChangeGameState extends PacketOut {
     private int reason;
     private float value;
+
+    public PacketOutChangeGameState() {
+        super(0x2B);
+    }
 
     public PacketOutChangeGameState(int reasonfloat value) {
         super(0x2B);

@@ -1,11 +1,17 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutPluginMessage extends PacketOut {
     private byte[] data;
     private String channel;
+
+    public PacketOutPluginMessage() {
+        super(0x3F);
+    }
 
     public PacketOutPluginMessage(byte[] dataString channel) {
         super(0x3F);

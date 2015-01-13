@@ -1,14 +1,20 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityRelativeMove extends PacketOut {
     private int dX;
     private boolean onGround;
     private int dY;
     private int dZ;
     private int entityID;
+
+    public PacketOutEntityRelativeMove() {
+        super(0x15);
+    }
 
     public PacketOutEntityRelativeMove(int dXboolean onGroundint dYint dZint entityID) {
         super(0x15);

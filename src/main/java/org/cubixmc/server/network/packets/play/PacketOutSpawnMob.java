@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutSpawnMob extends PacketOut {
     private Metadata metadata;
     private int x;
@@ -16,6 +18,10 @@ public class PacketOutSpawnMob extends PacketOut {
     private int headPitch;
     private short velocityY;
     private int yaw;
+
+    public PacketOutSpawnMob() {
+        super(0x0F);
+    }
 
     public PacketOutSpawnMob(Metadata metadataint xint yint entityIDint zshort velocityXint pitchint typeshort velocityZint headPitchshort velocityYint yaw) {
         super(0x0F);

@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInClientStatus extends PacketIn {
     private int actionID;
 
@@ -15,6 +17,7 @@ public class PacketInClientStatus extends PacketIn {
         this.actionID = codec.readVarInt();
     }
 
+    @Override
     public void handle() {
     }
 }

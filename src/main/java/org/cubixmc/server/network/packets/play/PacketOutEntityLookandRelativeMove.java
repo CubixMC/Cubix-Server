@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityLookandRelativeMove extends PacketOut {
     private int dX;
     private boolean onGround;
@@ -11,6 +13,10 @@ public class PacketOutEntityLookandRelativeMove extends PacketOut {
     private int entityID;
     private int pitch;
     private int yaw;
+
+    public PacketOutEntityLookandRelativeMove() {
+        super(0x17);
+    }
 
     public PacketOutEntityLookandRelativeMove(int dXboolean onGroundint dYint dZint entityIDint pitchint yaw) {
         super(0x17);

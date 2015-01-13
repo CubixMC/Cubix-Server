@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutWindowProperty extends PacketOut {
     private short property;
     private short value;
     private int windowID;
+
+    public PacketOutWindowProperty() {
+        super(0x31);
+    }
 
     public PacketOutWindowProperty(short propertyshort valueint windowID) {
         super(0x31);

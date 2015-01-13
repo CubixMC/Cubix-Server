@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInUseEntity extends PacketIn {
     private float targetZ;
     private float targetY;
@@ -23,6 +25,7 @@ public class PacketInUseEntity extends PacketIn {
         this.target = codec.readVarInt();
     }
 
+    @Override
     public void handle() {
     }
 }

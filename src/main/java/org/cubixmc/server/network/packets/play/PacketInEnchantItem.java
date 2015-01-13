@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInEnchantItem extends PacketIn {
     private int enchantment;
     private int windowID;
@@ -17,6 +19,7 @@ public class PacketInEnchantItem extends PacketIn {
         this.windowID = codec.readByte();
     }
 
+    @Override
     public void handle() {
     }
 }

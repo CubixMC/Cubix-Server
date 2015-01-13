@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutChunkData extends PacketOut {
     private int size;
     private byte[] data;
@@ -11,6 +13,10 @@ public class PacketOutChunkData extends PacketOut {
     private int chunkZ;
     private boolean ground
     -UpContinuous;
+
+    public PacketOutChunkData() {
+        super(0x21);
+    }
 
     public PacketOutChunkData(int sizebyte[]datashort primaryBitMapint chunkXint chunkZboolean ground-UpContinuous) {
         super(0x21);

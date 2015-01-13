@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutJoinGame extends PacketOut {
     private int difficulty;
     private int maxPlayers;
@@ -11,6 +13,10 @@ public class PacketOutJoinGame extends PacketOut {
     private int entityID;
     private int gamemode;
     private int dimension;
+
+    public PacketOutJoinGame() {
+        super(0x01);
+    }
 
     public PacketOutJoinGame(int difficultyint maxPlayersString levelTypeboolean reducedDebugInfoint entityIDint gamemodeint dimension) {
         super(0x01);

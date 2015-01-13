@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutUpdateHealth extends PacketOut {
     private float health;
     private int food;
     private float foodSaturation;
+
+    public PacketOutUpdateHealth() {
+        super(0x06);
+    }
 
     public PacketOutUpdateHealth(float healthint foodfloat foodSaturation) {
         super(0x06);

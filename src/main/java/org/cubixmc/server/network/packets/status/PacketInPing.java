@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.status;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInPing extends PacketIn {
     private long time;
 
@@ -15,6 +17,7 @@ public class PacketInPing extends PacketIn {
         this.time = codec.readLong();
     }
 
+    @Override
     public void handle() {
     }
 }

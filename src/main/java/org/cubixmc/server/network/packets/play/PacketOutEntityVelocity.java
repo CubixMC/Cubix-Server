@@ -1,13 +1,19 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityVelocity extends PacketOut {
     private int entityID;
     private short velocityX;
     private short velocityZ;
     private short velocityY;
+
+    public PacketOutEntityVelocity() {
+        super(0x12);
+    }
 
     public PacketOutEntityVelocity(int entityIDshort velocityXshort velocityZshort velocityY) {
         super(0x12);

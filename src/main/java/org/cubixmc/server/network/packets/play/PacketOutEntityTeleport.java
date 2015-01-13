@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutEntityTeleport extends PacketOut {
     private boolean onGround;
     private int x;
@@ -11,6 +13,10 @@ public class PacketOutEntityTeleport extends PacketOut {
     private int z;
     private int pitch;
     private int yaw;
+
+    public PacketOutEntityTeleport() {
+        super(0x18);
+    }
 
     public PacketOutEntityTeleport(boolean onGroundint xint yint entityIDint zint pitchint yaw) {
         super(0x18);

@@ -1,14 +1,20 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutSpawnGlobalEntity extends PacketOut {
     private int x;
     private int y;
     private int entityID;
     private int z;
     private int type;
+
+    public PacketOutSpawnGlobalEntity() {
+        super(0x2C);
+    }
 
     public PacketOutSpawnGlobalEntity(int xint yint entityIDint zint type) {
         super(0x2C);

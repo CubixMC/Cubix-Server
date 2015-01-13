@@ -1,12 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutSetExperience extends PacketOut {
     private int level;
     private int totalExperience;
     private float experienceBar;
+
+    public PacketOutSetExperience() {
+        super(0x1F);
+    }
 
     public PacketOutSetExperience(int levelint totalExperiencefloat experienceBar) {
         super(0x1F);

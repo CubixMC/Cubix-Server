@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInSpectate extends PacketIn {
     private UUID targetPlayer;
 
@@ -15,6 +17,7 @@ public class PacketInSpectate extends PacketIn {
         this.targetPlayer = codec.readUUID();
     }
 
+    @Override
     public void handle() {
     }
 }

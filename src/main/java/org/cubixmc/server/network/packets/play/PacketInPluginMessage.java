@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+@Getter
 public class PacketInPluginMessage extends PacketIn {
     private byte[] data;
     private String channel;
@@ -17,6 +19,7 @@ public class PacketInPluginMessage extends PacketIn {
                 this.channel = codec.readString();
     }
 
+    @Override
     public void handle() {
     }
 }

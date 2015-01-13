@@ -1,13 +1,19 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutScoreboardObjective extends PacketOut {
     private int mode;
     private String objectiveValue;
     private String type;
     private String objectiveName;
+
+    public PacketOutScoreboardObjective() {
+        super(0x3B);
+    }
 
     public PacketOutScoreboardObjective(int modeString objectiveValueString typeString objectiveName) {
         super(0x3B);

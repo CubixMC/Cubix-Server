@@ -1,13 +1,19 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutBlockAction extends PacketOut {
     private int byte1;
     private int byte2;
     private int blockType;
     private Position location;
+
+    public PacketOutBlockAction() {
+        super(0x24);
+    }
 
     public PacketOutBlockAction(int byte1int byte2int blockTypePosition location) {
         super(0x24);

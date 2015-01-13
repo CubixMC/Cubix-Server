@@ -1,14 +1,20 @@
 package org.cubixmc.server.network.packets.play;
 
+import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+@Data
 public class PacketOutCombatEvent extends PacketOut {
     private int duration;
     private int entityID;
     private int event;
     private String message;
     private int playerID;
+
+    public PacketOutCombatEvent() {
+        super(0x42);
+    }
 
     public PacketOutCombatEvent(int durationint entityIDint eventString messageint playerID) {
         super(0x42);
