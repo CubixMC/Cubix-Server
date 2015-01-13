@@ -10,6 +10,7 @@ public class Position {
 
     private float yaw;
     private float pitch;
+    private Position position;
 
     public Position(World world, double x, double y, double z) {
         this(world, x, y, z, 0F, 0F);
@@ -72,17 +73,17 @@ public class Position {
 
     @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Position position = (Position) o;
 
-        if(Float.compare(position.pitch, pitch) != 0) return false;
-        if(Double.compare(position.x, x) != 0) return false;
-        if(Double.compare(position.y, y) != 0) return false;
-        if(Float.compare(position.yaw, yaw) != 0) return false;
-        if(Double.compare(position.z, z) != 0) return false;
-        if(!world.equals(position.world)) return false;
+        if (Float.compare(position.pitch, pitch) != 0) return false;
+        if (Double.compare(position.x, x) != 0) return false;
+        if (Double.compare(position.y, y) != 0) return false;
+        if (Float.compare(position.yaw, yaw) != 0) return false;
+        if (Double.compare(position.z, z) != 0) return false;
+        if (!world.equals(position.world)) return false;
 
         return true;
     }

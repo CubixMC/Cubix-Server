@@ -1,8 +1,9 @@
 package org.cubixmc.entity;
 
-/**
- * CubixCreated by Adam on 13/01/15.
- */
+
+import org.cubixmc.inventory.Inventory;
+import org.cubixmc.inventory.PlayerInventory;
+
 public interface HumanEntity extends LivingEntity {
 
     /**
@@ -42,5 +43,19 @@ public interface HumanEntity extends LivingEntity {
      * @param health Desired health of player
      */
     public void setHealth(int health);
+
+
+    /**
+     *
+     * @return The Player's inventory in PlayerInventory form.
+     */
+    public PlayerInventory getPlayerInventory();
+
+
+    /**
+     *
+     * @return The Player's inventory in inventory form
+     */
+    public Inventory getInventory();
 
 }
