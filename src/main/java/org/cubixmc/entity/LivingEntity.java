@@ -39,4 +39,11 @@ public interface LivingEntity extends Entity {
      * @return Max health of entity
      */
     public double getMaxHealth();
+    
+    /**
+     * @return this.boolean(flag.type, true(), false())
+     * @param name New name for the entity 
+     * Method does not apply to HumanEntities
+     */
+    public void customName(String name, boolean flag);
 }
