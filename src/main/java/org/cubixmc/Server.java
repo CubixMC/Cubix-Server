@@ -25,4 +25,12 @@ public interface Server {
      * @return Max players on server
      */
      public int getMaxPlayers();
+     
+     
+    /**
+     * Get the server's port
+     *
+     * @return Server's port
+     */
+     public int getPort();
 }
