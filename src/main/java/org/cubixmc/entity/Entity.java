@@ -55,7 +55,7 @@ public interface Entity {
      * @param destination Entity to teleport this entity to
      * @return true if the teleport was successful
      */
-    public boolean teleport(Entity destination);
+    public boolean teleport(Entity target);
 
 
     /**
@@ -66,5 +66,5 @@ public interface Entity {
      * @param cause The reason of this teleportation
      * @return true if the teleport was successful
      */
-    public boolean teleport(Entity destination, String cause);
+    public boolean teleport(Entity target, String cause);
 }
