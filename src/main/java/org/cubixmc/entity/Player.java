@@ -1,32 +1,48 @@
 package org.cubixmc.entity;
 
-public interface Player extends LivingEntity {
+import java.net.InetSocketAddress;
+
+public interface Player extends HumanEntity {
+
 
     /**
-     * Get the name of the player.
+     * Gets the socket address of this player
      *
-     * @return Name of player
+     * @return the player's address
      */
-    String getName();
+    public InetSocketAddress getAddress();
+
 
     /**
-     * Get display name of the player used in chat messages.
+     * Kicks player with custom kick message.
      *
-     * @return Display name of player
+     * @param message kick message
      */
-    String getDisplayName();
+    public void kickPlayer(String message);
+
 
     /**
-     * Set the display name of the player for chat messages.
+     * Says a message (or runs a command).
      *
-     * @param displayName Display name for the player
+     * @param msg message to print
      */
-    void setDisplayName(String displayName);
+    public void chat(String msg);
+
 
     /**
-     * Send a raw message to the player, will be formatted to json automatically.
-     *
-     * @param message To send the the player
+     * Saves the players current information,
+     * including; location, health, inventory, motion, and
+     * other information into the players data file.
      */
-    void sendMessage(String message);
+    public void saveData();
+    /**
+     * Loads the players current information,
+     * including; location, health, inventory, motion, and
+     * other information into the players data file.
+     * Note: This should overwrite the players current inventory, health,
+     * motion, etc, with the state from the saved data file.
+     */
+    public void loadData();
+
+
 }

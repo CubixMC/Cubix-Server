@@ -7,7 +7,7 @@ public interface LivingEntity extends Entity {
      *
      * @return Health of entity
      */
-    double getHealth();
+    public double getHealth();
 
     /**
      * Set the current health of the entity.
@@ -15,12 +15,12 @@ public interface LivingEntity extends Entity {
      *
      * @param health New health for the entity
      */
-    void setHealth(double health);
+    public void setHealth(double health);
 
     /**
      * Get the maximum amount of health the entity can have.
      *
      * @return Max health of entity
      */
-    double getMaxHealth();
+    public double getMaxHealth();
 }

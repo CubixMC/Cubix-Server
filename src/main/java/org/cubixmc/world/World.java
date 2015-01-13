@@ -9,7 +9,7 @@ public interface World {
      *
      * @return Name of world
      */
-    String getName();
+    public String getName();
 
     /**
      * Get the unique id of the world.
@@ -17,5 +17,5 @@ public interface World {
      *
      * @return Unique id of world
      */
-    UUID getUID();
+     public UUID getUUID();
 }

@@ -10,19 +10,19 @@ public interface Server {
      *
      * @return Socket address of server
      */
-    InetAddress getAddress();
+    public InetAddress getAddress();
 
     /**
      * Get a collection of all online players.
      *
      * @return All online players
      */
-    Collection<?> getOnlinePlayers();
+     public Collection<?> getOnlinePlayers();
 
     /**
      * Get the maximum amount of players that can be online on the server.
      *
      * @return Max players on server
      */
-    int getMaxPlayers();
+     public int getMaxPlayers();
 }
