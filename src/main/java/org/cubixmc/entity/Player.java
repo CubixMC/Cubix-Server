@@ -145,7 +145,6 @@ public interface Player extends HumanEntity {
     public void setTotalExperience(int exp);
 
     /**
-     *
      * Will request if the player would like to use the texture pack
      *
      * @param url The url of the pack
@@ -154,7 +153,6 @@ public interface Player extends HumanEntity {
 
 
     /**
-     *
      * Will force the player to use the texture pack
      *
      * @param url The url of the pack
@@ -162,10 +160,9 @@ public interface Player extends HumanEntity {
     public void setResourcePack(String url);
     
     /**
-    *
-    *Will send a message to the player
-    *
-    *@return to the player a message
+     * Will send a message to the player
+     *
+     * @return to the player a message
     */
     public void sendMessage(String message);
     
