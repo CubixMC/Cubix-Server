@@ -160,4 +160,15 @@ public interface Player extends HumanEntity {
      * @param url The url of the pack
      */
     public void setResourcePack(String url);
+    
+    /**
+    *
+    *
+    *Will send a message to the player
+    *
+    *@return to the player a message
+    */
+    public void sendMessage(String message);
+    
+    
 }
