@@ -1,0 +1,27 @@
+package org.cubixmc.server.network.packets.play;
+
+import org.cubixmc.server.network.Codec;
+import org.cubixmc.server.network.packets.PacketOut;
+
+public class PacketOutEntityLook extends PacketOut {
+    private boolean onGround;
+    private int entityID;
+    private int pitch;
+    private int yaw;
+
+    public PacketOutEntityLook(boolean onGroundint entityIDint pitchint yaw) {
+        super(0x16);
+        this.onGround = onGround;
+        this.entityID = entityID;
+        this.pitch = pitch;
+        this.yaw = yaw;
+    }
+
+    @Override
+    public void encode(Codec codec) {
+        codec.writeBoolean(onGround);
+        codec.writeVarInt(entityID);
+        codec.writeByte(pitch);
+        codec.writeByte(yaw);
+    }
+}
