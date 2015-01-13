@@ -19,6 +19,6 @@ public String getName() {
 }
 
 public void sendInfo(String paramString) { 
-	System.out.println("[" + getName() + "] " + paramString);
+l.info(paramString);
    }
 }
