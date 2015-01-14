@@ -1,10 +1,11 @@
 package org.cubixmc.entity;
 
+import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
 
 import java.net.InetSocketAddress;
 
-public interface Player extends HumanEntity {
+public interface Player extends LivingEntity {
 
     /**
      * Get the name of the player.
@@ -191,4 +192,10 @@ public interface Player extends HumanEntity {
      * @return to the player a message
     */
     void sendMessage(String message);
+
+    /**
+     *
+     * @param inventory for the player to open
+     */
+    void openInventory(Inventory inventory);
 }
