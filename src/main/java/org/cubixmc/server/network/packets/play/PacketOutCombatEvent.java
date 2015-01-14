@@ -7,6 +7,7 @@ import org.cubixmc.server.network.packets.PacketOut;
 @Data
 public class PacketOutCombatEvent extends PacketOut {
     private int duration;
+    private int entityID0;
     private int entityID;
     private int event;
     private String message;
@@ -16,9 +17,10 @@ public class PacketOutCombatEvent extends PacketOut {
         super(0x42);
     }
 
-    public PacketOutCombatEvent(int durationint entityIDint eventString messageint playerID) {
+    public PacketOutCombatEvent(int durationint entityID0int entityIDint eventString messageint playerID) {
         super(0x42);
         this.duration = duration;
+        this.entityID0 = entityID0;
         this.entityID = entityID;
         this.event = event;
         this.message = message;
@@ -28,6 +30,7 @@ public class PacketOutCombatEvent extends PacketOut {
     @Override
     public void encode(Codec codec) {
         codec.writeVarInt(duration);
+        codec.writeInt(entityID0);
         codec.writeInt(entityID);
         codec.writeVarInt(event);
         codec.writeString(message);

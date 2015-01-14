@@ -15,8 +15,8 @@ public class PacketInPluginMessage extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.data = codec.// TODO: Read bytes;
-                this.channel = codec.readString();
+        this.data = codec.readBytes();
+        this.channel = codec.readString();
     }
 
     @Override
