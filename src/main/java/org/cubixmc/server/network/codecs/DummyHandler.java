@@ -1,4 +1,4 @@
-package org.cubixmc.server.network.handlers;
+package org.cubixmc.server.network.codecs;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerAdapter;

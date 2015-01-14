@@ -10,10 +10,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.cubixmc.server.CubixServer;
-import org.cubixmc.server.network.handlers.DummyHandler;
+import org.cubixmc.server.network.codecs.CodecHandler;
+import org.cubixmc.server.network.codecs.CompletionHandler;
+import org.cubixmc.server.network.codecs.DummyHandler;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,8 +58,9 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
         connections.add(connection);
 
         channel.pipeline().addLast("encryption", DummyHandler.INSTANCE); // encrypt/decrypt packets
+        channel.pipeline().addLast("completion", new CompletionHandler()); // parse packet length
         channel.pipeline().addLast("compression", DummyHandler.INSTANCE); // compress/decompress packets
-        channel.pipeline().addLast("decoding", DummyHandler.INSTANCE); // encode/decode packets
+        channel.pipeline().addLast("codec", new CodecHandler(connection)); // encode/decode packets
         channel.pipeline().addLast("handler", DummyHandler.INSTANCE); // read packets in player thread
     }
 
