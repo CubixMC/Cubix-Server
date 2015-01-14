@@ -1,6 +1,7 @@
 package org.cubixmc.server.network;
 
 import com.google.common.base.Charsets;
+import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 
 public class Codec {
@@ -8,6 +9,10 @@ public class Codec {
 
     public Codec(ByteBuf byteBuf) {
         this.byteBuf = byteBuf;
+    }
+
+    public void writeByte(byte value) {
+        byteBuf.writeByte(value);
     }
 
     public void writeBoolean(boolean value) {
@@ -35,7 +40,7 @@ public class Codec {
     }
 
     public void writeVarInt(int varInt) {
-        // TODO: Write var int
+        writeVarInt(byteBuf, varInt);
     }
 
     public void writeVarLong(long varLong) {
@@ -45,6 +50,21 @@ public class Codec {
     public void writeString(String utf) {
         writeVarInt(utf.length());
         byteBuf.writeBytes(utf.getBytes(Charsets.UTF_8));
+    }
+
+    public void writeChat(String chat) {
+        if(chat.startsWith("{")) {
+            // Already json
+            writeString(chat);
+        } else {
+            JsonObject object = new JsonObject();
+            object.addProperty("text", chat);
+            writeString(object.toString());
+        }
+    }
+
+    public byte readByte() {
+        return byteBuf.readByte();
     }
 
     public boolean readBoolean() {
@@ -72,8 +92,7 @@ public class Codec {
     }
 
     public int readVarInt() {
-        // TODO: Read VarInt
-        return 0;
+        return readVarInt(byteBuf, 32);
     }
 
     public long readVarLong() {
@@ -87,5 +106,48 @@ public class Codec {
         byteBuf.readBytes(bytes);
 
         return new String(bytes, Charsets.UTF_8);
+    }
+
+    public String readChat() {
+        return readString();
+    }
+
+    public static int readVarInt(ByteBuf byteBuf, int max) {
+        int out = 0;
+        int bytes = 0;
+        byte in;
+        while (true) {
+            in = byteBuf.readByte();
+
+            out |= (in & 0x7F) << (bytes++ * 7);
+
+            if (bytes > max) {
+                throw new RuntimeException("VarInt too big");
+            }
+
+            if ((in & 0x80) != 0x80) {
+                break;
+            }
+        }
+
+        return out;
+    }
+
+    public static void writeVarInt(ByteBuf byteBuf, int value) {
+        int part;
+        while (true) {
+            part = value & 0x7F;
+
+            value >>>= 7;
+            if (value != 0) {
+                part |= 0x80;
+            }
+
+            byteBuf.writeByte(part);
+
+            if (value == 0) {
+                break;
+            }
+        }
     }
 }
