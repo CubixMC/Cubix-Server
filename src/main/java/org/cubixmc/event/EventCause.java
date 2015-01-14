@@ -2,7 +2,7 @@ package org.cubixmc.event;
 
 public class EventCause extends Exception {
 
-    private static final long serialVersionUID = 3532808232324183999L;
+    private static final long serialVersionUID = 35328082323241839L;
     private final Throwable cause;
 
     /**
