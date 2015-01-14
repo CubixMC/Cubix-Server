@@ -1,5 +1,6 @@
 package org.cubixmc.inventory;
 
+import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.LivingEntity;
 
 public interface Inventory {
@@ -31,9 +32,15 @@ public interface Inventory {
     InventoryType getType();
 
     /**
+     *
+     * @param type The inventory type to be set to
+     */
+    void setType(InventoryType type);
+
+    /**
      * Gets the block or entity belonging to the open inventory
      *
      * @return The holder of the inventory; null if it has no holder.
      */
-    LivingEntity getHolder();
+    Entity getHolder();
 }
