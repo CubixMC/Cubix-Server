@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +30,7 @@ public class CubixServer {
     }
 
     private final NetManager netManager;
+    private @Getter KeyPair keyPair;
 
     public CubixServer() {
         setInstance(this);
@@ -43,7 +47,11 @@ public class CubixServer {
             logger.log(Level.SEVERE, "Failed to initiate logger handler", e);
         }
 
+        logger.log(Level.INFO, "Generating key pair...");
+        generateKeyPair();
+
         try {
+            logger.log(Level.INFO, "Starting a Minecraft protocol server on localhost:25565");
             this.netManager = new NetManager(new InetSocketAddress(InetAddress.getLocalHost(), 25565));
         } catch(UnknownHostException e) {
             logger.log(Level.SEVERE, "Failed to find host to start server with!", e);
@@ -53,5 +61,15 @@ public class CubixServer {
 
     public void tick() {
         // This is the main thread
+    }
+
+    private void generateKeyPair() {
+        try {
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+            generator.initialize(1024);
+            this.keyPair = generator.generateKeyPair();
+        } catch(NoSuchAlgorithmException e) {
+            CubixServer.getLogger().log(Level.SEVERE, "Failed to generate RSA-Key for encryption");
+        }
     }
 }
