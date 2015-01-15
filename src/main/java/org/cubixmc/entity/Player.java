@@ -1,5 +1,6 @@
 package org.cubixmc.entity;
 
+import org.cubixmc.GameMode;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
 
@@ -189,7 +190,7 @@ public interface Player extends LivingEntity {
     /**
      * Will send a message to the player
      *
-     * @return to the player a message
+     * @param message to the player a message
     */
     void sendMessage(String message);
 
@@ -198,4 +199,18 @@ public interface Player extends LivingEntity {
      * @param inventory for the player to open
      */
     void openInventory(Inventory inventory);
+
+    /**
+     * Sets the player's GameMode 
+     * 
+     * @param gameMode the gameMode to set the player to
+     */
+    public void setGameMode(GameMode gameMode);
+
+    /**
+     * Gets the player's GameMode
+     *  
+     * @return the player's GameMode
+     */
+    public GameMode getGameMode();
 }
