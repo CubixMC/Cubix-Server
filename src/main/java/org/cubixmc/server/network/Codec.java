@@ -4,6 +4,9 @@ import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.util.Position;
+
+import java.util.UUID;
 
 public class Codec {
     private final ByteBuf byteBuf;
@@ -72,6 +75,19 @@ public class Codec {
         throw new UnsupportedOperationException("Not made yet");
     }
 
+    public void writePosition(Position position) {
+        int x = (int) position.getX();
+        int y = (int) position.getY();
+        int z = (int) position.getZ();
+        long value = ((x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF);
+        writeLong(value);
+    }
+
+    public void writeUUID(UUID uuid) {
+        writeLong(uuid.getMostSignificantBits());
+        writeLong(uuid.getLeastSignificantBits());
+    }
+
     public byte readByte() {
         return byteBuf.readByte();
     }
@@ -130,6 +146,18 @@ public class Codec {
 
     public ItemStack readSlot() {
         throw new UnsupportedOperationException("Not made yet");
+    }
+
+    public Position readPosition() {
+        long value = readLong();
+        double x = (double) (value >> 38);
+        double y = (double) ((value >> 26) & 0xFFF);
+        double z = (double) (value << 38 >> 38);
+        return new Position(null, x, y, z);
+    }
+
+    public UUID readUUID() {
+        return new UUID(readLong(), readLong());
     }
 
     public static int readVarInt(ByteBuf byteBuf, int max) {
