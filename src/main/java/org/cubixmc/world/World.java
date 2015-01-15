@@ -1,5 +1,8 @@
 package org.cubixmc.world;
 
+import org.cubixmc.entity.Entity;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface World {
@@ -41,5 +44,5 @@ public interface World {
      *
      * @return Entity[] from world
      */
-     public Entity[] getEntities();
+     //public Entity[] getEntities();
 }

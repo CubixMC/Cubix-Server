@@ -1,4 +1,4 @@
-package org.cubixmc.event
+package org.cubixmc.event;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
@@ -12,11 +12,10 @@ import java.lang.annotation.RetentionPolicy;
 
 @Target(ElementType.METHOD)
    @Retention(RetentionPolicy.RUNTIME)
-   public @interface Events {
+   public @interface EventCaller {
 
     /**
      * @boolean type(default, false);
      */
     boolean ignoreCancelled() default false;
-    }
 }
