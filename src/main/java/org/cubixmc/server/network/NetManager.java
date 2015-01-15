@@ -13,6 +13,7 @@ import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.codecs.CodecHandler;
 import org.cubixmc.server.network.codecs.CompletionHandler;
 import org.cubixmc.server.network.codecs.DummyHandler;
+import org.cubixmc.server.network.codecs.PacketHandler;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class NetManager extends ChannelInitializer<SocketChannel> {
-    private final List<Connection> connections = Collections.synchronizedList(new ArrayList<Connection>());
+    private final List<Connection> connections = new ArrayList<>();
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;
     private final ServerBootstrap bootstrap;
@@ -61,7 +62,7 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
         channel.pipeline().addLast("completion", new CompletionHandler()); // parse packet length
         channel.pipeline().addLast("compression", DummyHandler.INSTANCE); // compress/decompress packets
         channel.pipeline().addLast("codec", new CodecHandler(connection)); // encode/decode packets
-        channel.pipeline().addLast("handler", DummyHandler.INSTANCE); // read packets in player thread
+        channel.pipeline().addLast("handler", new PacketHandler(connection)); // read packets in player thread
     }
 
     public Connection getConnection(Channel channel) {

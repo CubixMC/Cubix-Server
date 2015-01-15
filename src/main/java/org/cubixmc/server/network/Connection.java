@@ -1,11 +1,11 @@
 package org.cubixmc.server.network;
 
 import io.netty.channel.socket.SocketChannel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.cubixmc.server.entity.CubixPlayer;
+import org.cubixmc.server.network.codecs.CompressionHandler;
 import org.cubixmc.server.network.codecs.DummyHandler;
 import org.cubixmc.server.network.codecs.EncryptionHandler;
 import org.cubixmc.server.network.packets.PacketOut;
@@ -15,7 +15,7 @@ import javax.crypto.SecretKey;
 
 @RequiredArgsConstructor
 public class Connection {
-    private final SocketChannel channel;
+    private final @Getter SocketChannel channel;
     private @Getter int compression = -1;
     private @Getter @Setter Phase phase = Phase.HANDSHAKE;
     private @Getter @Setter CubixPlayer player;
@@ -37,7 +37,7 @@ public class Connection {
         }
 
         if(this.compression < 0 && compression >= 0) {
-            channel.pipeline().replace("compression", "compression", null);
+            channel.pipeline().replace("compression", "compression", new CompressionHandler(this));
         } else if(this.compression >= 0 && compression < 0) {
             channel.pipeline().replace("compression", "compression", DummyHandler.INSTANCE);
         }
