@@ -23,7 +23,7 @@ public class EventCause extends Exception {
      * @param cause The exception that made this happen
      * @param message Message sent
      */
-    public EventException(Throwable cause, String message){
+    public EventCause(Throwable cause, String message){
         super(message);
         this.cause = cause;
     }
