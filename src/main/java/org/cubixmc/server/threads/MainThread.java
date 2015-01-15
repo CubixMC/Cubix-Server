@@ -12,16 +12,18 @@ public class MainThread extends Thread {
 
     @Override
     public void run() {
-        long start = System.currentTimeMillis();
+        while(!isInterrupted()) {
+            long start = System.currentTimeMillis();
 
-        CubixServer.getInstance().tick();
+            CubixServer.getInstance().tick();
 
-        long duration = System.currentTimeMillis() - start;
-        long sleepTime = 1000L / ticksPerSecond - duration;
-        if(sleepTime > 0) {
-            try {
-                Thread.sleep(sleepTime);
-            } catch(InterruptedException e) {
+            long duration = System.currentTimeMillis() - start;
+            long sleepTime = 1000L / ticksPerSecond - duration;
+            if(sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch(InterruptedException e) {
+                }
             }
         }
     }

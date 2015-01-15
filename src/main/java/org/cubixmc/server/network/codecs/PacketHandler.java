@@ -33,6 +33,11 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
         // TODO: Player quit
     }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        CubixServer.getLogger().log(Level.INFO, "Connected");
+    }
+
     public void execute() {
         PacketIn[] packets = packetQueue.toArray(new PacketIn[0]);
         packetQueue.clear();

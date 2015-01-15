@@ -38,16 +38,19 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(this)
                 .childOption(ChannelOption.TCP_NODELAY, true)
-                .childOption(ChannelOption.SO_KEEPALIVE, true);
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .localAddress(25565);
     }
 
     public void connect() {
-        bootstrap.bind(address).addListener(new GenericFutureListener<ChannelFuture>() {
+        bootstrap.bind().addListener(new GenericFutureListener<ChannelFuture>() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if(!future.isSuccess()) {
                     CubixServer.getLogger().log(Level.SEVERE, "Failed to bind port " + address.getPort(), future.cause());
                     // TODO: Stop server
+                } else {
+                    CubixServer.getLogger().log(Level.INFO, "Network pipeline running!");
                 }
             }
         });
@@ -57,13 +60,14 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel channel) throws Exception {
         Connection connection = new Connection(channel);
         PacketHandler packetHandler = new PacketHandler(connection);
+        connection.setPacketHandler(packetHandler);
         connections.add(connection);
 
         channel.pipeline().addLast("encryption", DummyHandler.INSTANCE); // encrypt/decrypt packets
         channel.pipeline().addLast("completion", new CompletionHandler()); // parse packet length
         channel.pipeline().addLast("compression", DummyHandler.INSTANCE); // compress/decompress packets
         channel.pipeline().addLast("codec", new CodecHandler(connection)); // encode/decode packets
-        channel.pipeline().addLast("handler", new PacketHandler(connection)); // read packets in player thread
+        channel.pipeline().addLast("handler", packetHandler); // read packets in player thread
     }
 
     public Connection getConnection(Channel channel) {

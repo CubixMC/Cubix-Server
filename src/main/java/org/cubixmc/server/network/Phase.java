@@ -22,7 +22,7 @@ public enum Phase {
             ClassPath classPath = ClassPath.from(getClass().getClassLoader());
             for(ClassInfo classInfo : classPath.getTopLevelClassesRecursive("org.cubixmc.server.network.packets." + toString().toLowerCase())) {
                 Class<?> clazz = Class.forName(classInfo.getName());
-                if(clazz.isAssignableFrom(PacketIn.class)) {
+                if(PacketIn.class.isAssignableFrom(clazz)) {
                     PacketIn test = (PacketIn) clazz.newInstance();
                     idToClass.put(test.getId(), (Class<? extends PacketIn>) clazz);
                 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
+import org.cubixmc.server.threads.Threads;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -54,6 +55,9 @@ public class CubixServer {
         try {
             logger.log(Level.INFO, "Starting a Minecraft protocol server on localhost:25565");
             this.netManager = new NetManager(new InetSocketAddress(InetAddress.getLocalHost(), 25565));
+            netManager.connect();
+
+            Threads.mainThread.start();
         } catch(UnknownHostException e) {
             logger.log(Level.SEVERE, "Failed to find host to start server with!", e);
             throw new RuntimeException("");
