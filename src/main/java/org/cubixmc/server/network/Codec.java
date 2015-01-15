@@ -12,7 +12,7 @@ public class Codec {
         this.byteBuf = byteBuf;
     }
 
-    public void writeByte(byte value) {
+    public void writeByte(int value) {
         byteBuf.writeByte(value);
     }
 
