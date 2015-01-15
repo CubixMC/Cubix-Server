@@ -6,28 +6,28 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityLook extends PacketOut {
-    private boolean onGround;
     private int entityID;
-    private int pitch;
     private int yaw;
+    private int pitch;
+    private boolean onGround;
 
     public PacketOutEntityLook() {
         super(0x16);
     }
 
-    public PacketOutEntityLook(boolean onGround, int entityID, int pitch, int yaw) {
+    public PacketOutEntityLook(int entityID, int yaw, int pitch, boolean onGround) {
         super(0x16);
-        this.onGround = onGround;
         this.entityID = entityID;
-        this.pitch = pitch;
         this.yaw = yaw;
+        this.pitch = pitch;
+        this.onGround = onGround;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeBoolean(onGround);
         codec.writeVarInt(entityID);
-        codec.writeByte(pitch);
         codec.writeByte(yaw);
+        codec.writeByte(pitch);
+        codec.writeBoolean(onGround);
     }
 }

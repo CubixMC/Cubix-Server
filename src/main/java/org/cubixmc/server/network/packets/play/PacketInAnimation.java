@@ -6,8 +6,8 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInAnimation extends PacketIn {
-    private int actionID;
     private int entityID;
+    private int actionID;
     private int jumpBoost;
 
     public PacketInAnimation() {
@@ -16,8 +16,8 @@ public class PacketInAnimation extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.actionID = codec.readVarInt();
         this.entityID = codec.readVarInt();
+        this.actionID = codec.readVarInt();
         this.jumpBoost = codec.readVarInt();
     }
 

@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutPluginMessage extends PacketOut {
-    private byte[] data;
     private String channel;
+    private byte[] data;
 
     public PacketOutPluginMessage() {
         super(0x3F);
     }
 
-    public PacketOutPluginMessage(byte[] data, String channel) {
+    public PacketOutPluginMessage(String channel, byte[] data) {
         super(0x3F);
-        this.data = data;
         this.channel = channel;
+        this.data = data;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeBytes(data);
         codec.writeString(channel);
+        codec.writeBytes(data);
     }
 }

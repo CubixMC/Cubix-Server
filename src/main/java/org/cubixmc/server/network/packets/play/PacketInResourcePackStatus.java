@@ -6,8 +6,8 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInResourcePackStatus extends PacketIn {
-    private int result;
     private String hash;
+    private int result;
 
     public PacketInResourcePackStatus() {
         super(0x19);
@@ -15,8 +15,8 @@ public class PacketInResourcePackStatus extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.result = codec.readVarInt();
         this.hash = codec.readString();
+        this.result = codec.readVarInt();
     }
 
     @Override

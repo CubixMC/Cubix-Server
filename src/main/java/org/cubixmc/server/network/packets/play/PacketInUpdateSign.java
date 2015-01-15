@@ -7,11 +7,11 @@ import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInUpdateSign extends PacketIn {
-    private String line4;
     private Position location;
-    private String line3;
-    private String line2;
     private String line1;
+    private String line2;
+    private String line3;
+    private String line4;
 
     public PacketInUpdateSign() {
         super(0x12);
@@ -19,11 +19,11 @@ public class PacketInUpdateSign extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.line4 = codec.readChat();
         this.location = codec.readPosition();
-        this.line3 = codec.readChat();
-        this.line2 = codec.readChat();
         this.line1 = codec.readChat();
+        this.line2 = codec.readChat();
+        this.line3 = codec.readChat();
+        this.line4 = codec.readChat();
     }
 
     @Override

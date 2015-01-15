@@ -6,9 +6,9 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInPlayerLook extends PacketIn {
-    private boolean onGround;
-    private float pitch;
     private float yaw;
+    private float pitch;
+    private boolean onGround;
 
     public PacketInPlayerLook() {
         super(0x05);
@@ -16,9 +16,9 @@ public class PacketInPlayerLook extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.onGround = codec.readBoolean();
-        this.pitch = codec.readFloat();
         this.yaw = codec.readFloat();
+        this.pitch = codec.readFloat();
+        this.onGround = codec.readBoolean();
     }
 
     @Override

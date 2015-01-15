@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityHeadLook extends PacketOut {
-    private int headYaw;
     private int entityID;
+    private int headYaw;
 
     public PacketOutEntityHeadLook() {
         super(0x19);
     }
 
-    public PacketOutEntityHeadLook(int headYaw, int entityID) {
+    public PacketOutEntityHeadLook(int entityID, int headYaw) {
         super(0x19);
-        this.headYaw = headYaw;
         this.entityID = entityID;
+        this.headYaw = headYaw;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeByte(headYaw);
         codec.writeVarInt(entityID);
+        codec.writeByte(headYaw);
     }
 }

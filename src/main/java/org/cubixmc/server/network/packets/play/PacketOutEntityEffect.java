@@ -6,31 +6,31 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityEffect extends PacketOut {
+    private int entityID;
+    private int effectID;
+    private int amplifier;
     private int duration;
     private boolean hideParticles;
-    private int effectID;
-    private int entityID;
-    private int amplifier;
 
     public PacketOutEntityEffect() {
         super(0x1D);
     }
 
-    public PacketOutEntityEffect(int duration, boolean hideParticles, int effectID, int entityID, int amplifier) {
+    public PacketOutEntityEffect(int entityID, int effectID, int amplifier, int duration, boolean hideParticles) {
         super(0x1D);
+        this.entityID = entityID;
+        this.effectID = effectID;
+        this.amplifier = amplifier;
         this.duration = duration;
         this.hideParticles = hideParticles;
-        this.effectID = effectID;
-        this.entityID = entityID;
-        this.amplifier = amplifier;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeVarInt(entityID);
+        codec.writeByte(effectID);
+        codec.writeByte(amplifier);
         codec.writeVarInt(duration);
         codec.writeBoolean(hideParticles);
-        codec.writeByte(effectID);
-        codec.writeVarInt(entityID);
-        codec.writeByte(amplifier);
     }
 }

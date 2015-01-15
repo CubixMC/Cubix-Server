@@ -6,8 +6,8 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInPluginMessage extends PacketIn {
-    private byte[] data;
     private String channel;
+    private byte[] data;
 
     public PacketInPluginMessage() {
         super(0x17);
@@ -15,8 +15,8 @@ public class PacketInPluginMessage extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.data = codec.readBytes();
         this.channel = codec.readString();
+        this.data = codec.readBytes();
     }
 
     @Override

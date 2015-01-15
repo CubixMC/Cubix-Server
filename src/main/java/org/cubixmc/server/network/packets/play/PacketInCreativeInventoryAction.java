@@ -7,8 +7,8 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInCreativeInventoryAction extends PacketIn {
-    private ItemStack clickedItem;
     private short slot;
+    private ItemStack clickedItem;
 
     public PacketInCreativeInventoryAction() {
         super(0x10);
@@ -16,8 +16,8 @@ public class PacketInCreativeInventoryAction extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.clickedItem = codec.readSlot();
         this.slot = codec.readShort();
+        this.clickedItem = codec.readSlot();
     }
 
     @Override

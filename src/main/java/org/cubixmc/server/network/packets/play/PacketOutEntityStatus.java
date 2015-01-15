@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityStatus extends PacketOut {
-    private int entityStatus;
     private int entityID;
+    private int entityStatus;
 
     public PacketOutEntityStatus() {
         super(0x1A);
     }
 
-    public PacketOutEntityStatus(int entityStatus, int entityID) {
+    public PacketOutEntityStatus(int entityID, int entityStatus) {
         super(0x1A);
-        this.entityStatus = entityStatus;
         this.entityID = entityID;
+        this.entityStatus = entityStatus;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeByte(entityStatus);
         codec.writeInt(entityID);
+        codec.writeByte(entityStatus);
     }
 }

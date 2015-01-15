@@ -8,27 +8,27 @@ import org.cubixmc.util.Position;
 @Data
 public class PacketOutEffect extends PacketOut {
     private int effectID;
-    private int data;
     private Position location;
+    private int data;
     private boolean disableRelativeVolume;
 
     public PacketOutEffect() {
         super(0x28);
     }
 
-    public PacketOutEffect(int effectID, int data, Position location, boolean disableRelativeVolume) {
+    public PacketOutEffect(int effectID, Position location, int data, boolean disableRelativeVolume) {
         super(0x28);
         this.effectID = effectID;
-        this.data = data;
         this.location = location;
+        this.data = data;
         this.disableRelativeVolume = disableRelativeVolume;
     }
 
     @Override
     public void encode(Codec codec) {
         codec.writeInt(effectID);
-        codec.writeInt(data);
         codec.writePosition(location);
+        codec.writeInt(data);
         codec.writeBoolean(disableRelativeVolume);
     }
 }

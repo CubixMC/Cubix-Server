@@ -6,12 +6,12 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInPlayerPositionAndLook extends PacketIn {
-    private boolean onGround;
-    private double feetY;
     private double x;
+    private double feetY;
     private double z;
-    private float pitch;
     private float yaw;
+    private float pitch;
+    private boolean onGround;
 
     public PacketInPlayerPositionAndLook() {
         super(0x06);
@@ -19,12 +19,12 @@ public class PacketInPlayerPositionAndLook extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.onGround = codec.readBoolean();
-        this.feetY = codec.readFloat();
         this.x = codec.readFloat();
+        this.feetY = codec.readFloat();
         this.z = codec.readFloat();
-        this.pitch = codec.readFloat();
         this.yaw = codec.readFloat();
+        this.pitch = codec.readFloat();
+        this.onGround = codec.readBoolean();
     }
 
     @Override

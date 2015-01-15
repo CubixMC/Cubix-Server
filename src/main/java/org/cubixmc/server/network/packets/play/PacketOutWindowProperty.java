@@ -6,25 +6,25 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutWindowProperty extends PacketOut {
+    private int windowID;
     private short property;
     private short value;
-    private int windowID;
 
     public PacketOutWindowProperty() {
         super(0x31);
     }
 
-    public PacketOutWindowProperty(short property, short value, int windowID) {
+    public PacketOutWindowProperty(int windowID, short property, short value) {
         super(0x31);
+        this.windowID = windowID;
         this.property = property;
         this.value = value;
-        this.windowID = windowID;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeByte(windowID);
         codec.writeShort(property);
         codec.writeShort(value);
-        codec.writeByte(windowID);
     }
 }

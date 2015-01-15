@@ -8,12 +8,12 @@ import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInPlayerBlockPlacement extends PacketIn {
-    private int cursorPositionX;
-    private int cursorPositionZ;
-    private ItemStack heldItem;
-    private int cursorPositionY;
     private Position location;
     private int direction;
+    private ItemStack heldItem;
+    private int cursorPositionX;
+    private int cursorPositionY;
+    private int cursorPositionZ;
 
     public PacketInPlayerBlockPlacement() {
         super(0x08);
@@ -21,12 +21,12 @@ public class PacketInPlayerBlockPlacement extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.cursorPositionX = codec.readByte();
-        this.cursorPositionZ = codec.readByte();
-        this.heldItem = codec.readSlot();
-        this.cursorPositionY = codec.readByte();
         this.location = codec.readPosition();
         this.direction = codec.readByte();
+        this.heldItem = codec.readSlot();
+        this.cursorPositionX = codec.readByte();
+        this.cursorPositionY = codec.readByte();
+        this.cursorPositionZ = codec.readByte();
     }
 
     @Override

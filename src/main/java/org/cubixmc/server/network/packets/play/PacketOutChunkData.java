@@ -6,34 +6,34 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutChunkData extends PacketOut {
+    private int chunkX;
+    private int chunkZ;
+    private boolean groundUpContinuous;
+    private short primaryBitMap;
     private int size;
     private byte[] data;
-    private short primaryBitMap;
-    private int chunkX;
-    private boolean groundUpContinuous;
-    private int chunkZ;
 
     public PacketOutChunkData() {
         super(0x21);
     }
 
-    public PacketOutChunkData(int size, byte[] data, short primaryBitMap, int chunkX, boolean groundUpContinuous, int chunkZ) {
+    public PacketOutChunkData(int chunkX, int chunkZ, boolean groundUpContinuous, short primaryBitMap, int size, byte[] data) {
         super(0x21);
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.groundUpContinuous = groundUpContinuous;
+        this.primaryBitMap = primaryBitMap;
         this.size = size;
         this.data = data;
-        this.primaryBitMap = primaryBitMap;
-        this.chunkX = chunkX;
-        this.groundUpContinuous = groundUpContinuous;
-        this.chunkZ = chunkZ;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeInt(chunkX);
+        codec.writeInt(chunkZ);
+        codec.writeBoolean(groundUpContinuous);
+        codec.writeShort(primaryBitMap);
         codec.writeVarInt(size);
         codec.writeBytes(data);
-        codec.writeShort(primaryBitMap);
-        codec.writeInt(chunkX);
-        codec.writeBoolean(groundUpContinuous);
-        codec.writeInt(chunkZ);
     }
 }

@@ -6,10 +6,10 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInClientSettings extends PacketIn {
-    private boolean chatColours;
-    private int chatFlags;
     private String locale;
     private int viewDistance;
+    private int chatFlags;
+    private boolean chatColours;
     private int displayedSkinParts;
 
     public PacketInClientSettings() {
@@ -18,10 +18,10 @@ public class PacketInClientSettings extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.chatColours = codec.readBoolean();
-        this.chatFlags = codec.readByte();
         this.locale = codec.readString();
         this.viewDistance = codec.readByte();
+        this.chatFlags = codec.readByte();
+        this.chatColours = codec.readBoolean();
         this.displayedSkinParts = codec.readByte();
     }
 

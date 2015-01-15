@@ -6,9 +6,9 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInSteerVehicle extends PacketIn {
+    private float sideways;
     private float forward;
     private int flags;
-    private float sideways;
 
     public PacketInSteerVehicle() {
         super(0x0C);
@@ -16,9 +16,9 @@ public class PacketInSteerVehicle extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
+        this.sideways = codec.readFloat();
         this.forward = codec.readFloat();
         this.flags = codec.readByte();
-        this.sideways = codec.readFloat();
     }
 
     @Override

@@ -7,12 +7,12 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInClickWindow extends PacketIn {
+    private int windowID;
+    private short slot;
     private int button;
+    private short actionNumber;
     private int mode;
     private ItemStack clickedItem;
-    private short actionNumber;
-    private short slot;
-    private int windowID;
 
     public PacketInClickWindow() {
         super(0x0E);
@@ -20,12 +20,12 @@ public class PacketInClickWindow extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
+        this.windowID = codec.readByte();
+        this.slot = codec.readShort();
         this.button = codec.readByte();
+        this.actionNumber = codec.readShort();
         this.mode = codec.readByte();
         this.clickedItem = codec.readSlot();
-        this.actionNumber = codec.readShort();
-        this.slot = codec.readShort();
-        this.windowID = codec.readByte();
     }
 
     @Override

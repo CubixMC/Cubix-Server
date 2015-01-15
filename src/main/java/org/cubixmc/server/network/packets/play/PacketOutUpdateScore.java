@@ -6,28 +6,28 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutUpdateScore extends PacketOut {
-    private int updateRemove;
-    private int value;
-    private String objectiveName;
     private String scoreName;
+    private int updateRemove;
+    private String objectiveName;
+    private int value;
 
     public PacketOutUpdateScore() {
         super(0x3C);
     }
 
-    public PacketOutUpdateScore(int updateRemove, int value, String objectiveName, String scoreName) {
+    public PacketOutUpdateScore(String scoreName, int updateRemove, String objectiveName, int value) {
         super(0x3C);
-        this.updateRemove = updateRemove;
-        this.value = value;
-        this.objectiveName = objectiveName;
         this.scoreName = scoreName;
+        this.updateRemove = updateRemove;
+        this.objectiveName = objectiveName;
+        this.value = value;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeByte(updateRemove);
-        codec.writeVarInt(value);
-        codec.writeString(objectiveName);
         codec.writeString(scoreName);
+        codec.writeByte(updateRemove);
+        codec.writeString(objectiveName);
+        codec.writeVarInt(value);
     }
 }

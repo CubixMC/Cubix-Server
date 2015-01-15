@@ -4,45 +4,47 @@ import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
+import java.util.UUID;
+
 @Data
 public class PacketOutSpawnPlayer extends PacketOut {
+    private int entityID;
     private UUID playerUUID;
-    private Metadata metadata;
     private int x;
     private int y;
-    private int entityID;
     private int z;
+    private int yaw;
     private int pitch;
     private short currentItem;
-    private int yaw;
+    private Metadata metadata;
 
     public PacketOutSpawnPlayer() {
         super(0x0C);
     }
 
-    public PacketOutSpawnPlayer(UUID playerUUID, Metadata metadata, int x, int y, int entityID, int z, int pitch, short currentItem, int yaw) {
+    public PacketOutSpawnPlayer(int entityID, UUID playerUUID, int x, int y, int z, int yaw, int pitch, short currentItem, Metadata metadata) {
         super(0x0C);
+        this.entityID = entityID;
         this.playerUUID = playerUUID;
-        this.metadata = metadata;
         this.x = x;
         this.y = y;
-        this.entityID = entityID;
         this.z = z;
+        this.yaw = yaw;
         this.pitch = pitch;
         this.currentItem = currentItem;
-        this.yaw = yaw;
+        this.metadata = metadata;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeVarInt(entityID);
         codec.writeUUID(playerUUID);
-        codec.writeMetadata(metadata);
         codec.writeInt(x);
         codec.writeInt(y);
-        codec.writeVarInt(entityID);
         codec.writeInt(z);
+        codec.writeByte(yaw);
         codec.writeByte(pitch);
         codec.writeShort(currentItem);
-        codec.writeByte(yaw);
+        codec.writeMetadata(metadata);
     }
 }

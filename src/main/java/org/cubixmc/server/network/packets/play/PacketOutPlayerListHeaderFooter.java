@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutPlayerListHeaderFooter extends PacketOut {
-    private String footer;
     private String header;
+    private String footer;
 
     public PacketOutPlayerListHeaderFooter() {
         super(0x47);
     }
 
-    public PacketOutPlayerListHeaderFooter(String footer, String header) {
+    public PacketOutPlayerListHeaderFooter(String header, String footer) {
         super(0x47);
-        this.footer = footer;
         this.header = header;
+        this.footer = footer;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeChat(footer);
         codec.writeChat(header);
+        codec.writeChat(footer);
     }
 }

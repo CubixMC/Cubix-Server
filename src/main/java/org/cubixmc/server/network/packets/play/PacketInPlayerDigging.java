@@ -7,9 +7,9 @@ import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInPlayerDigging extends PacketIn {
-    private int face;
-    private Position location;
     private int status;
+    private Position location;
+    private int face;
 
     public PacketInPlayerDigging() {
         super(0x07);
@@ -17,9 +17,9 @@ public class PacketInPlayerDigging extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.face = codec.readByte();
-        this.location = codec.readPosition();
         this.status = codec.readByte();
+        this.location = codec.readPosition();
+        this.face = codec.readByte();
     }
 
     @Override

@@ -6,34 +6,34 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutSoundEffect extends PacketOut {
-    private float volume;
-    private int effectPositionZ;
-    private int effectPositionY;
-    private int effectPositionX;
-    private int pitch;
     private String soundName;
+    private int effectPositionX;
+    private int effectPositionY;
+    private int effectPositionZ;
+    private float volume;
+    private int pitch;
 
     public PacketOutSoundEffect() {
         super(0x29);
     }
 
-    public PacketOutSoundEffect(float volume, int effectPositionZ, int effectPositionY, int effectPositionX, int pitch, String soundName) {
+    public PacketOutSoundEffect(String soundName, int effectPositionX, int effectPositionY, int effectPositionZ, float volume, int pitch) {
         super(0x29);
-        this.volume = volume;
-        this.effectPositionZ = effectPositionZ;
-        this.effectPositionY = effectPositionY;
-        this.effectPositionX = effectPositionX;
-        this.pitch = pitch;
         this.soundName = soundName;
+        this.effectPositionX = effectPositionX;
+        this.effectPositionY = effectPositionY;
+        this.effectPositionZ = effectPositionZ;
+        this.volume = volume;
+        this.pitch = pitch;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeFloat(volume);
-        codec.writeInt(effectPositionZ);
-        codec.writeInt(effectPositionY);
-        codec.writeInt(effectPositionX);
-        codec.writeByte(pitch);
         codec.writeString(soundName);
+        codec.writeInt(effectPositionX);
+        codec.writeInt(effectPositionY);
+        codec.writeInt(effectPositionZ);
+        codec.writeFloat(volume);
+        codec.writeByte(pitch);
     }
 }

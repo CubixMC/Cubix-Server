@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityMetadata extends PacketOut {
-    private Metadata metadata;
     private int entityID;
+    private Metadata metadata;
 
     public PacketOutEntityMetadata() {
         super(0x1C);
     }
 
-    public PacketOutEntityMetadata(Metadata metadata, int entityID) {
+    public PacketOutEntityMetadata(int entityID, Metadata metadata) {
         super(0x1C);
-        this.metadata = metadata;
         this.entityID = entityID;
+        this.metadata = metadata;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeMetadata(metadata);
         codec.writeVarInt(entityID);
+        codec.writeMetadata(metadata);
     }
 }

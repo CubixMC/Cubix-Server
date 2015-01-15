@@ -6,22 +6,22 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutRemoveEntityEffect extends PacketOut {
-    private int effectID;
     private int entityID;
+    private int effectID;
 
     public PacketOutRemoveEntityEffect() {
         super(0x1E);
     }
 
-    public PacketOutRemoveEntityEffect(int effectID, int entityID) {
+    public PacketOutRemoveEntityEffect(int entityID, int effectID) {
         super(0x1E);
-        this.effectID = effectID;
         this.entityID = entityID;
+        this.effectID = effectID;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeByte(effectID);
         codec.writeVarInt(entityID);
+        codec.writeByte(effectID);
     }
 }

@@ -6,11 +6,11 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInUseEntity extends PacketIn {
-    private float targetZ;
-    private float targetY;
-    private float targetX;
-    private int type;
     private int target;
+    private int type;
+    private float targetX;
+    private float targetY;
+    private float targetZ;
 
     public PacketInUseEntity() {
         super(0x02);
@@ -18,11 +18,11 @@ public class PacketInUseEntity extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.targetZ = codec.readFloat();
-        this.targetY = codec.readFloat();
-        this.targetX = codec.readFloat();
-        this.type = codec.readVarInt();
         this.target = codec.readVarInt();
+        this.type = codec.readVarInt();
+        this.targetX = codec.readFloat();
+        this.targetY = codec.readFloat();
+        this.targetZ = codec.readFloat();
     }
 
     @Override

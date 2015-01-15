@@ -6,28 +6,28 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutRespawn extends PacketOut {
-    private int difficulty;
-    private String levelType;
     private int dimension;
+    private int difficulty;
     private int gamemode;
+    private String levelType;
 
     public PacketOutRespawn() {
         super(0x07);
     }
 
-    public PacketOutRespawn(int difficulty, String levelType, int dimension, int gamemode) {
+    public PacketOutRespawn(int dimension, int difficulty, int gamemode, String levelType) {
         super(0x07);
-        this.difficulty = difficulty;
-        this.levelType = levelType;
         this.dimension = dimension;
+        this.difficulty = difficulty;
         this.gamemode = gamemode;
+        this.levelType = levelType;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeByte(difficulty);
-        codec.writeString(levelType);
         codec.writeInt(dimension);
+        codec.writeByte(difficulty);
         codec.writeByte(gamemode);
+        codec.writeString(levelType);
     }
 }

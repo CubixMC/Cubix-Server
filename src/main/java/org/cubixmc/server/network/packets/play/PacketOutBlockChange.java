@@ -7,22 +7,22 @@ import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutBlockChange extends PacketOut {
-    private int blockID;
     private Position location;
+    private int blockID;
 
     public PacketOutBlockChange() {
         super(0x23);
     }
 
-    public PacketOutBlockChange(int blockID, Position location) {
+    public PacketOutBlockChange(Position location, int blockID) {
         super(0x23);
-        this.blockID = blockID;
         this.location = location;
+        this.blockID = blockID;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeVarInt(blockID);
         codec.writePosition(location);
+        codec.writeVarInt(blockID);
     }
 }

@@ -6,37 +6,37 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityTeleport extends PacketOut {
-    private boolean onGround;
+    private int entityID;
     private int x;
     private int y;
-    private int entityID;
     private int z;
-    private int pitch;
     private int yaw;
+    private int pitch;
+    private boolean onGround;
 
     public PacketOutEntityTeleport() {
         super(0x18);
     }
 
-    public PacketOutEntityTeleport(boolean onGround, int x, int y, int entityID, int z, int pitch, int yaw) {
+    public PacketOutEntityTeleport(int entityID, int x, int y, int z, int yaw, int pitch, boolean onGround) {
         super(0x18);
-        this.onGround = onGround;
+        this.entityID = entityID;
         this.x = x;
         this.y = y;
-        this.entityID = entityID;
         this.z = z;
-        this.pitch = pitch;
         this.yaw = yaw;
+        this.pitch = pitch;
+        this.onGround = onGround;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeBoolean(onGround);
+        codec.writeVarInt(entityID);
         codec.writeInt(x);
         codec.writeInt(y);
-        codec.writeVarInt(entityID);
         codec.writeInt(z);
-        codec.writeByte(pitch);
         codec.writeByte(yaw);
+        codec.writeByte(pitch);
+        codec.writeBoolean(onGround);
     }
 }

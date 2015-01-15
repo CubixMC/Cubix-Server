@@ -6,8 +6,8 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInEnchantItem extends PacketIn {
-    private int enchantment;
     private int windowID;
+    private int enchantment;
 
     public PacketInEnchantItem() {
         super(0x11);
@@ -15,8 +15,8 @@ public class PacketInEnchantItem extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.enchantment = codec.readByte();
         this.windowID = codec.readByte();
+        this.enchantment = codec.readByte();
     }
 
     @Override

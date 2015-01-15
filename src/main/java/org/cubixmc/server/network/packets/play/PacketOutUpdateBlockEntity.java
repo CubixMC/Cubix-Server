@@ -7,25 +7,25 @@ import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutUpdateBlockEntity extends PacketOut {
-    private byte[] nBTData;
-    private int action;
     private Position location;
+    private int action;
+    private byte[] nBTData;
 
     public PacketOutUpdateBlockEntity() {
         super(0x35);
     }
 
-    public PacketOutUpdateBlockEntity(byte[] nBTData, int action, Position location) {
+    public PacketOutUpdateBlockEntity(Position location, int action, byte[] nBTData) {
         super(0x35);
-        this.nBTData = nBTData;
-        this.action = action;
         this.location = location;
+        this.action = action;
+        this.nBTData = nBTData;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeBytes(nBTData);
-        codec.writeByte(action);
         codec.writePosition(location);
+        codec.writeByte(action);
+        codec.writeBytes(nBTData);
     }
 }

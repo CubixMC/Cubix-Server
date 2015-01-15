@@ -4,6 +4,8 @@ import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
+import java.util.UUID;
+
 @Getter
 public class PacketInSpectate extends PacketIn {
     private UUID targetPlayer;

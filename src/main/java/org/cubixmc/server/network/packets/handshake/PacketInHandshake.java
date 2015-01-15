@@ -6,10 +6,10 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInHandshake extends PacketIn {
-    private String serverAddress;
     private int protocolVersion;
-    private int nextState;
+    private String serverAddress;
     private short serverPort;
+    private int nextState;
 
     public PacketInHandshake() {
         super(0x00);
@@ -17,10 +17,10 @@ public class PacketInHandshake extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.serverAddress = codec.readString();
         this.protocolVersion = codec.readVarInt();
-        this.nextState = codec.readVarInt();
+        this.serverAddress = codec.readString();
         this.serverPort = codec.readShort();
+        this.nextState = codec.readVarInt();
     }
 
     @Override

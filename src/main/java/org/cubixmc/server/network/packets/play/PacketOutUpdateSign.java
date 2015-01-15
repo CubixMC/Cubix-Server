@@ -7,31 +7,31 @@ import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutUpdateSign extends PacketOut {
-    private String line4;
     private Position location;
-    private String line3;
-    private String line2;
     private String line1;
+    private String line2;
+    private String line3;
+    private String line4;
 
     public PacketOutUpdateSign() {
         super(0x33);
     }
 
-    public PacketOutUpdateSign(String line4, Position location, String line3, String line2, String line1) {
+    public PacketOutUpdateSign(Position location, String line1, String line2, String line3, String line4) {
         super(0x33);
-        this.line4 = line4;
         this.location = location;
-        this.line3 = line3;
-        this.line2 = line2;
         this.line1 = line1;
+        this.line2 = line2;
+        this.line3 = line3;
+        this.line4 = line4;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeChat(line4);
         codec.writePosition(location);
-        codec.writeChat(line3);
-        codec.writeChat(line2);
         codec.writeChat(line1);
+        codec.writeChat(line2);
+        codec.writeChat(line3);
+        codec.writeChat(line4);
     }
 }

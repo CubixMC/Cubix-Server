@@ -7,25 +7,25 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutEntityEquipment extends PacketOut {
-    private ItemStack item;
     private int entityID;
     private short slot;
+    private ItemStack item;
 
     public PacketOutEntityEquipment() {
         super(0x04);
     }
 
-    public PacketOutEntityEquipment(ItemStack item, int entityID, short slot) {
+    public PacketOutEntityEquipment(int entityID, short slot, ItemStack item) {
         super(0x04);
-        this.item = item;
         this.entityID = entityID;
         this.slot = slot;
+        this.item = item;
     }
 
     @Override
     public void encode(Codec codec) {
-        codec.writeSlot(item);
         codec.writeVarInt(entityID);
         codec.writeShort(slot);
+        codec.writeSlot(item);
     }
 }

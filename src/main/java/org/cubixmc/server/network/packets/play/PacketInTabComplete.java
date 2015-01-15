@@ -7,9 +7,9 @@ import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInTabComplete extends PacketIn {
+    private String text;
     private boolean hasPosition;
     private Position lookedAtBlock;
-    private String text;
 
     public PacketInTabComplete() {
         super(0x14);
@@ -17,9 +17,9 @@ public class PacketInTabComplete extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
+        this.text = codec.readString();
         this.hasPosition = codec.readBoolean();
         this.lookedAtBlock = codec.readPosition();
-        this.text = codec.readString();
     }
 
     @Override

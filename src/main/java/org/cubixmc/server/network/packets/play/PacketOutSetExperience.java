@@ -6,25 +6,25 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutSetExperience extends PacketOut {
+    private float experienceBar;
     private int level;
     private int totalExperience;
-    private float experienceBar;
 
     public PacketOutSetExperience() {
         super(0x1F);
     }
 
-    public PacketOutSetExperience(int level, int totalExperience, float experienceBar) {
+    public PacketOutSetExperience(float experienceBar, int level, int totalExperience) {
         super(0x1F);
+        this.experienceBar = experienceBar;
         this.level = level;
         this.totalExperience = totalExperience;
-        this.experienceBar = experienceBar;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeFloat(experienceBar);
         codec.writeVarInt(level);
         codec.writeVarInt(totalExperience);
-        codec.writeFloat(experienceBar);
     }
 }

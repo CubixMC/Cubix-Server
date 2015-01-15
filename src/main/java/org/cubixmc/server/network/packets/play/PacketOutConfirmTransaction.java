@@ -6,25 +6,25 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutConfirmTransaction extends PacketOut {
+    private int windowID;
     private short actionNumber;
     private boolean accepted;
-    private int windowID;
 
     public PacketOutConfirmTransaction() {
         super(0x32);
     }
 
-    public PacketOutConfirmTransaction(short actionNumber, boolean accepted, int windowID) {
+    public PacketOutConfirmTransaction(int windowID, short actionNumber, boolean accepted) {
         super(0x32);
+        this.windowID = windowID;
         this.actionNumber = actionNumber;
         this.accepted = accepted;
-        this.windowID = windowID;
     }
 
     @Override
     public void encode(Codec codec) {
+        codec.writeByte(windowID);
         codec.writeShort(actionNumber);
         codec.writeBoolean(accepted);
-        codec.writeByte(windowID);
     }
 }
