@@ -93,6 +93,13 @@ public class Codec {
         throw new UnsupportedOperationException("Not made yet");
     }
 
+    public void writeVarInts(int[] integers) {
+        writeVarInt(integers.length);
+        for(int integer : integers) {
+            writeVarInt(integer);
+        }
+    }
+
     public byte readByte() {
         return byteBuf.readByte();
     }
@@ -167,6 +174,16 @@ public class Codec {
 
     public Metadata readMetadata() {
         throw new UnsupportedOperationException("Not made yet");
+    }
+
+    public int[] readVarInts() {
+        int length = readVarInt();
+        int[] integers = new int[length];
+        for(int i = 0; i < length; i++) {
+            integers[i] = readVarInt();
+        }
+
+        return integers;
     }
 
     public static int readVarInt(ByteBuf byteBuf, int max) {
