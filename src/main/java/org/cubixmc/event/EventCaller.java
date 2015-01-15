@@ -18,4 +18,5 @@ import java.lang.annotation.RetentionPolicy;
      * @boolean type(default, false);
      */
     boolean ignoreCancelled() default false;
+    }
 }
