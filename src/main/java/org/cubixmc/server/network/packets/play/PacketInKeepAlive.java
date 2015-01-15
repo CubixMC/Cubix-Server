@@ -1,23 +1,23 @@
 package org.cubixmc.server.network.packets.play;
 
-import org.cubixmc.server.network.Codec;
 import lombok.Getter;
+import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInKeepAlive extends PacketIn {
-private int keepAliveID;
+    private int keepAliveID;
 
-public PacketInKeepAlive() {
-super(0x00);
-}
+    public PacketInKeepAlive() {
+        super(0x00);
+    }
 
-@Override
-public void decode(Codec codec) {
-this.keepAliveID = codec.readVarInt();
-}
+    @Override
+    public void decode(Codec codec) {
+        this.keepAliveID = codec.readVarInt();
+    }
 
-@Override
-public void handle() {
-}
+    @Override
+    public void handle() {
+    }
 }

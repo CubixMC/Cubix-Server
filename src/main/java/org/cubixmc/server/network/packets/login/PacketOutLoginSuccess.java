@@ -1,27 +1,27 @@
 package org.cubixmc.server.network.packets.login;
 
-import org.cubixmc.server.network.Codec;
 import lombok.Data;
+import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutLoginSuccess extends PacketOut {
-private String uUID;
-private String username;
+    private String uUID;
+    private String username;
 
-public PacketOutLoginSuccess() {
-super(0x02);
-}
+    public PacketOutLoginSuccess() {
+        super(0x02);
+    }
 
-public PacketOutLoginSuccess(String uUID, String username) {
-super(0x02);
-this.uUID = uUID;
-this.username = username;
-}
+    public PacketOutLoginSuccess(String uUID, String username) {
+        super(0x02);
+        this.uUID = uUID;
+        this.username = username;
+    }
 
-@Override
-public void encode(Codec codec) {
-codec.writeString(uUID);
-codec.writeString(username);
-}
+    @Override
+    public void encode(Codec codec) {
+        codec.writeString(uUID);
+        codec.writeString(username);
+    }
 }

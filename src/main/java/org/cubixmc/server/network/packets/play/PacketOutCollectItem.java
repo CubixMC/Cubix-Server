@@ -1,27 +1,27 @@
 package org.cubixmc.server.network.packets.play;
 
-import org.cubixmc.server.network.Codec;
 import lombok.Data;
+import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutCollectItem extends PacketOut {
-private int collectedEntityID;
-private int collectorEntityID;
+    private int collectedEntityID;
+    private int collectorEntityID;
 
-public PacketOutCollectItem() {
-super(0x0D);
-}
+    public PacketOutCollectItem() {
+        super(0x0D);
+    }
 
-public PacketOutCollectItem(int collectedEntityID, int collectorEntityID) {
-super(0x0D);
-this.collectedEntityID = collectedEntityID;
-this.collectorEntityID = collectorEntityID;
-}
+    public PacketOutCollectItem(int collectedEntityID, int collectorEntityID) {
+        super(0x0D);
+        this.collectedEntityID = collectedEntityID;
+        this.collectorEntityID = collectorEntityID;
+    }
 
-@Override
-public void encode(Codec codec) {
-codec.writeVarInt(collectedEntityID);
-codec.writeVarInt(collectorEntityID);
-}
+    @Override
+    public void encode(Codec codec) {
+        codec.writeVarInt(collectedEntityID);
+        codec.writeVarInt(collectorEntityID);
+    }
 }
