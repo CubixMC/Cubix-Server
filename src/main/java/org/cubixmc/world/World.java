@@ -18,4 +18,20 @@ public interface World {
      * @return Unique id of world
      */
      public UUID getUUID();
+
+    /**
+     * Get a list of all entities
+     * for the current world.
+     *
+     * @return List from world
+     */
+     public List<Entity> getEntities();
+
+    /**
+     * Get an array of all entities
+     * for the current world.
+     *
+     * @return Entity[] from world
+     */
+     public Entity[] getEntities();
 }
