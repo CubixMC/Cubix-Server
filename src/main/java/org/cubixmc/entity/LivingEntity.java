@@ -39,6 +39,13 @@ public interface LivingEntity extends Entity {
      * @return Max health of entity
      */
     public double getMaxHealth();
+
+    /**
+     * Set the maximum amount of health the entity can have.
+     *
+     * @return Max health of entity
+     */
+    public double setMaxHealth(doublt maxHealth);
     
     /**
      * @return this.boolean(flag.type, true(), false())
