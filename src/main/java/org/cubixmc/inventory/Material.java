@@ -1,12 +1,6 @@
 package org.cubixmc.inventory;
 
-import com.google.common.collect.Maps;
-import java.lang.reflect.Constructor;
-import java.util.Map;
-
-
 public enum Material {
-
 
     /**
      * solid = destroyed by water, opaque = light, block placable
