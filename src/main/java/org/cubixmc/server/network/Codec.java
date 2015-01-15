@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.util.Position;
 
 import java.util.UUID;
@@ -88,6 +89,10 @@ public class Codec {
         writeLong(uuid.getLeastSignificantBits());
     }
 
+    public void writeMetadata(Metadata metadata) {
+        throw new UnsupportedOperationException("Not made yet");
+    }
+
     public byte readByte() {
         return byteBuf.readByte();
     }
@@ -158,6 +163,10 @@ public class Codec {
 
     public UUID readUUID() {
         return new UUID(readLong(), readLong());
+    }
+
+    public Metadata readMetadata() {
+        throw new UnsupportedOperationException("Not made yet");
     }
 
     public static int readVarInt(ByteBuf byteBuf, int max) {
