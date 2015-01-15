@@ -8,7 +8,7 @@ public class EventCause extends Exception {
     /**
      * @param throwable Exception which triggered it's parent
      */
-    public EventException(Throwable throwable) {
+    public EventCause(Throwable throwable) {
         cause = throwable;
     }
 
@@ -31,7 +31,7 @@ public class EventCause extends Exception {
     /**
      * @param message Message sent
      */
-    public EventException(String message) {
+    public EventCause(String message) {
         super(message);
         cause = null;
     }
