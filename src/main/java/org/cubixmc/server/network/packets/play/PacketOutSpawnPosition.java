@@ -1,24 +1,24 @@
 package org.cubixmc.server.network.packets.play;
 
-import lombok.Data;
 import org.cubixmc.server.network.Codec;
+import lombok.Data;
 import org.cubixmc.server.network.packets.PacketOut;
 
 @Data
 public class PacketOutSpawnPosition extends PacketOut {
-    private Position location;
+private Position location;
 
-    public PacketOutSpawnPosition() {
-        super(0x05);
-    }
+public PacketOutSpawnPosition() {
+super(0x05);
+}
 
-    public PacketOutSpawnPosition(Position location) {
-        super(0x05);
-        this.location = location;
-    }
+public PacketOutSpawnPosition(Position location) {
+super(0x05);
+this.location = location;
+}
 
-    @Override
-    public void encode(Codec codec) {
-        codec.writePosition(location);
-    }
+@Override
+public void encode(Codec codec) {
+codec.writePosition(location);
+}
 }
