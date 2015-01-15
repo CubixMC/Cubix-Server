@@ -3,6 +3,7 @@ package org.cubixmc.server.network;
 import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
+import org.cubixmc.inventory.ItemStack;
 
 public class Codec {
     private final ByteBuf byteBuf;
@@ -67,6 +68,10 @@ public class Codec {
         byteBuf.writeBytes(bytes);
     }
 
+    public void writeSlot(ItemStack item) {
+        throw new UnsupportedOperationException("Not made yet");
+    }
+
     public byte readByte() {
         return byteBuf.readByte();
     }
@@ -121,6 +126,10 @@ public class Codec {
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
         return bytes;
+    }
+
+    public ItemStack readSlot() {
+        throw new UnsupportedOperationException("Not made yet");
     }
 
     public static int readVarInt(ByteBuf byteBuf, int max) {
