@@ -63,6 +63,10 @@ public class Codec {
         }
     }
 
+    public void writeBytes(byte[] bytes) {
+        byteBuf.writeBytes(bytes);
+    }
+
     public byte readByte() {
         return byteBuf.readByte();
     }
@@ -110,6 +114,13 @@ public class Codec {
 
     public String readChat() {
         return readString();
+    }
+
+    public byte[] readBytes() {
+        int length = readVarInt();
+        byte[] bytes = new byte[length];
+        byteBuf.readBytes(bytes);
+        return bytes;
     }
 
     public static int readVarInt(ByteBuf byteBuf, int max) {
