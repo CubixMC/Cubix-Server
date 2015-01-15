@@ -1,6 +1,7 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
@@ -8,7 +9,7 @@ import org.cubixmc.server.network.packets.PacketIn;
 public class PacketInPlayerBlockPlacement extends PacketIn {
     private int cursorPositionX;
     private int cursorPositionZ;
-    private // TODO: Slot heldItem;
+    private ItemStack heldItem;
     private int cursorPositionY;
     private Position location;
     private int direction;

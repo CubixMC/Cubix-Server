@@ -1,6 +1,7 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
 
@@ -8,7 +9,7 @@ import org.cubixmc.server.network.packets.PacketIn;
 public class PacketInClickWindow extends PacketIn {
     private int button;
     private int mode;
-    private // TODO: Slot clickedItem;
+    private ItemStack clickedItem;
     private short actionNumber;
     private short slot;
     private int windowID;
