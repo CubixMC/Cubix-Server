@@ -10,22 +10,21 @@ public class PacketOutChunkData extends PacketOut {
     private byte[] data;
     private short primaryBitMap;
     private int chunkX;
+    private boolean groundUpContinuous;
     private int chunkZ;
-    private boolean ground
-    -UpContinuous;
 
     public PacketOutChunkData() {
         super(0x21);
     }
 
-    public PacketOutChunkData(int size, byte[] data, short primaryBitMap, int chunkX, int chunkZ, boolean ground-UpContinuous) {
+    public PacketOutChunkData(int size, byte[] data, short primaryBitMap, int chunkX, boolean groundUpContinuous, int chunkZ) {
         super(0x21);
         this.size = size;
         this.data = data;
         this.primaryBitMap = primaryBitMap;
         this.chunkX = chunkX;
+        this.groundUpContinuous = groundUpContinuous;
         this.chunkZ = chunkZ;
-        this.ground - UpContinuous = ground - UpContinuous;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class PacketOutChunkData extends PacketOut {
         codec.writeBytes(data);
         codec.writeShort(primaryBitMap);
         codec.writeInt(chunkX);
+        codec.writeBoolean(groundUpContinuous);
         codec.writeInt(chunkZ);
-        codec.writeBoolean(ground - UpContinuous);
     }
 }
