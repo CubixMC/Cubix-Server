@@ -20,6 +20,14 @@ public interface World {
      public UUID getUUID();
 
     /**
+     * Get the seed for the
+     * current world.
+     *
+     * @return Long seed
+     */
+     public long getSeed();
+
+    /**
      * Get a list of all entities
      * for the current world.
      *
