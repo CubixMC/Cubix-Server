@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketIn;
+import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInPlayerBlockPlacement extends PacketIn {

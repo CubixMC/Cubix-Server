@@ -3,6 +3,7 @@ package org.cubixmc.server.network.packets.play;
 import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutBlockBreakAnimation extends PacketOut {
