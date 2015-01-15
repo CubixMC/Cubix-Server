@@ -3,6 +3,7 @@ package org.cubixmc.server;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
 
 import java.io.IOException;
@@ -61,6 +62,9 @@ public class CubixServer {
 
     public void tick() {
         // This is the main thread
+        for(Connection connection : netManager.getConnections()) {
+            connection.getPacketHandler().execute();
+        }
     }
 
     private void generateKeyPair() {

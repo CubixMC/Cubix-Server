@@ -19,4 +19,5 @@ public class Threads {
      * Pathfinding thread
      */
     public static final ExecutorService pathExecutor = Executors.newFixedThreadPool(1);
+    public static final ExecutorService playerExecutor = Executors.newFixedThreadPool(2);
 }
