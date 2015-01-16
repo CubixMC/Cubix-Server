@@ -88,6 +88,22 @@ public class Position {
         return true;
     }
 
+    public double distance(Position pos){
+        return Math.sqrt(distanceSquared(pos));
+    }
+
+    public double distanceSquared(Position pos){
+        double x2 = pos.getX();
+        double y2 = pos.getY();
+        double z2 = pos.getZ();
+
+        double deltaX = x2-x;
+        double deltaY = y2-y;
+        double deltaZ = z2-z;
+
+        return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+    }
+
     @Override
     public int hashCode() {
         int result;
