@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ import java.util.logging.SimpleFormatter;
 /**
  * Main class
  */
-public class CubixServer {
+public class CubixServer implements Runnable {
     private static @Getter @Setter(AccessLevel.PRIVATE) CubixServer instance;
     private static @Getter @Setter(AccessLevel.PRIVATE) Logger logger;
 
@@ -41,7 +42,7 @@ public class CubixServer {
         // Cant bother atm
 
         try {
-            FileHandler fileHandler = new FileHandler("server.log");
+            FileHandler fileHandler = new FileHandler("server.log", true);
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
             logger.setLevel(Level.ALL);
@@ -57,14 +58,15 @@ public class CubixServer {
             this.netManager = new NetManager(new InetSocketAddress(InetAddress.getLocalHost(), 25565));
             netManager.connect();
 
-            Threads.mainThread.start();
+            Threads.mainThread.scheduleAtFixedRate(this, 0L, 50L, TimeUnit.MILLISECONDS);
         } catch(UnknownHostException e) {
             logger.log(Level.SEVERE, "Failed to find host to start server with!", e);
             throw new RuntimeException("");
         }
     }
 
-    public void tick() {
+    @Override
+    public void run() {
         // This is the main thread
         for(Connection connection : netManager.getConnections()) {
             connection.getPacketHandler().execute();

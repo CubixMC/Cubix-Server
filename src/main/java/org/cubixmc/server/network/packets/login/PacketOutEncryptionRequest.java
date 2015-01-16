@@ -28,9 +28,9 @@ public class PacketOutEncryptionRequest extends PacketOut {
     @Override
     public void encode(Codec codec) {
         codec.writeString(serverID);
-        codec.writeVarInt(length);
+//        codec.writeVarInt(length);
         codec.writeBytes(publicKey);
-        codec.writeVarInt(length0);
+//        codec.writeVarInt(length0);
         codec.writeBytes(verifyToken);
     }
 }

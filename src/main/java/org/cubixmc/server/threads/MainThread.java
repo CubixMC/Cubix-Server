@@ -15,7 +15,7 @@ public class MainThread extends Thread {
         while(!isInterrupted()) {
             long start = System.currentTimeMillis();
 
-            CubixServer.getInstance().tick();
+            CubixServer.getInstance();
 
             long duration = System.currentTimeMillis() - start;
             long sleepTime = 1000L / ticksPerSecond - duration;

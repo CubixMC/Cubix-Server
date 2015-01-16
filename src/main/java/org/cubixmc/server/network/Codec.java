@@ -69,6 +69,7 @@ public class Codec {
     }
 
     public void writeBytes(byte[] bytes) {
+        writeVarInt(bytes.length);
         byteBuf.writeBytes(bytes);
     }
 

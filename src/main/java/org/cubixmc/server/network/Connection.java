@@ -1,6 +1,12 @@
 package org.cubixmc.server.network;
 
+import com.google.gson.JsonObject;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.FutureListener;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.cubixmc.server.CubixServer;
@@ -11,6 +17,7 @@ import org.cubixmc.server.network.codecs.EncryptionHandler;
 import org.cubixmc.server.network.codecs.PacketHandler;
 import org.cubixmc.server.network.listeners.PacketListener;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 
 import java.util.logging.Level;
@@ -29,6 +36,31 @@ public class Connection {
 
     public void sendPacket(PacketOut packet) {
         channel.writeAndFlush(packet);
+    }
+
+    public void sendPacket(PacketOut packet, GenericFutureListener<ChannelFuture> future) {
+        channel.writeAndFlush(packet).addListener(future);
+    }
+
+    public void play() {
+
+    }
+
+    public void disconnect(String message) {
+        JsonObject object = new JsonObject();
+        object.addProperty("text", message);
+        switch(phase) {
+            case LOGIN:
+                channel.writeAndFlush(new PacketOutDisconnect(object.toString())).addListener(ChannelFutureListener.CLOSE);
+                break;
+            case PLAY:
+                channel.writeAndFlush(
+                        new org.cubixmc.server.network.packets.play.PacketOutDisconnect(object.toString()))
+                        .addListener(ChannelFutureListener.CLOSE);
+                break;
+            default:
+                channel.close();
+        }
     }
 
     public void setCompression(int compression) {

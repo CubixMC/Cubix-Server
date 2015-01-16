@@ -5,11 +5,9 @@ import org.cubixmc.server.network.Phase;
 import org.cubixmc.server.network.packets.handshake.PacketInHandshake;
 
 public class HandshakeListener extends PacketListener {
-    private final Connection connection;
 
     public HandshakeListener(Connection connection) {
-        super();
-        this.connection = connection;
+        super(connection);
     }
 
     public void onHandshake(PacketInHandshake packet) {

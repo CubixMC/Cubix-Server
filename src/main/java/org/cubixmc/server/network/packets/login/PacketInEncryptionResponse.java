@@ -17,9 +17,9 @@ public class PacketInEncryptionResponse extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.length = codec.readVarInt();
+//        this.length = codec.readVarInt();
         this.sharedSecret = codec.readBytes();
-        this.length0 = codec.readVarInt();
+//        this.length0 = codec.readVarInt();
         this.verifyToken = codec.readBytes();
     }
 
