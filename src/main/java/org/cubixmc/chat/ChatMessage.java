@@ -12,7 +12,7 @@ public class ChatMessage {
 
     public ChatMessage(String message) {
         object.addProperty("text", message);
-        object.add("extra", extras);
+//        object.add("extra", extras);
     }
 
     public void bold(boolean bold) {
@@ -36,7 +36,7 @@ public class ChatMessage {
     }
 
     public void color(ChatColor color) {
-        object.addProperty("color", color.toString().toLowerCase());
+        object.addProperty("color", color.name().toLowerCase());
     }
 
     public void append(ChatMessage message) {
@@ -46,11 +46,15 @@ public class ChatMessage {
 
     @Override
     public String toString() {
+        if(extras.size() > 0 && !object.has("extra")) {
+            object.add("extra", extras);
+        }
+
         return object.toString();
     }
 
     public static ChatMessage fromString(String rawMessage) {
-        rawMessage = rawMessage.replace("\n", ChatColor.RESET + "\n");
+        rawMessage = rawMessage.replace("\n", ChatColor.RESET + "\n") + ChatColor.AQUA;
         boolean inMessage = true;
         List<ChatColor> colors = Lists.newArrayList();
         StringBuilder builder = new StringBuilder();
@@ -99,7 +103,7 @@ public class ChatMessage {
                 } else {
                     chatMessage.append(current);
                 }
-            } else if(color != null) {
+            } if(color != null) {
                 inMessage = false;
                 colors.add(color);
                 i += 1;

@@ -21,7 +21,7 @@ public enum ChatColor {
     BOLD('l'),
     STRIKE_THROUH('m'),
     UNDERLINE('n'),
-    ITALIC('i'),
+    ITALIC('o'),
     RESET('r');
 
     private static final char COLOR_CHAR = '\u00A7';
@@ -46,7 +46,7 @@ public enum ChatColor {
     public static String replace(char colorChar, String message) {
         char[] chars = message.toCharArray();
         for(int i = 0; i < chars.length - 1; i++) {
-            if(chars[i] == colorChar && "0123456789ABCDEFabcdef".indexOf(chars[i + 1]) > -1) {
+            if(chars[i] == colorChar && "0123456789ABCDEFabcdefRLOMNKrlomnk".indexOf(chars[i + 1]) > -1) {
                 chars[i] = COLOR_CHAR;
                 chars[i + 1] = Character.toLowerCase(chars[i + 1]);
             }
