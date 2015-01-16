@@ -9,7 +9,7 @@ public class PacketOutChunkData extends PacketOut {
     private int chunkX;
     private int chunkZ;
     private boolean groundUpContinuous;
-    private short primaryBitMap;
+    private int primaryBitMap;
     private int size;
     private byte[] data;
 
@@ -17,7 +17,7 @@ public class PacketOutChunkData extends PacketOut {
         super(0x21);
     }
 
-    public PacketOutChunkData(int chunkX, int chunkZ, boolean groundUpContinuous, short primaryBitMap, int size, byte[] data) {
+    public PacketOutChunkData(int chunkX, int chunkZ, boolean groundUpContinuous, int primaryBitMap, int size, byte[] data) {
         super(0x21);
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;

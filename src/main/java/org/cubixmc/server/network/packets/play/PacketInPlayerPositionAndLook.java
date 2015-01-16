@@ -19,9 +19,9 @@ public class PacketInPlayerPositionAndLook extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.x = codec.readFloat();
-        this.feetY = codec.readFloat();
-        this.z = codec.readFloat();
+        this.x = codec.readDouble();
+        this.feetY = codec.readDouble();
+        this.z = codec.readDouble();
         this.yaw = codec.readFloat();
         this.pitch = codec.readFloat();
         this.onGround = codec.readBool();

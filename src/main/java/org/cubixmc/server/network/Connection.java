@@ -18,10 +18,7 @@ import org.cubixmc.server.network.listeners.PacketListener;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
-import org.cubixmc.server.network.packets.play.PacketOutEntityLookandRelativeMove;
-import org.cubixmc.server.network.packets.play.PacketOutJoinGame;
-import org.cubixmc.server.network.packets.play.PacketOutPlayerAbilities;
-import org.cubixmc.server.network.packets.play.PacketOutSpawnPosition;
+import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.util.Position;
 
 import java.util.logging.Level;
@@ -68,14 +65,14 @@ public class Connection {
         packet3.setFlags(6);
         sendPacket(packet3);
 
-        PacketOutEntityLookandRelativeMove packet4 = new PacketOutEntityLookandRelativeMove();
-        packet4.setEntityID(0);
-        packet4.setDX(0);
-        packet4.setDY(80 * 32);
-        packet4.setDZ(0);
-        packet4.setYaw(0);
-        packet4.setPitch(0);
-        packet4.setOnGround(false);
+        PacketOutPlayerPositionLook packet4 = new PacketOutPlayerPositionLook();
+        packet4.setX(0);
+        packet4.setY(0);
+        packet4.setZ(0);
+        packet4.setYaw(0f);
+        packet4.setPitch(0f);
+        packet4.setRelativePos(false);
+        packet4.setRelativeLook(false);
         sendPacket(packet4);
     }
 
