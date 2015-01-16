@@ -59,8 +59,9 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         Connection connection = new Connection(channel);
-        PacketHandler packetHandler = new PacketHandler(connection);
+        PacketHandler packetHandler = new PacketHandler();
         connection.setPacketHandler(packetHandler);
+        connection.setPhase(Phase.HANDSHAKE);
         connections.add(connection);
 
         channel.pipeline().addLast("encryption", DummyHandler.INSTANCE); // encrypt/decrypt packets

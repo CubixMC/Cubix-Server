@@ -31,7 +31,7 @@ public class CubixServer {
         new CubixServer();
     }
 
-    private final NetManager netManager;
+    private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
 
     public CubixServer() {

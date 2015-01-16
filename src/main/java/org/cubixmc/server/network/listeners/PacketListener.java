@@ -15,7 +15,7 @@ public abstract class PacketListener {
         for(Method method : getClass().getMethods()) {
             if(method.getParameterTypes().length > 0) {
                 Class<?> type = method.getParameterTypes()[0];
-                if(type.isAssignableFrom(PacketIn.class)) {
+                if(PacketIn.class.isAssignableFrom(type)) {
                     classMethodMap.put(type, method);
                 }
             }
@@ -23,7 +23,7 @@ public abstract class PacketListener {
     }
 
     public void call(PacketIn packet) {
-        Method method = classMethodMap.get(packet);
+        Method method = classMethodMap.get(packet.getClass());
         if(method != null) {
             try {
                 method.invoke(this, packet);
@@ -32,4 +32,6 @@ public abstract class PacketListener {
             }
         }
     }
+
+    public abstract boolean isAsync();
 }

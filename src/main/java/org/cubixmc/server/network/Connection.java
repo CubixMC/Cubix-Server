@@ -22,7 +22,7 @@ import javax.crypto.SecretKey;
 public class Connection {
     private final SocketChannel channel;
     private int compression = -1;
-    private Phase phase = Phase.HANDSHAKE;
+    private Phase phase;
     private CubixPlayer player;
     private PacketHandler packetHandler;
     private PacketListener listener;
@@ -59,7 +59,7 @@ public class Connection {
         String name = phase.toString().substring(0, 1) + phase.toString().substring(1).toLowerCase();
         try {
             Class<?> listenerClass = Class.forName("org.cubixmc.server.network.listeners." + name + "Listener");
-            setListener((PacketListener) listenerClass.newInstance());
+            setListener((PacketListener) listenerClass.getConstructor(Connection.class).newInstance(this));
         } catch(Exception e) {
             CubixServer.getLogger().log(Level.SEVERE, "Failed to initiate protocol listener", e);
         }

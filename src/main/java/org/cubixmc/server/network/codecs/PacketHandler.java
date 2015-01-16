@@ -10,22 +10,27 @@ import org.cubixmc.server.threads.Threads;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
-@RequiredArgsConstructor
 public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
     private final Queue<PacketIn> packetQueue = new ArrayDeque<>();
-    private final Connection connection;
+    private final AtomicReference<Connection> connection = new AtomicReference<>();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketIn packet) throws Exception {
         CubixServer.getLogger().log(Level.INFO, "Received packet from client: " + packet.getClass().getSimpleName());
-        packetQueue.offer(packet);
+        Connection con = connection.get();
+        if(con.getListener().isAsync()) {
+            con.getListener().call(packet);
+        } else {
+            packetQueue.offer(packet);
+        }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        CubixServer.getLogger().log(Level.SEVERE, "Exception occurred in network codec during stage " + connection.getPhase(), cause);
+        CubixServer.getLogger().log(Level.SEVERE, "Exception occurred in network codec during stage " + connection.get().getPhase(), cause);
     }
 
     @Override
@@ -36,6 +41,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         CubixServer.getLogger().log(Level.INFO, "Connected");
+        connection.set(CubixServer.getInstance().getNetManager().getConnection(ctx.channel()));
     }
 
     public void execute() {
@@ -45,7 +51,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
             Threads.playerExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    connection.getListener().call(packet);
+                    connection.get().getListener().call(packet);
                 }
             });
         }
