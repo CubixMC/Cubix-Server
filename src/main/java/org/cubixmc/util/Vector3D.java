@@ -1,7 +1,7 @@
-package org.cubixmc.util
+package org.cubixmc.util;
 
 
-import org.cubixmc.util.Position
+import org.cubixmc.util.Position;
 
 public class Vector3D {
 private Position pos;
