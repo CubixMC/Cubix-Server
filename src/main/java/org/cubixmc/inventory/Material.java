@@ -428,7 +428,6 @@ public enum Material {
     public boolean isEdible() {
         switch (this) {
             case BREAD:
-            case FERMENTED_SPIDER_EYE:
             case CARROT_ITEM:
             case BAKED_POTATO:
             case POTATO_ITEM:
