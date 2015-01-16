@@ -7,7 +7,7 @@ public class Vector3D {
 private Position pos;
 
  public void multiply(double TimesThePosition){
-        return pos.getX() * TimesThePosition, pos.getY() * TimesThePosition, pos.getZ() * TimesThePosition;
+        return pos.getX() * TimesThePosition, pos.getY() * TimesThePosition, pos.getZ() * TimesThePosition);
     }
 
 }
