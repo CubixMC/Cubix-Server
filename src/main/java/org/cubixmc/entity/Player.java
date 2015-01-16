@@ -205,12 +205,12 @@ public interface Player extends LivingEntity {
      * 
      * @param gameMode the gameMode to set the player to
      */
-    public void setGameMode(GameMode gameMode);
+    void setGameMode(GameMode gameMode);
 
     /**
      * Gets the player's GameMode
      *  
      * @return the player's GameMode
      */
-    public GameMode getGameMode();
+    GameMode getGameMode();
 }
