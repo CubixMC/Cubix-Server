@@ -24,7 +24,7 @@ private Vector3D v3d;
     
     @Override
     public String toVector3D() {
-    return "Vector3D{ + v3d + "}";
+    return "Vector3D{" + v3d + "}";
     }
     
     
