@@ -31,7 +31,7 @@ private Vector3D v3d;
     //========================[WIP]======================
     // @Override
     // public String toVector2D() {
-    // return "Vector2D{ + v2d + "}";
+    // return "Vector2D{" + v2d + "}";
     // }
 
 }
