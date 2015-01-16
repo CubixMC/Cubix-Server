@@ -1,9 +1,11 @@
 package org.cubixmc.util;
 
+import org.cubixmc.world.World;
+
 public class Vector3D {
-
-    private double x,y,z;
-
+    private double x;
+    private double y;
+    private double z;
 
     /**
      * Construct the vector with all components as 0.
@@ -97,5 +99,63 @@ public class Vector3D {
         return this;
     }
 
+    @Override
+    public Vector3D clone() {
+        return new Vector3D(x, y, z);
+    }
 
+    /**
+     * Return a block location for this vector.
+     *
+     * @return An instance of {@link org.cubixmc.util.Vector3I Vector3I}
+     */
+    public Vector3I toVector3I() {
+        return new Vector3I(x, y, z);
+    }
+
+    /**
+     * Return a position for this vector.
+     *
+     * @param world Of the position
+     * @return An instance of {@link org.cubixmc.world.World World}
+     */
+    public Position toPositon(World world) {
+        return new Position(world, x, y, z);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        Vector3D vector3D = (Vector3D) o;
+
+        if(Double.compare(vector3D.x, x) != 0) return false;
+        if(Double.compare(vector3D.y, y) != 0) return false;
+        if(Double.compare(vector3D.z, z) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Vector3D{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }
