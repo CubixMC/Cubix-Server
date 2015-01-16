@@ -29,6 +29,6 @@ public class PacketOutEffect extends PacketOut {
         codec.writeInt(effectID);
         codec.writePosition(location);
         codec.writeInt(data);
-        codec.writeBoolean(disableRelativeVolume);
+        codec.writeBool(disableRelativeVolume);
     }
 }

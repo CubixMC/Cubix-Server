@@ -18,7 +18,7 @@ public class PacketInPlayerLook extends PacketIn {
     public void decode(Codec codec) {
         this.yaw = codec.readFloat();
         this.pitch = codec.readFloat();
-        this.onGround = codec.readBoolean();
+        this.onGround = codec.readBool();
     }
 
     @Override

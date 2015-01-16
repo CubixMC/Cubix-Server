@@ -18,7 +18,7 @@ public class PacketInConfirmTransaction extends PacketIn {
     public void decode(Codec codec) {
         this.windowID = codec.readByte();
         this.actionNumber = codec.readShort();
-        this.accepted = codec.readBoolean();
+        this.accepted = codec.readBool();
     }
 
     @Override

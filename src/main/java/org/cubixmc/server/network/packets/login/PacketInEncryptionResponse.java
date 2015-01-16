@@ -6,9 +6,7 @@ import org.cubixmc.server.network.packets.PacketIn;
 
 @Getter
 public class PacketInEncryptionResponse extends PacketIn {
-    private int length;
     private byte[] sharedSecret;
-    private int length0;
     private byte[] verifyToken;
 
     public PacketInEncryptionResponse() {
@@ -17,9 +15,7 @@ public class PacketInEncryptionResponse extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-//        this.length = codec.readVarInt();
         this.sharedSecret = codec.readBytes();
-//        this.length0 = codec.readVarInt();
         this.verifyToken = codec.readBytes();
     }
 

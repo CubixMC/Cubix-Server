@@ -73,6 +73,10 @@ public class Codec {
         byteBuf.writeBytes(bytes);
     }
 
+    public void writeBool(boolean bool) {
+        byteBuf.writeByte(bool ? 1 : 0);
+    }
+
     public void writeSlot(ItemStack item) {
         throw new UnsupportedOperationException("Not made yet");
     }
@@ -155,6 +159,18 @@ public class Codec {
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
         return bytes;
+    }
+
+    public boolean readBool() {
+        return byteBuf.readByte() != 0;
+    }
+
+    public short readUnsignedByte() {
+        return byteBuf.readUnsignedByte();
+    }
+
+    public int readUnsignedShort() {
+        return byteBuf.readUnsignedShort();
     }
 
     public ItemStack readSlot() {

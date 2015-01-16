@@ -25,6 +25,6 @@ public class PacketOutConfirmTransaction extends PacketOut {
     public void encode(Codec codec) {
         codec.writeByte(windowID);
         codec.writeShort(actionNumber);
-        codec.writeBoolean(accepted);
+        codec.writeBool(accepted);
     }
 }

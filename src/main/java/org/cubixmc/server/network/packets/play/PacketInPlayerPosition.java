@@ -20,7 +20,7 @@ public class PacketInPlayerPosition extends PacketIn {
         this.x = codec.readFloat();
         this.feetY = codec.readFloat();
         this.z = codec.readFloat();
-        this.onGround = codec.readBoolean();
+        this.onGround = codec.readBool();
     }
 
     @Override

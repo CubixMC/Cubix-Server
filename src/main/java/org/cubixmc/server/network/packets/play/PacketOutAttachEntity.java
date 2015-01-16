@@ -25,6 +25,6 @@ public class PacketOutAttachEntity extends PacketOut {
     public void encode(Codec codec) {
         codec.writeInt(entityID);
         codec.writeInt(vehicleID);
-        codec.writeBoolean(leash);
+        codec.writeBool(leash);
     }
 }

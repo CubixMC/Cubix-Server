@@ -71,7 +71,7 @@ public class LoginListener extends PacketListener {
             connection.sendPacket(success, new GenericFutureListener<ChannelFuture>() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    connection.setPhase(Phase.PLAY);
+                    connection.play();
                 }
             });
         } catch(GeneralSecurityException e) {

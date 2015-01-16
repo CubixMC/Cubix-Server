@@ -21,8 +21,8 @@ public class PacketInClientSettings extends PacketIn {
         this.locale = codec.readString();
         this.viewDistance = codec.readByte();
         this.chatFlags = codec.readByte();
-        this.chatColours = codec.readBoolean();
-        this.displayedSkinParts = codec.readByte();
+        this.chatColours = codec.readBool();
+        this.displayedSkinParts = codec.readUnsignedByte();
     }
 
     @Override

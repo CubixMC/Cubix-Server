@@ -24,7 +24,7 @@ public class PacketInPlayerPositionAndLook extends PacketIn {
         this.z = codec.readFloat();
         this.yaw = codec.readFloat();
         this.pitch = codec.readFloat();
-        this.onGround = codec.readBoolean();
+        this.onGround = codec.readBool();
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.cubixmc.server.network.packets.PacketIn;
 public class PacketInHandshake extends PacketIn {
     private int protocolVersion;
     private String serverAddress;
-    private short serverPort;
+    private int serverPort;
     private int nextState;
 
     public PacketInHandshake() {
@@ -19,7 +19,7 @@ public class PacketInHandshake extends PacketIn {
     public void decode(Codec codec) {
         this.protocolVersion = codec.readVarInt();
         this.serverAddress = codec.readString();
-        this.serverPort = codec.readShort();
+        this.serverPort = codec.readUnsignedShort();
         this.nextState = codec.readVarInt();
     }
 

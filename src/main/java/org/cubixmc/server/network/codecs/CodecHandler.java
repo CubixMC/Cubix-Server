@@ -44,7 +44,7 @@ public class CodecHandler extends MessageToMessageCodec<ByteBuf, PacketOut> {
 
         packet.decode(codec);
         if(byteBuf.readableBytes() > 0) {
-            throw new IOException("Remaining bytes after decoding packet: " + byteBuf.readableBytes());
+            throw new IOException("Remaining bytes after decoding packet " + id + ": " + byteBuf.readableBytes());
         }
 
         list.add(packet);

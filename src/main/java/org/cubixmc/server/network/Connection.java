@@ -1,14 +1,13 @@
 package org.cubixmc.server.network;
 
-import com.google.gson.JsonObject;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.FutureListener;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.cubixmc.chat.ChatColor;
+import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.codecs.CompressionHandler;
@@ -19,6 +18,11 @@ import org.cubixmc.server.network.listeners.PacketListener;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
+import org.cubixmc.server.network.packets.play.PacketOutEntityLookandRelativeMove;
+import org.cubixmc.server.network.packets.play.PacketOutJoinGame;
+import org.cubixmc.server.network.packets.play.PacketOutPlayerAbilities;
+import org.cubixmc.server.network.packets.play.PacketOutSpawnPosition;
+import org.cubixmc.util.Position;
 
 import java.util.logging.Level;
 
@@ -43,19 +47,48 @@ public class Connection {
     }
 
     public void play() {
+        setPhase(Phase.PLAY);
+        PacketOutJoinGame packet = new PacketOutJoinGame();
+        packet.setEntityID(0);
+        packet.setGamemode(0);
+        packet.setDimension(0);
+        packet.setDifficulty(0);
+        packet.setMaxPlayers(60);
+        packet.setLevelType("default");
+        packet.setReducedDebugInfo(true);
+        sendPacket(packet);
 
+        PacketOutSpawnPosition packet2 = new PacketOutSpawnPosition();
+        packet2.setLocation(new Position(null, 0, 80, 0));
+        sendPacket(packet2);
+
+        PacketOutPlayerAbilities packet3 = new PacketOutPlayerAbilities();
+        packet3.setFlyingSpeed(0.2f);
+        packet3.setWalkingSpeed(0.2f);
+        packet3.setFlags(6);
+        sendPacket(packet3);
+
+        PacketOutEntityLookandRelativeMove packet4 = new PacketOutEntityLookandRelativeMove();
+        packet4.setEntityID(0);
+        packet4.setDX(0);
+        packet4.setDY(80 * 32);
+        packet4.setDZ(0);
+        packet4.setYaw(0);
+        packet4.setPitch(0);
+        packet4.setOnGround(false);
+        sendPacket(packet4);
     }
 
     public void disconnect(String message) {
-        JsonObject object = new JsonObject();
-        object.addProperty("text", message);
+        message = ChatColor.replace('&', message);
+        ChatMessage chatMessage = ChatMessage.fromString(message);
         switch(phase) {
             case LOGIN:
-                channel.writeAndFlush(new PacketOutDisconnect(object.toString())).addListener(ChannelFutureListener.CLOSE);
+                channel.writeAndFlush(new PacketOutDisconnect(chatMessage.toString())).addListener(ChannelFutureListener.CLOSE);
                 break;
             case PLAY:
                 channel.writeAndFlush(
-                        new org.cubixmc.server.network.packets.play.PacketOutDisconnect(object.toString()))
+                        new org.cubixmc.server.network.packets.play.PacketOutDisconnect(chatMessage.toString()))
                         .addListener(ChannelFutureListener.CLOSE);
                 break;
             default:

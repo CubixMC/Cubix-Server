@@ -18,7 +18,7 @@ public class PacketInSteerVehicle extends PacketIn {
     public void decode(Codec codec) {
         this.sideways = codec.readFloat();
         this.forward = codec.readFloat();
-        this.flags = codec.readByte();
+        this.flags = codec.readUnsignedByte();
     }
 
     @Override

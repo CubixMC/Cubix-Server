@@ -14,7 +14,7 @@ public class PacketInPlayer extends PacketIn {
 
     @Override
     public void decode(Codec codec) {
-        this.onGround = codec.readBoolean();
+        this.onGround = codec.readBool();
     }
 
     @Override
