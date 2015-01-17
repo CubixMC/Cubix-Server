@@ -26,6 +26,7 @@ public class PlayListener extends PacketListener {
     }
 
 
+
     public void onChat(PacketInChatMessage packet) {
         String sender = connection.getPlayer().getName();
         String message = packet.getMessage();

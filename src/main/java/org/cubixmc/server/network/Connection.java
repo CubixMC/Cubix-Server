@@ -11,6 +11,7 @@ import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
+import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.network.codecs.CompressionHandler;
 import org.cubixmc.server.network.codecs.DummyHandler;
 import org.cubixmc.server.network.codecs.EncryptionHandler;
@@ -80,12 +81,23 @@ public class Connection {
         packet4.setRelativePos(false);
         packet4.setRelativeLook(false);
         sendPacket(packet4);
-        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+
+       //int entityID, UUID playerUUID, int x, int y, int z, int yaw, int pitch, short currentItem, Metadata metadata
+        for(CubixPlayer p : CubixServer.getInstance().getOnlinePlayers()){
+            if(p == player) continue;
             p.sendMessage(ChatColor.AQUA + name + " has joined!");
         }
+
+
+        //show players
     }
 
     public void disconnect(String message) {
+        String name = player.getName();
+        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+            p.sendMessage(ChatColor.AQUA + name + " has joined!");
+        }
+
         message = ChatColor.replace('&', message);
         ChatMessage chatMessage = ChatMessage.fromString(message);
         switch(phase) {
@@ -100,10 +112,7 @@ public class Connection {
             default:
                 channel.close();
         }
-        String name = player.getName();
-        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
-            p.sendMessage(ChatColor.AQUA + name + " has joined!");
-        }
+
     }
 
     public void setCompression(int compression) {

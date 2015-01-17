@@ -3,6 +3,7 @@ package org.cubixmc.server;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.cubixmc.server.commands.Command;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
@@ -15,9 +16,7 @@ import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
@@ -31,6 +30,7 @@ import java.util.logging.SimpleFormatter;
 public class CubixServer implements Runnable {
     private static @Getter @Setter(AccessLevel.PRIVATE) CubixServer instance;
     private static @Getter @Setter(AccessLevel.PRIVATE) Logger logger;
+    private static @Getter @Setter(AccessLevel.PRIVATE) List<Command> commands;
 
     public static void main(String[] args) {
         // TODO: Parse args
@@ -43,6 +43,7 @@ public class CubixServer implements Runnable {
 
     public CubixServer() {
         setInstance(this);
+        setCommands(new ArrayList<Command>());
         setLogger(Logger.getLogger("Cubix"));
         // Load property file here....
         // Cant bother atm

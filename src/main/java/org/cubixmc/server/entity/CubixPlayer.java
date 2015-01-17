@@ -16,7 +16,7 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
-    private final Connection connection;
+    private final @Getter Connection connection;
     private final UUID uniqueUserId;
     private final String username;
     private GameMode gameMode = GameMode.SURVIVAL;
