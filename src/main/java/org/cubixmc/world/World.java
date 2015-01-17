@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface World {
-
     /**
      * Get the name of the world.
      *
      * @return Name of world
      */
-    public String getName();
+    String getName();
 
     /**
      * Get the unique id of the world.
@@ -20,7 +19,7 @@ public interface World {
      *
      * @return Unique id of world
      */
-     public UUID getUUID();
+     UUID getUUID();
 
     /**
      * Get the seed for the
@@ -28,7 +27,7 @@ public interface World {
      *
      * @return Long seed
      */
-     public long getSeed();
+     long getSeed();
 
     /**
      * Get a list of all entities
@@ -36,7 +35,7 @@ public interface World {
      *
      * @return List from world
      */
-     public List<Entity> getEntities();
+     List<Entity> getEntities();
 
     /**
      * Get an array of all entities

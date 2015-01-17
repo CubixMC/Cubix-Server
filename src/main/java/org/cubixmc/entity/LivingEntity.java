@@ -8,7 +8,7 @@ public interface LivingEntity extends Entity {
      *
      * @return Name of entity
      */
-    public String getName();
+    String getName();
 
 
     /**
@@ -16,7 +16,7 @@ public interface LivingEntity extends Entity {
      *
      * @return Health of entity
      */
-    public double getHealth();
+    double getHealth();
 
     /**
      * Set the current health of the entity.
@@ -24,40 +24,37 @@ public interface LivingEntity extends Entity {
      *
      * @param health New health for the entity
      */
-    public void setHealth(double health);
+    void setHealth(double health);
     
     /**
      * If the developer is adding damage to an entity manually, they would have to use damageEntity();
      * damageEntity(); applies for all entities the void is being called to.
-     * @return added Damage to entity
      */
-    public void damageEntity(double damage);
+    void damageEntity(double damage);
 
     /**
      * Get the maximum amount of health the entity can have.
      *
      * @return Max health of entity
      */
-    public double getMaxHealth();
+    double getMaxHealth();
 
     /**
      * Set the maximum amount of health the entity can have.
      *
      * @return Max health of entity
      */
-    public void setMaxHealth(double maxHealth);
+    void setMaxHealth(double maxHealth);
+    
+    /**
+     * @param name New name for the entity
+     * Method does not apply to HumanEntities
+     */
+    void customName(String name, boolean flag);
     
     /**
      * @return this.boolean(flag.type, true(), false())
-     * @param name New name for the entity 
      * Method does not apply to HumanEntities
      */
-    public void customName(String name, boolean flag);
-    
-    /**
-     * @return this.boolean(flag.type, true(), false())
-     * @param name New name for the entity 
-     * Method does not apply to HumanEntities
-     */
-    public String getCustomName();
+    String getCustomName();
 }
