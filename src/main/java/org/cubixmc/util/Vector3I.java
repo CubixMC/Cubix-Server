@@ -5,6 +5,10 @@ public class Vector3I {
     private int y;
     private int z;
 
+    public Vector3I(Position position) {
+        this(position.getX(), position.getY(), position.getZ());
+    }
+
     public Vector3I(double x, double y, double z) {
         this(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
     }
@@ -13,12 +17,6 @@ public class Vector3I {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    public Vector3I(Position pos){
-        this.x = (int) pos.getX();
-        this.y = (int) pos.getY();
-        this.z = (int) pos.getZ();
     }
 
     public int getX() {
