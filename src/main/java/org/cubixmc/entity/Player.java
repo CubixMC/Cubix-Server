@@ -117,7 +117,7 @@ public interface Player extends LivingEntity {
      *
      * @param amount Exp amount to give
      */
-    void giveExp(int amount);
+    void giveExp(float amount);
 
     /**
      * Gives the player the amount of experience levels specified. Levels can
@@ -164,14 +164,14 @@ public interface Player extends LivingEntity {
      *
      * @return Current total experience points
      */
-    int getTotalExperience();
+    float getTotalExperience();
 
     /**
      * Sets the players current experience level
      *
      * @param exp New experience level
      */
-    void setTotalExperience(int exp);
+    void setTotalExperience(float exp);
 
     /**
      * Will request if the player would like to use the texture pack
