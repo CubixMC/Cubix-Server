@@ -8,6 +8,7 @@ import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
 import org.cubixmc.server.threads.Threads;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,7 +20,6 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketIn packet) throws Exception {
-        CubixServer.getLogger().log(Level.INFO, "Received packet from client: " + packet.getClass().getSimpleName());
         Connection con = connection.get();
         if(con.getListener().isAsync()) {
             con.getListener().call(packet);
@@ -40,7 +40,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        CubixServer.getLogger().log(Level.INFO, "Connected");
+        CubixServer.getLogger().log(Level.INFO, ((InetSocketAddress) ctx.channel().remoteAddress()).getHostName() + " Connected");
         connection.set(CubixServer.getInstance().getNetManager().getConnection(ctx.channel()));
     }
 

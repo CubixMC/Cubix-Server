@@ -44,6 +44,9 @@ public class Connection {
     }
 
     public void play() {
+        CubixPlayer player = new CubixPlayer(null, this);
+        CubixServer.getInstance().addPlayer(player);
+
         setPhase(Phase.PLAY);
         PacketOutJoinGame packet = new PacketOutJoinGame();
         packet.setEntityID(0);

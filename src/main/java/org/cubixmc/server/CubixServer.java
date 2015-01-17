@@ -3,6 +3,7 @@ package org.cubixmc.server;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.threads.Threads;
@@ -14,6 +15,10 @@ import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -32,6 +37,7 @@ public class CubixServer implements Runnable {
         new CubixServer();
     }
 
+    private final Map<UUID, CubixPlayer> players = new ConcurrentHashMap<>();
     private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
 
@@ -71,6 +77,22 @@ public class CubixServer implements Runnable {
         for(Connection connection : netManager.getConnections()) {
             connection.getPacketHandler().execute();
         }
+
+        for(CubixPlayer player : players.values()) {
+            player.tick();
+        }
+    }
+
+    public void addPlayer(CubixPlayer player) {
+        players.put(player.getUniqueId(), player);
+    }
+
+    public void removePlayer(CubixPlayer player) {
+        players.remove(player.getUniqueId());
+    }
+
+    public Collection<CubixPlayer> getOnlinePlayers() {
+        return players.values();
     }
 
     private void generateKeyPair() {
