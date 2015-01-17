@@ -15,6 +15,12 @@ public class Vector3I {
         this.z = z;
     }
 
+    public Vector3I(Position pos){
+        this.x = (int) pos.getX();
+        this.y = (int) pos.getY();
+        this.z = (int) pos.getZ();
+    }
+
     public int getX() {
         return x;
     }
