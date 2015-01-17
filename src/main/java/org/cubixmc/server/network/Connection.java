@@ -82,9 +82,7 @@ public class Connection {
         packet4.setRelativeLook(false);
         sendPacket(packet4);
 
-       //int entityID, UUID playerUUID, int x, int y, int z, int yaw, int pitch, short currentItem, Metadata metadata
         for(CubixPlayer p : CubixServer.getInstance().getOnlinePlayers()){
-            if(p == player) continue;
             p.sendMessage(ChatColor.AQUA + name + " has joined!");
             spawnPlayer(this, p);
             spawnPlayer(p.getConnection(), player);
