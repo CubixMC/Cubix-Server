@@ -48,6 +48,7 @@ public class Connection {
 
     public void play(UUID uuid, String name) {
         CubixPlayer player = new CubixPlayer(null, this, uuid, name);
+        player.spawn(new Position(null, 0, 80, 0));
         CubixServer.getInstance().addPlayer(player);
         setPlayer(player);
 
@@ -59,7 +60,7 @@ public class Connection {
         packet.setDifficulty(0);
         packet.setMaxPlayers(60);
         packet.setLevelType("default");
-        packet.setReducedDebugInfo(true);
+        packet.setReducedDebugInfo(false);
         sendPacket(packet);
 
         PacketOutSpawnPosition packet2 = new PacketOutSpawnPosition();
@@ -74,7 +75,7 @@ public class Connection {
 
         PacketOutPlayerPositionLook packet4 = new PacketOutPlayerPositionLook();
         packet4.setX(0);
-        packet4.setY(0);
+        packet4.setY(80);
         packet4.setZ(0);
         packet4.setYaw(0f);
         packet4.setPitch(0f);

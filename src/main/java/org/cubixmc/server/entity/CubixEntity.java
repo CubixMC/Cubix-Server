@@ -20,7 +20,7 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     }
 
     public boolean spawn(Position position) {
-        if(position != null) {
+        if(this.position != null) {
             return false;
         }
 
