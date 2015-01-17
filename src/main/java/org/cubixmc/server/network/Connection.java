@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
+import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.codecs.CompressionHandler;
@@ -79,6 +80,9 @@ public class Connection {
         packet4.setRelativePos(false);
         packet4.setRelativeLook(false);
         sendPacket(packet4);
+        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+            p.sendMessage(ChatColor.AQUA + name + " has joined!");
+        }
     }
 
     public void disconnect(String message) {
@@ -95,6 +99,10 @@ public class Connection {
                 break;
             default:
                 channel.close();
+        }
+        String name = player.getName();
+        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+            p.sendMessage(ChatColor.AQUA + name + " has joined!");
         }
     }
 

@@ -1,6 +1,8 @@
 package org.cubixmc.server.network.listeners;
 
 
+import org.cubixmc.chat.ChatColor;
+import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.login.PacketInEncryptionResponse;
@@ -44,6 +46,7 @@ public class LoginListener extends PacketListener {
         request.setPublicKey(encodedPubKey);
         request.setVerifyToken(verifyToken);
         connection.sendPacket(request);
+
     }
 
     public void onEncryptionResponse(PacketInEncryptionResponse packet) {
@@ -64,6 +67,7 @@ public class LoginListener extends PacketListener {
 //            connection.setCompression(256);
 
             new AuthenticationThread(connection, username, secretKey);
+
         } catch(GeneralSecurityException e) {
             CubixServer.getLogger().log(Level.WARNING, "Failed to decrypt data from packet", e);
             connection.disconnect("Failed to decrypt your packet data!");
