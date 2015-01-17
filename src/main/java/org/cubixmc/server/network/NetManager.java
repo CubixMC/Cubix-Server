@@ -8,6 +8,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.internal.ConcurrentSet;
 import org.cubixmc.server.CubixServer;
@@ -24,6 +25,9 @@ import java.util.Set;
 import java.util.logging.Level;
 
 public class NetManager extends ChannelInitializer<SocketChannel> {
+    public static final AttributeKey<byte[]> VERIFY_TOKEN = AttributeKey.valueOf("verifyToken");
+    public static final AttributeKey<String> USERNAME = AttributeKey.valueOf("username");
+
     private final Set<Connection> connections = new ConcurrentSet<>();
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;

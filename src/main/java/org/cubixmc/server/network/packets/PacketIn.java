@@ -12,4 +12,8 @@ public abstract class PacketIn extends Packet {
     public abstract void decode(Codec codec);
 
     public abstract void handle(Connection connection);
+
+    public boolean isAsync() {
+        return false;
+    }
 }
