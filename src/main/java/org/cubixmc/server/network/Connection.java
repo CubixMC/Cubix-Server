@@ -84,7 +84,6 @@ public class Connection {
 
        //int entityID, UUID playerUUID, int x, int y, int z, int yaw, int pitch, short currentItem, Metadata metadata
         for(CubixPlayer p : CubixServer.getInstance().getOnlinePlayers()){
-            if(p == player) continue;
             p.sendMessage(ChatColor.AQUA + name + " has joined!");
         }
 
