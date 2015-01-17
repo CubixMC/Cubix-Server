@@ -5,6 +5,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
+import org.cubixmc.server.network.Phase;
 import org.cubixmc.server.network.packets.PacketIn;
 import org.cubixmc.server.threads.Threads;
 
@@ -16,13 +17,12 @@ import java.util.logging.Level;
 
 public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
     private final Queue<PacketIn> packetQueue = new ArrayDeque<>();
-    private final AtomicReference<Connection> connection = new AtomicReference<>();
+    private Connection connection;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketIn packet) throws Exception {
-        Connection con = connection.get();
-        if(con.getListener().isAsync()) {
-            con.getListener().call(packet);
+        if(connection.getListener().isAsync()) {
+            connection.getListener().call(packet);
         } else {
             packetQueue.offer(packet);
         }
@@ -30,18 +30,21 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        CubixServer.getLogger().log(Level.SEVERE, "Exception occurred in network codec during stage " + connection.get().getPhase(), cause);
+        CubixServer.getLogger().log(Level.SEVERE, "Exception occurred in network codec during stage " + connection.getPhase(), cause);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        // TODO: Player quit
+        CubixServer.getInstance().getNetManager().removeConnection(connection);
+        if(connection.getPhase() == Phase.PLAY) {
+            CubixServer.getInstance().removePlayer(connection.getPlayer());
+        }
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         CubixServer.getLogger().log(Level.INFO, ((InetSocketAddress) ctx.channel().remoteAddress()).getHostName() + " Connected");
-        connection.set(CubixServer.getInstance().getNetManager().getConnection(ctx.channel()));
+        connection = CubixServer.getInstance().getNetManager().getConnection(ctx.channel());
     }
 
     public void execute() {
@@ -51,7 +54,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
             Threads.playerExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    connection.get().getListener().call(packet);
+                    connection.getListener().call(packet);
                 }
             });
         }

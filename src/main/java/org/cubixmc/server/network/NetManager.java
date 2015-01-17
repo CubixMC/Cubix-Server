@@ -9,6 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
+import io.netty.util.internal.ConcurrentSet;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.codecs.CodecHandler;
 import org.cubixmc.server.network.codecs.CompletionHandler;
@@ -19,10 +20,11 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class NetManager extends ChannelInitializer<SocketChannel> {
-    private final List<Connection> connections = new ArrayList<>();
+    private final Set<Connection> connections = new ConcurrentSet<>();
     private final NioEventLoopGroup bossGroup;
     private final NioEventLoopGroup workerGroup;
     private final ServerBootstrap bootstrap;
@@ -84,5 +86,9 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
 
     public Connection[] getConnections() {
         return connections.toArray(new Connection[0]);
+    }
+
+    public void removeConnection(Connection connection) {
+        connections.remove(connection);
     }
 }
