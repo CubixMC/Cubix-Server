@@ -38,12 +38,11 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(this)
                 .childOption(ChannelOption.TCP_NODELAY, true)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .localAddress(25565);
+                .childOption(ChannelOption.SO_KEEPALIVE, true);
     }
 
     public void connect() {
-        bootstrap.bind().addListener(new GenericFutureListener<ChannelFuture>() {
+        bootstrap.bind(new InetSocketAddress(25565)).addListener(new GenericFutureListener<ChannelFuture>() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if(!future.isSuccess()) {
