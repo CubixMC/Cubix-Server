@@ -1,21 +1,16 @@
 package org.cubixmc.server.network.listeners;
 
 
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
-import org.cubixmc.server.network.Phase;
 import org.cubixmc.server.network.packets.login.PacketInEncryptionResponse;
 import org.cubixmc.server.network.packets.login.PacketInLoginStart;
 import org.cubixmc.server.network.packets.login.PacketOutEncryptionRequest;
-import org.cubixmc.server.network.packets.login.PacketOutLoginSuccess;
 import org.cubixmc.server.threads.AuthenticationThread;
 
 import java.security.*;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.crypto.Cipher;

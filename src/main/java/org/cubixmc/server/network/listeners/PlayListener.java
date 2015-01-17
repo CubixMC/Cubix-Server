@@ -1,7 +1,10 @@
 package org.cubixmc.server.network.listeners;
 
 import org.cubixmc.chat.ChatColor;
+import org.cubixmc.entity.Player;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
+import org.cubixmc.server.network.packets.play.PacketInChatMessage;
 import org.cubixmc.server.network.packets.play.PacketInKeepAlive;
 
 public class PlayListener extends PacketListener {
@@ -19,7 +22,15 @@ public class PlayListener extends PacketListener {
         }
 
         connection.getPlayer().setPing((int) ping);
-        connection.getPlayer().sendMessage("Your ping is: " + ChatColor.GREEN + ping);
+        //connection.getPlayer().sendMessage("Your ping is: " + ChatColor.GREEN + ping);
+    }
+
+
+    public void onChat(PacketInChatMessage packet) {
+        String sender = connection.getPlayer().getName();
+        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+            p.sendMessage(sender + " : " + packet.getMessage());
+        }
     }
 
     @Override
