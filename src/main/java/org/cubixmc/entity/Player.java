@@ -213,4 +213,18 @@ public interface Player extends LivingEntity {
      * @return the player's GameMode
      */
     GameMode getGameMode();
+
+    /**
+     * Sets tab header of player
+     *
+     * @param message Message to be displayed in header
+     */
+    void setHeader(String message);
+
+    /**
+     * Sets tab footer of player
+     *
+     * @param message Message to be displayed in footer
+     */
+    void setFooter(String message);
 }
