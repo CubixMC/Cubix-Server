@@ -53,7 +53,7 @@ public class Connection {
 
         setPhase(Phase.PLAY);
         PacketOutJoinGame packet = new PacketOutJoinGame();
-        packet.setEntityID(0);
+        packet.setEntityID(player.getEntityId());
         packet.setGamemode(0);
         packet.setDimension(0);
         packet.setDifficulty(0);
@@ -86,10 +86,9 @@ public class Connection {
         for(CubixPlayer p : CubixServer.getInstance().getOnlinePlayers()){
             if(p == player) continue;
             p.sendMessage(ChatColor.AQUA + name + " has joined!");
+            spawnPlayer(this, p);
+            spawnPlayer(p.getConnection(), player);
         }
-
-
-        //show players
     }
 
     public void disconnect(String message) {
@@ -155,5 +154,23 @@ public class Connection {
 
     public void disableEncryption() {
         channel.pipeline().replace("encryption", "encryption", DummyHandler.INSTANCE);
+    }
+
+    private void spawnPlayer(Connection connection, CubixPlayer player) {
+        PacketOutSpawnPlayer spawn = new PacketOutSpawnPlayer();
+        spawn.setEntityID(player.getEntityId());
+        spawn.setPlayerUUID(player.getUniqueId());
+        spawn.setX((int) (player.getPosition().getX() * 32.0));
+        spawn.setY((int) (player.getPosition().getY() * 32.0));
+        spawn.setZ((int) (player.getPosition().getZ() * 32.0));
+        spawn.setYaw((int) (player.getPosition().getYaw() * 256.0F / 360.0F));
+        spawn.setPitch((int) (player.getPosition().getPitch() * 256.0F / 360.0F));
+        spawn.setCurrentItem((short) 0);
+
+        Metadata metadata = new Metadata();
+        metadata.set(0, (byte) 0);
+
+        spawn.setMetadata(metadata);
+        connection.sendPacket(spawn);
     }
 }

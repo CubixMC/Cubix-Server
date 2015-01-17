@@ -95,7 +95,7 @@ public class Codec {
     }
 
     public void writeMetadata(Metadata metadata) {
-        throw new UnsupportedOperationException("Not made yet");
+        metadata.encode(this);
     }
 
     public void writeVarInts(int[] integers) {
