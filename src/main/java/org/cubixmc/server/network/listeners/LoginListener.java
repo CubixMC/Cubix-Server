@@ -10,6 +10,7 @@ import org.cubixmc.server.network.packets.login.PacketInEncryptionResponse;
 import org.cubixmc.server.network.packets.login.PacketInLoginStart;
 import org.cubixmc.server.network.packets.login.PacketOutEncryptionRequest;
 import org.cubixmc.server.network.packets.login.PacketOutLoginSuccess;
+import org.cubixmc.server.threads.AuthenticationThread;
 
 import java.security.*;
 import java.util.Arrays;
@@ -67,13 +68,7 @@ public class LoginListener extends PacketListener {
             connection.enableEncryption(secretKey);
 //            connection.setCompression(256);
 
-            PacketOutLoginSuccess success = new PacketOutLoginSuccess(UUID.randomUUID().toString(), username);
-            connection.sendPacket(success, new GenericFutureListener<ChannelFuture>() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    connection.play();
-                }
-            });
+            new AuthenticationThread(connection, username, secretKey);
         } catch(GeneralSecurityException e) {
             CubixServer.getLogger().log(Level.WARNING, "Failed to decrypt data from packet", e);
             connection.disconnect("Failed to decrypt your packet data!");

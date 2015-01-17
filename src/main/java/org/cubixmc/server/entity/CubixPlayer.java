@@ -1,5 +1,7 @@
 package org.cubixmc.server.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.cubixmc.GameMode;
 import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.entity.Player;
@@ -11,23 +13,41 @@ import org.cubixmc.server.network.packets.play.PacketOutKeepAlive;
 import org.cubixmc.server.world.World;
 
 import java.net.InetSocketAddress;
+import java.util.UUID;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
     private final Connection connection;
+    private final UUID uniqueUserId;
+    private final String username;
     private GameMode gameMode = GameMode.SURVIVAL;
-    private long keepAliveCount;
+    
+    private @Getter long keepAliveCount;
+    private @Getter int keepAliveId;
+    private @Getter @Setter int ping;
 
-    public CubixPlayer(World world, Connection connection) {
+    public CubixPlayer(World world, Connection connection, UUID uuid, String name) {
         super(world);
         this.connection = connection;
         this.keepAliveCount = System.currentTimeMillis() + 5000L;
+        this.uniqueUserId = uuid;
+        this.username = name;
     }
 
     public void tick() {
-        if(keepAliveCount < System.currentTimeMillis()) {
-            connection.sendPacket(new PacketOutKeepAlive(random.nextInt(256)));
-            this.keepAliveCount = System.currentTimeMillis() + 5000L;
+        if(keepAliveCount < System.currentTimeMillis() - 5000L) {
+            connection.sendPacket(new PacketOutKeepAlive(this.keepAliveId = random.nextInt(256)));
+            this.keepAliveCount = System.currentTimeMillis();
         }
+    }
+
+    @Override
+    public String getName() {
+        return username;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return uniqueUserId;
     }
 
     @Override

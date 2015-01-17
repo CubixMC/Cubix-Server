@@ -21,6 +21,7 @@ import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.util.Position;
 
+import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.crypto.SecretKey;
@@ -43,9 +44,10 @@ public class Connection {
         channel.writeAndFlush(packet).addListener(future);
     }
 
-    public void play() {
-        CubixPlayer player = new CubixPlayer(null, this);
+    public void play(UUID uuid, String name) {
+        CubixPlayer player = new CubixPlayer(null, this, uuid, name);
         CubixServer.getInstance().addPlayer(player);
+        setPlayer(player);
 
         setPhase(Phase.PLAY);
         PacketOutJoinGame packet = new PacketOutJoinGame();
