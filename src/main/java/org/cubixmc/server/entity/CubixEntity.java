@@ -1,7 +1,7 @@
 package org.cubixmc.server.entity;
 
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.server.world.World;
+import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
 
 import java.util.Random;
@@ -16,7 +16,7 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     private final UUID uuid;
     protected Position position;
 
-    protected CubixEntity(World world) {
+    protected CubixEntity(CubixWorld world) {
         this.entityId = ENTITY_ID++;
         this.uuid = UUID.randomUUID();
         this.metadata = new Metadata();

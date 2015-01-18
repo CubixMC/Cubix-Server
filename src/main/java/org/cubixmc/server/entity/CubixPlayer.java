@@ -1,5 +1,6 @@
 package org.cubixmc.server.entity;
 
+import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.GameMode;
@@ -12,23 +13,24 @@ import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.PacketOutChatMessage;
 import org.cubixmc.server.network.packets.play.PacketOutKeepAlive;
 import org.cubixmc.server.network.packets.play.PacketOutSpawnPlayer;
-import org.cubixmc.server.world.World;
+import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.MathHelper;
 
 import java.net.InetSocketAddress;
+import java.util.Set;
 import java.util.UUID;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
+    private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
     private final @Getter Connection connection;
     private final UUID uniqueUserId;
     private final String username;
     private GameMode gameMode = GameMode.SURVIVAL;
     
     private @Getter long keepAliveCount;
-    private @Getter int keepAliveId;
     private @Getter @Setter int ping;
 
-    public CubixPlayer(World world, Connection connection, UUID uuid, String name) {
+    public CubixPlayer(CubixWorld world, Connection connection, UUID uuid, String name) {
         super(world);
         this.connection = connection;
         this.keepAliveCount = System.currentTimeMillis() + 5000L;
@@ -38,8 +40,13 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     public void tick() {
         if(keepAliveCount < System.currentTimeMillis() - 5000L) {
-            System.out.println("x<3");
-            connection.sendPacket(new PacketOutKeepAlive(this.keepAliveId = random.nextInt(256)));
+            int keepAliveId = random.nextInt(1024);
+            while(keepAliveIds.contains(keepAliveId)) {
+                keepAliveId = random.nextInt(1024);
+            }
+
+            keepAliveIds.add(keepAliveId);
+            connection.sendPacket(new PacketOutKeepAlive(keepAliveId));
             this.keepAliveCount = System.currentTimeMillis();
         }
     }

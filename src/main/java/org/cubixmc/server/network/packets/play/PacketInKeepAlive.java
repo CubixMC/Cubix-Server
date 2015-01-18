@@ -22,7 +22,7 @@ public class PacketInKeepAlive extends PacketIn {
     @Override
     public void handle(Connection connection) {
         long ping = System.currentTimeMillis() - connection.getPlayer().getKeepAliveCount();
-        if(connection.getPlayer().getKeepAliveId() != keepAliveID) {
+        if(!connection.getPlayer().getKeepAliveIds().remove(keepAliveID)) {
             connection.disconnect("Invalid KeepAlive id!");
             return;
         }

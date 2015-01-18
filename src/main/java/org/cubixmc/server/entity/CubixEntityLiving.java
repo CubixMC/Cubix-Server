@@ -3,7 +3,7 @@ package org.cubixmc.server.entity;
 import org.cubixmc.entity.LivingEntity;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.PacketOutSpawnMob;
-import org.cubixmc.server.world.World;
+import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.MathHelper;
 
 public abstract  class CubixEntityLiving extends CubixEntity implements LivingEntity {
@@ -11,7 +11,7 @@ public abstract  class CubixEntityLiving extends CubixEntity implements LivingEn
     private boolean customNameVisible;
     private double health;
 
-    protected CubixEntityLiving(World world) {
+    protected CubixEntityLiving(CubixWorld world) {
         super(world);
     }
 
