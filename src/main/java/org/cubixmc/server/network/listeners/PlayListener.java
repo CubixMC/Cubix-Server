@@ -28,7 +28,7 @@ public class PlayListener extends PacketListener {
 
 
     public void onChat(PacketInChatMessage packet) {
-        String sender = connection.getPlayer().getDisplayName();
+        String sender = connection.getPlayer().getName();
         String message = packet.getMessage();
         if(message.startsWith("/")){
             connection.getPlayer().sendMessage(ChatColor.RED + "Command not added yet");

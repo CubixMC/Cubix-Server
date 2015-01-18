@@ -93,7 +93,7 @@ public class Connection {
     public void disconnect(String message) {
         String name = player.getName();
         for(Player p : CubixServer.getInstance().getOnlinePlayers()){
-            p.sendMessage(ChatColor.AQUA + name + " has Left!");
+            p.sendMessage(ChatColor.AQUA + name + " has joined!");
         }
 
         message = ChatColor.replace('&', message);
