@@ -12,4 +12,8 @@ public class MathHelper {
         int i = (int) value;
         return i > value ? i - 1 : i;
     }
+
+    public static int byteToDegree(float rot) {
+        return (int) (rot * 256.0F / 360.0F);
+    }
 }
