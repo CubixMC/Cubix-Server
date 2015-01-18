@@ -1,7 +1,6 @@
 package org.cubixmc.inventory;
 
 import org.cubixmc.entity.Entity;
-import org.cubixmc.entity.LivingEntity;
 
 public interface Inventory {
 
@@ -32,7 +31,6 @@ public interface Inventory {
     InventoryType getType();
 
     /**
-     *
      * @param type The inventory type to be set to
      */
     void setType(InventoryType type);

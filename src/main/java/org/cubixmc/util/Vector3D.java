@@ -11,8 +11,9 @@ public class Vector3D {
      * Construct the vector with all components as 0.
      */
     public Vector3D() {
-        this(0,0,0);
+        this(0, 0, 0);
     }
+
     /**
      * Construct the vector with provided integer components.
      *
@@ -25,6 +26,7 @@ public class Vector3D {
         this.y = y;
         this.z = z;
     }
+
     /**
      * Construct the vector with provided double components.
      *
@@ -37,6 +39,7 @@ public class Vector3D {
         this.y = y;
         this.z = z;
     }
+
     /**
      * Construct the vector with provided float components.
      *
@@ -49,6 +52,7 @@ public class Vector3D {
         this.y = y;
         this.z = z;
     }
+
     /**
      * Adds a vector to this one
      *
@@ -61,6 +65,7 @@ public class Vector3D {
         z += vec.z;
         return this;
     }
+
     /**
      * Subtracts a vector from this one.
      *
@@ -73,6 +78,7 @@ public class Vector3D {
         z -= vec.z;
         return this;
     }
+
     /**
      * Multiplies the vector by another.
      *

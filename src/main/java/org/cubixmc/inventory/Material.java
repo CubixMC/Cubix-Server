@@ -377,8 +377,7 @@ public enum Material {
     RECORD_9(2264),
     RECORD_10(2265),
     RECORD_11(2266),
-    RECORD_12(2267),
-    ;
+    RECORD_12(2267),;
 
     private final int id;
     private final boolean solid, opaque, block;
@@ -386,37 +385,38 @@ public enum Material {
     /**
      * solid = placable, opaque = light, block placable
      */
-    private Material(int id, boolean solid, boolean opaque, boolean block){
+    private Material(int id, boolean solid, boolean opaque, boolean block) {
         this.id = id;
-        this.solid= solid;
+        this.solid = solid;
         this.opaque = opaque;
         this.block = block;
     }
-    private Material(int id){
+
+    private Material(int id) {
         this(id, false, false, false);
     }
 
-    public static Material getMaterial(int id){
+    public static Material getMaterial(int id) {
         for(Material material : Material.values())
-            if (material.getId() == id) {
+            if(material.getId() == id) {
                 return material;
             }
         return null;
     }
 
-    public boolean isBlock(){
+    public boolean isBlock() {
         return block;
     }
 
-    public boolean isOpaque(){
+    public boolean isOpaque() {
         return opaque;
     }
 
-    public boolean isSolid(){
+    public boolean isSolid() {
         return solid;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -426,7 +426,7 @@ public enum Material {
      * @return true if this Material is edible.
      */
     public boolean isEdible() {
-        switch (this) {
+        switch(this) {
             case BREAD:
             case CARROT_ITEM:
             case BAKED_POTATO:
@@ -459,10 +459,10 @@ public enum Material {
      * @return True if this material is affected by gravity.
      */
     public boolean hasGravity() {
-        if (!isBlock()) {
+        if(!isBlock()) {
             return false;
         }
-        switch (this) {
+        switch(this) {
             case SAND:
             case GRAVEL:
             case ANVIL:

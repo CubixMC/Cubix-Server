@@ -1,7 +1,5 @@
 package org.cubixmc.entity;
 
-import lombok.Getter;
-
 public enum EntityType {
     DROPPED_ITEM(0x01),
     XP_ORB(0x02),
@@ -68,7 +66,7 @@ public enum EntityType {
     RABBIT(0X65, Type.MOB),
     VILLAGER(0X78, Type.MOB);
 
-    private @Getter int typeId;
+    private int typeId;
     private Type type;
 
 
@@ -77,28 +75,31 @@ public enum EntityType {
         this.type = type;
     }
 
+    public int getTypeId() {
+        return typeId;
+    }
+
     private EntityType(int id) {
         this.typeId = id;
         this.type = Type.ENTITY;
     }
 
-    public static EntityType getByTypeId(int id){
-        for(int i = 0; i < values().length; i++){
+    public static EntityType getByTypeId(int id) {
+        for(int i = 0; i < values().length; i++) {
             EntityType type = values()[i];
-            if(type.getTypeId() == id){
+            if(type.getTypeId() == id) {
                 return type;
             }
         }
         return null;
     }
 
-
-    public boolean isMonster(){
+    public boolean isMonster() {
         if(type.equals(Type.MONSTER)) return true;
         return false;
     }
 
-    public boolean isAnimal(){
+    public boolean isAnimal() {
         if(type.equals(Type.MOB)) return true;
         return false;
     }
@@ -106,5 +107,4 @@ public enum EntityType {
     private enum Type {
         MOB, MONSTER, ENTITY
     }
-
 }

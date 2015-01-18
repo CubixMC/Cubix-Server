@@ -186,30 +186,29 @@ public interface Player extends LivingEntity {
      * @param url The url of the pack
      */
     void setResourcePack(String url);
-    
+
     /**
      * Will send a message to the player
      *
      * @param message to the player a message
-    */
+     */
     void sendMessage(String message);
 
     /**
-     *
      * @param inventory for the player to open
      */
     void openInventory(Inventory inventory);
 
     /**
-     * Sets the player's GameMode 
-     * 
+     * Sets the player's GameMode
+     *
      * @param gameMode the gameMode to set the player to
      */
     void setGameMode(GameMode gameMode);
 
     /**
      * Gets the player's GameMode
-     *  
+     *
      * @return the player's GameMode
      */
     GameMode getGameMode();

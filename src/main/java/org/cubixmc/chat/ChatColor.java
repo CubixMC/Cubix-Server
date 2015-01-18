@@ -40,7 +40,7 @@ public enum ChatColor {
      * Replace all colors with a custom color character with the default character.
      *
      * @param colorChar The chosen character
-     * @param message The message to parse
+     * @param message   The message to parse
      * @return The message with replaced color codes
      */
     public static String replace(char colorChar, String message) {

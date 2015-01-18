@@ -103,7 +103,8 @@ public class ChatMessage {
                 } else {
                     chatMessage.append(current);
                 }
-            } if(color != null) {
+            }
+            if(color != null) {
                 inMessage = false;
                 colors.add(color);
                 i += 1;

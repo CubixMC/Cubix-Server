@@ -19,7 +19,7 @@ public interface World {
      *
      * @return Unique id of world
      */
-     UUID getUUID();
+    UUID getUUID();
 
     /**
      * Get the seed for the
@@ -27,7 +27,7 @@ public interface World {
      *
      * @return Long seed
      */
-     long getSeed();
+    long getSeed();
 
     /**
      * Get a list of all entities
@@ -35,7 +35,7 @@ public interface World {
      *
      * @return List from world
      */
-     List<Entity> getEntities();
+    List<Entity> getEntities();
 
     /**
      * Get an array of all entities
@@ -43,5 +43,5 @@ public interface World {
      *
      * @return Entity[] from world
      */
-     //public Entity[] getEntities();
+    //public Entity[] getEntities();
 }

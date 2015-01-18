@@ -2,7 +2,7 @@ package org.cubixmc.entity;
 
 public interface LivingEntity extends Entity {
 
-     
+
     /**
      * Get the entity's name.
      *
@@ -25,7 +25,7 @@ public interface LivingEntity extends Entity {
      * @param health New health for the entity
      */
     void setHealth(double health);
-    
+
     /**
      * If the developer is adding damage to an entity manually, they would have to use damageEntity();
      * damageEntity(); applies for all entities the void is being called to.
@@ -45,13 +45,13 @@ public interface LivingEntity extends Entity {
      * @return Max health of entity
      */
     void setMaxHealth(double maxHealth);
-    
+
     /**
      * @param name New name for the entity
-     * Method does not apply to HumanEntities
+     *             Method does not apply to HumanEntities
      */
     void customName(String name, boolean flag);
-    
+
     /**
      * @return this.boolean(flag.type, true(), false())
      * Method does not apply to HumanEntities

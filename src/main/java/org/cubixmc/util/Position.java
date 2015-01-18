@@ -73,33 +73,33 @@ public class Position {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
 
         Position position = (Position) o;
 
-        if (Float.compare(position.pitch, pitch) != 0) return false;
-        if (Double.compare(position.x, x) != 0) return false;
-        if (Double.compare(position.y, y) != 0) return false;
-        if (Float.compare(position.yaw, yaw) != 0) return false;
-        if (Double.compare(position.z, z) != 0) return false;
-        if (!world.equals(position.world)) return false;
+        if(Float.compare(position.pitch, pitch) != 0) return false;
+        if(Double.compare(position.x, x) != 0) return false;
+        if(Double.compare(position.y, y) != 0) return false;
+        if(Float.compare(position.yaw, yaw) != 0) return false;
+        if(Double.compare(position.z, z) != 0) return false;
+        if(!world.equals(position.world)) return false;
 
         return true;
     }
 
-    public double distance(Position pos){
+    public double distance(Position pos) {
         return Math.sqrt(distanceSquared(pos));
     }
 
-    public double distanceSquared(Position pos){
+    public double distanceSquared(Position pos) {
         double x2 = pos.getX();
         double y2 = pos.getY();
         double z2 = pos.getZ();
 
-        double deltaX = x2-x;
-        double deltaY = y2-y;
-        double deltaZ = z2-z;
+        double deltaX = x2 - x;
+        double deltaY = y2 - y;
+        double deltaZ = z2 - z;
 
         return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
     }

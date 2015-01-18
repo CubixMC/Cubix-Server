@@ -11,41 +11,39 @@ public interface Entity {
      *
      * @return Integer id of entity
      */
-     int getEntityId();
+    int getEntityId();
 
     /**
      * Get the unique id of the entity used by the server.
      *
      * @return Unique id of entity
      */
-     UUID getUniqueId();
+    UUID getUniqueId();
 
 
     /**
-     *
      * @return Position of the player, including x,y,z coords.
      */
-     Position getPosition();
+    Position getPosition();
 
 
     /**
      * Teleports this entity to the given position. Note: If entity is riding a vehicle, not sure if to teleport
-
      *
      * @param position New location to teleport this entity to
      * @return true if the teleport was successful
      */
-     boolean teleport(Position position);
+    boolean teleport(Position position);
 
 
     /**
      * Teleports this entity to the given position. Note: If entity is riding a vehicle, not sure if to teleport
      *
      * @param position New position to teleport this entity to
-     * @param cause The reason of this teleportation
+     * @param cause    The reason of this teleportation
      * @return true if the teleport was successful
      */
-     boolean teleport(Position position, String cause);
+    boolean teleport(Position position, String cause);
 
 
     /**
@@ -55,7 +53,7 @@ public interface Entity {
      * @param target Entity to teleport this entity to
      * @return true if the teleport was successful
      */
-     boolean teleport(Entity target);
+    boolean teleport(Entity target);
 
 
     /**
@@ -63,8 +61,8 @@ public interface Entity {
      * vehicle, it will be dismounted prior to teleportation.
      *
      * @param target Entity to teleport this entity to
-     * @param cause The reason of this teleportation
+     * @param cause  The reason of this teleportation
      * @return true if the teleport was successful
      */
-     boolean teleport(Entity target, String cause);
+    boolean teleport(Entity target, String cause);
 }
