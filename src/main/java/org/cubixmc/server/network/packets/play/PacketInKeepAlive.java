@@ -1,6 +1,7 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -26,6 +27,12 @@ public class PacketInKeepAlive extends PacketIn {
             return;
         }
 
+        connection.sendPacket(new PacketOutChatMessage(ChatMessage.fromString("Your ping is " + ping).toString(), 0));
         connection.getPlayer().setPing((int) ping);
+    }
+
+    @Override
+    public boolean isAsync() {
+        return true;
     }
 }

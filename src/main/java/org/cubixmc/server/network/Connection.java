@@ -11,12 +11,10 @@ import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
-import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.network.codecs.CompressionHandler;
 import org.cubixmc.server.network.codecs.DummyHandler;
 import org.cubixmc.server.network.codecs.EncryptionHandler;
 import org.cubixmc.server.network.codecs.PacketHandler;
-import org.cubixmc.server.network.listeners.PacketListener;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
@@ -24,7 +22,6 @@ import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.util.Position;
 
 import java.util.UUID;
-import java.util.logging.Level;
 
 import javax.crypto.SecretKey;
 
@@ -36,7 +33,6 @@ public class Connection {
     private Phase phase;
     private CubixPlayer player;
     private PacketHandler packetHandler;
-    private PacketListener listener;
 
     public void sendPacket(PacketOut packet) {
         channel.writeAndFlush(packet);
@@ -91,11 +87,6 @@ public class Connection {
     }
 
     public void disconnect(String message) {
-        String name = player.getName();
-        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
-            p.sendMessage(ChatColor.AQUA + name + " has joined!");
-        }
-
         message = ChatColor.replace('&', message);
         ChatMessage chatMessage = ChatMessage.fromString(message);
         switch(phase) {
@@ -136,15 +127,6 @@ public class Connection {
 
     public void setPhase(Phase phase) {
         this.phase = phase;
-
-        // Update protocol listener
-        String name = phase.toString().substring(0, 1) + phase.toString().substring(1).toLowerCase();
-        try {
-            Class<?> listenerClass = Class.forName("org.cubixmc.server.network.listeners." + name + "Listener");
-            setListener((PacketListener) listenerClass.getConstructor(Connection.class).newInstance(this));
-        } catch(Exception e) {
-            CubixServer.getLogger().log(Level.SEVERE, "Failed to initiate protocol listener", e);
-        }
     }
 
     public void enableEncryption(SecretKey key) {
@@ -156,20 +138,6 @@ public class Connection {
     }
 
     private void spawnPlayer(Connection connection, CubixPlayer player) {
-        PacketOutSpawnPlayer spawn = new PacketOutSpawnPlayer();
-        spawn.setEntityID(player.getEntityId());
-        spawn.setPlayerUUID(player.getUniqueId());
-        spawn.setX((int) (player.getPosition().getX() * 32.0));
-        spawn.setY((int) (player.getPosition().getY() * 32.0));
-        spawn.setZ((int) (player.getPosition().getZ() * 32.0));
-        spawn.setYaw((int) (player.getPosition().getYaw() * 256.0F / 360.0F));
-        spawn.setPitch((int) (player.getPosition().getPitch() * 256.0F / 360.0F));
-        spawn.setCurrentItem((short) 0);
-
-        Metadata metadata = new Metadata();
-        metadata.set(0, (byte) 0);
-
-        spawn.setMetadata(metadata);
-        connection.sendPacket(spawn);
+        connection.sendPacket(player.getSpawnPacket());
     }
 }

@@ -1,6 +1,5 @@
 package org.cubixmc.server.entity;
 
-import io.netty.buffer.ByteBuf;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.util.Position;
@@ -15,6 +14,20 @@ public class Metadata {
 
     public <T> T get(int id, Class<T> type) {
         return type.cast(objects[id]);
+    }
+
+    public void watch(int id, int mask, boolean value) {
+        byte bitmask = (byte) objects[id];
+        int current = bitmask >> mask;
+        if(current == 1 && !value) {
+            bitmask -= Math.pow(2, mask);
+        } else if(current == 0 && value) {
+            bitmask += Math.pow(2, mask);
+        } else {
+            return;
+        }
+
+        objects[id] = bitmask;
     }
 
     public void encode(Codec codec) {

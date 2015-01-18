@@ -21,10 +21,10 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketIn packet) throws Exception {
-        if(connection.getListener().isAsync()) {
-            connection.getListener().call(packet);
-        } else {
+        if(connection.getPhase() == Phase.PLAY && !packet.isAsync()) {
             packetQueue.offer(packet);
+        } else {
+            packet.handle(connection);
         }
     }
 
@@ -54,7 +54,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
             Threads.playerExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    connection.getListener().call(packet);
+                    packet.handle(connection);
                 }
             });
         }

@@ -35,7 +35,7 @@ public class PacketInLoginStart extends PacketIn {
 
         // Prevent fake name exploit
         Attribute<String> usernameKey = connection.getChannel().attr(NetManager.USERNAME);
-        if(usernameKey.get() != null) {
+        if(usernameKey.get() == null) {
             usernameKey.set(name);
         } else {
             CubixServer.getLogger().log(Level.WARNING, "Client attempted to send username twice!");

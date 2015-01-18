@@ -1,5 +1,6 @@
 package org.cubixmc.server.entity;
 
+import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.world.World;
 import org.cubixmc.util.Position;
 
@@ -11,12 +12,18 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
 
     protected final Random random = new Random();
     protected final int entityId;
+    protected final Metadata metadata;
     private final UUID uuid;
     protected Position position;
 
     protected CubixEntity(World world) {
         this.entityId = ENTITY_ID++;
         this.uuid = UUID.randomUUID();
+        this.metadata = new Metadata();
+    }
+
+    public boolean isSpawned() {
+        return position != null;
     }
 
     public boolean spawn(Position position) {
@@ -25,6 +32,7 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         }
 
         this.position = position;
+        metadata.set(0, (byte) 0);
         return true;
     }
 
@@ -71,4 +79,6 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     public boolean teleport(org.cubixmc.entity.Entity target, String cause) {
         return teleport(target.getPosition(), cause);
     }
+
+    public abstract PacketOut getSpawnPacket();
 }

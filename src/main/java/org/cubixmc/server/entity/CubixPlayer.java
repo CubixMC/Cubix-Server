@@ -8,9 +8,12 @@ import org.cubixmc.entity.Player;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
 import org.cubixmc.server.network.Connection;
+import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.PacketOutChatMessage;
 import org.cubixmc.server.network.packets.play.PacketOutKeepAlive;
+import org.cubixmc.server.network.packets.play.PacketOutSpawnPlayer;
 import org.cubixmc.server.world.World;
+import org.cubixmc.util.MathHelper;
 
 import java.net.InetSocketAddress;
 import java.util.UUID;
@@ -35,6 +38,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     public void tick() {
         if(keepAliveCount < System.currentTimeMillis() - 5000L) {
+            System.out.println("x<3");
             connection.sendPacket(new PacketOutKeepAlive(this.keepAliveId = random.nextInt(256)));
             this.keepAliveCount = System.currentTimeMillis();
         }
@@ -110,7 +114,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public void giveExp(int amount) {
+    public void giveExp(float amount) {
     }
 
     @Override
@@ -136,12 +140,13 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public int getTotalExperience() {
+    public float getTotalExperience() {
         return 0;
     }
 
     @Override
-    public void setTotalExperience(int exp) {
+    public void setTotalExperience(float exp) {
+
     }
 
     @Override
@@ -176,7 +181,32 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
+    public void setHeader(String message) {
+
+    }
+
+    @Override
+    public void setFooter(String message) {
+
+    }
+
+    @Override
     public double getMaxHealth() {
         return 20.0;
+    }
+
+    @Override
+    public PacketOut getSpawnPacket() {
+        PacketOutSpawnPlayer packet = new PacketOutSpawnPlayer();
+        packet.setEntityID(entityId);
+        packet.setPlayerUUID(uniqueUserId);
+        packet.setCurrentItem((short) 0);
+        packet.setX(MathHelper.floor(position.getX() * 32.0));
+        packet.setY(MathHelper.floor(position.getY() * 32.0));
+        packet.setZ(MathHelper.floor(position.getZ() * 32.0));
+        packet.setYaw(MathHelper.byteToDegree(position.getYaw()));
+        packet.setPitch(MathHelper.byteToDegree(position.getPitch()));
+        packet.setMetadata(metadata);
+        return packet;
     }
 }
