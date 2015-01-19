@@ -57,4 +57,11 @@ public interface LivingEntity extends Entity {
      * Method does not apply to HumanEntities
      */
     String getCustomName();
+    
+    /**
+     * Gets the current location of an entity (or saved location)
+     * 
+     * @! Define Location
+     */
+    void getLocation();
 }
