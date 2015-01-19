@@ -5,7 +5,6 @@ import lombok.Getter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Getter
 public class Threads {
@@ -17,10 +16,18 @@ public class Threads {
     /**
      * World thread, chunk loading, saving and generating.
      */
-    public static final ExecutorService worldExecutor = Executors.newFixedThreadPool(2);
+    public static final ExecutorService worldExecutor = Executors.newFixedThreadPool(3);
     /**
-     * Pathfinding thread
+     * Entity executor, AI and such
      */
-    public static final ExecutorService pathExecutor = Executors.newFixedThreadPool(1);
+    public static final ExecutorService entityExecutor = Executors.newFixedThreadPool(2);
+    /**
+     * Player executor, packet processing
+     */
     public static final ExecutorService playerExecutor = Executors.newFixedThreadPool(2);
+    /**
+     * Plugins, they don't need to worry about concurrency.
+     * Ill let them have that.
+     */
+    public static final ExecutorService pluginSecrive = Executors.newSingleThreadExecutor();
 }

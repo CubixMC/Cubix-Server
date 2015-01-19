@@ -13,12 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class CubixWorld implements World {
-    private final Map<Vector2I, CubixChunk> chunkMap = new ConcurrentHashMap<>();
     private final String name;
     private UUID uuid;
 
     public CubixWorld(String name) {
         this.name = name;
+    }
+
+    public File getWorldFolder() {
+        return new File(name);
     }
 
     public void load() {
