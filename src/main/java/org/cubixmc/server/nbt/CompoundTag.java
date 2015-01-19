@@ -13,12 +13,12 @@ public class CompoundTag extends NBTTag {
     private final Map<String, NBTTag> value = new HashMap<>();
     private String name;
 
-    public CompoundTag(String name) {
+    protected CompoundTag(String name) {
         this();
         this.name = name;
     }
 
-    protected CompoundTag() {
+    public CompoundTag() {
         super(NBTType.COMPOUND);
     }
 
@@ -27,13 +27,10 @@ public class CompoundTag extends NBTTag {
         NBTType type;
         while((type = NBTType.byTypeId(input.readByte())) != NBTType.END) {
             // Read tag name
-            int length = input.readInt();
-            byte[] bytes = new byte[length];
-            input.readFully(bytes);
-            String tagName = new String(bytes, Charsets.UTF_8);
+            String tagName = input.readUTF();
 
             // Make tag
-            NBTTag tag = type.construct();
+            NBTTag tag = type == NBTType.COMPOUND ? new CompoundTag(tagName) : type.construct();
             tag.decode(input);
             value.put(tagName, tag);
         }
@@ -55,6 +52,7 @@ public class CompoundTag extends NBTTag {
             // Write tag data
             tag.encode(output);
         }
+        output.writeByte(NBTType.END.getTypeId());
     }
 
     @Override
@@ -64,5 +62,106 @@ public class CompoundTag extends NBTTag {
 
     public String getName() {
         return name;
+    }
+
+    public boolean has(String key) {
+        return value.containsKey(key);
+    }
+
+    public boolean hasWithType(String key, NBTType type) {
+        NBTTag tag = value.get(key);
+        return tag != null && tag.getType() == type;
+    }
+
+    public <T extends NBTTag> T getTag(String key, Class<T> type) throws NBTException {
+        NBTTag tag = getTagUnsafe(key);
+        if(tag == null) {
+            throw new NBTException("Tag with name " + key + " does not exist!");
+        } else if(!type.isInstance(tag)) {
+            throw new NBTException("Tag with name " + key + " does not match the requested type!");
+        }
+
+        return type.cast(tag);
+    }
+
+    public <T extends NBTTag> T getTagUnsafe(String key, Class<T> type) {
+        NBTTag tag = getTagUnsafe(key);
+        return tag == null ? null : type.cast(tag);
+    }
+
+    public NBTTag getTagUnsafe(String key) {
+        return value.get(key);
+    }
+
+    public void addTag(String key, NBTTag tag) {
+        value.put(key, tag);
+    }
+
+    public boolean getBoolean(String key) throws NBTException {
+        return getByte(key) != 0;
+    }
+
+    public byte getByte(String key) throws NBTException {
+        try {
+            return getTag(key, ByteTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public short getShort(String key) throws NBTException {
+        try {
+            return getTag(key, ShortTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public int getInt(String key) throws NBTException {
+        try {
+            return getTag(key, IntTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public float getFloat(String key) throws NBTException {
+        try {
+            return getTag(key, FloatTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public double getDouble(String key) throws NBTException {
+        try {
+            return getTag(key, DoubleTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public long getLong(String key) throws NBTException {
+        try {
+            return getTag(key, LongTag.class).value();
+        } catch(NBTException e) {
+            return 0;
+        }
+    }
+
+    public String getString(String key) throws NBTException {
+        return getTag(key, StringTag.class).value();
+    }
+
+    public byte[] getByteArray(String key) throws NBTException {
+        return getTag(key, ByteArrayTag.class).value();
+    }
+
+    public ListTag getList(String key) throws NBTException {
+        return getTag(key, ListTag.class);
+    }
+
+    public CompoundTag getCompound(String key) throws NBTException {
+        return getTag(key, CompoundTag.class);
     }
 }

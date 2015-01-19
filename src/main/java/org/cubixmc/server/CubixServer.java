@@ -1,5 +1,7 @@
 package org.cubixmc.server;
 
+import com.google.common.collect.Maps;
+import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +9,7 @@ import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.threads.Threads;
+import org.cubixmc.server.world.CubixWorld;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,7 +38,8 @@ public class CubixServer implements Runnable {
         new CubixServer();
     }
 
-    private final Map<UUID, CubixPlayer> players = new ConcurrentHashMap<>();
+    private final Map<String, CubixWorld> worlds = new ConcurrentHashMapV8<>();
+    private final Map<UUID, CubixPlayer> players = Maps.newConcurrentMap();
     private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
 
@@ -61,12 +65,16 @@ public class CubixServer implements Runnable {
             logger.log(Level.INFO, "Starting a Minecraft protocol server on localhost:25565");
             this.netManager = new NetManager(new InetSocketAddress(InetAddress.getLocalHost(), 25565));
             netManager.connect();
-
-            Threads.mainThread.scheduleAtFixedRate(this, 0L, 50L, TimeUnit.MILLISECONDS);
         } catch(UnknownHostException e) {
             logger.log(Level.SEVERE, "Failed to find host to start server with!", e);
             throw new RuntimeException("");
         }
+
+        Threads.mainThread.scheduleAtFixedRate(this, 0L, 50L, TimeUnit.MILLISECONDS);
+        logger.log(Level.INFO, "Loading world world....");
+        CubixWorld world = new CubixWorld("world");
+        worlds.put(world.getName(), world);
+        world.load();
     }
 
     @Override
@@ -89,10 +97,16 @@ public class CubixServer implements Runnable {
         players.remove(player.getUniqueId());
     }
 
-
-
     public Collection<CubixPlayer> getOnlinePlayers() {
-        return players.values();
+        return Collections.unmodifiableCollection(players.values());
+    }
+
+    public List<CubixWorld> getWorldList() {
+        return new ArrayList<>(worlds.values());
+    }
+
+    public CubixWorld getMainWorld() {
+        return getWorldList().get(0);
     }
 
     private void generateKeyPair() {

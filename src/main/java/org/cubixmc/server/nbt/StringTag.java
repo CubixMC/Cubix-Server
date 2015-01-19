@@ -20,16 +20,12 @@ public class StringTag extends NBTTag {
 
     @Override
     public void decode(DataInput input) throws IOException {
-        int length = input.readShort();
-        byte[] bytes = new byte[length];
-        input.readFully(bytes);
-        this.value = new String(bytes, Charsets.UTF_8);
+        this.value = input.readUTF();
     }
 
     @Override
     public void encode(DataOutput output) throws IOException {
-        output.writeShort(value.length());
-        output.write(value.getBytes(Charsets.UTF_8));
+        output.writeUTF(value);
     }
 
     @Override

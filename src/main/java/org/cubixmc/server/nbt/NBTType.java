@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public enum NBTType {
-    BYTE(1, null),
-    SHORT(2, null),
-    INT(3, null),
-    LONG(4, null),
-    FLOAT(5, null),
-    DOUBLE(6, null),
-    BYTE_ARRAY(7, null),
-    STRING(8, null),
-    LIST(9, null),
-    COMPOUND(10, null),
+    BYTE(1, ByteTag.class),
+    SHORT(2, ShortTag.class),
+    INT(3, IntTag.class),
+    LONG(4, LongTag.class),
+    FLOAT(5, FloatTag.class),
+    DOUBLE(6, DoubleTag.class),
+    BYTE_ARRAY(7, ByteArrayTag.class),
+    STRING(8, StringTag.class),
+    LIST(9, ListTag.class),
+    COMPOUND(10, CompoundTag.class),
     INT_ARRAY(11, null),
     END(0, null);
 
@@ -35,7 +35,7 @@ public enum NBTType {
         try {
             return tagClass.newInstance();
         } catch(Exception e) {
-            CubixServer.getLogger().log(Level.SEVERE, "Failed to construct nbt tag", e);
+            CubixServer.getLogger().log(Level.SEVERE, "Failed to construct nbt tag with type " + toString(), e);
             return null;
         }
     }

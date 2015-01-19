@@ -2,6 +2,7 @@ package org.cubixmc.server.world;
 
 import org.cubixmc.entity.Entity;
 import org.cubixmc.server.CubixServer;
+import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.util.Vector2I;
 import org.cubixmc.world.World;
 
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 
 public class CubixWorld implements World {
     private final String name;
-    private UUID uuid;
+    private CubixWorldData worldData;
 
     public CubixWorld(String name) {
         this.name = name;
@@ -24,31 +25,21 @@ public class CubixWorld implements World {
         return new File(name);
     }
 
-    public void load() {
-        File dir = new File(name);
-
-        // Read UUID
-        File uuidFile = new File(dir, "uuid.dat");
-        if(uuidFile.exists()) {
+    public boolean load() {
+        getWorldFolder().mkdirs();
+        File dataFile = new File(getWorldFolder(), "level.dat");
+        if(dataFile.exists()) {
             try {
-                DataInputStream input = new DataInputStream(new FileInputStream(uuidFile));
-                this.uuid = new UUID(input.readLong(), input.readLong());
-                input.close();
-            } catch(IOException e) {
-                CubixServer.getLogger().log(Level.WARNING, "Failed to load UUID from world file", e);
+                this.worldData = new CubixWorldData(this);
+            } catch(NBTException e) {
+                CubixServer.getLogger().log(Level.WARNING, "Failed to read world data from level.dat!", e);
+                return false;
             }
         } else {
-            this.uuid = UUID.randomUUID();
-            try {
-                DataOutputStream output = new DataOutputStream(new FileOutputStream(uuidFile));
-                output.writeLong(uuid.getMostSignificantBits());
-                output.writeLong(uuid.getLeastSignificantBits());
-                output.flush();
-                output.close();
-            } catch(IOException e) {
-                CubixServer.getLogger().log(Level.WARNING, "Failed to save UUID to world file", e);
-            }
+            // TODO: Regenerate
         }
+
+        return true;
     }
 
     @Override
@@ -58,12 +49,12 @@ public class CubixWorld implements World {
 
     @Override
     public UUID getUUID() {
-        return uuid;
+        return worldData.getUuid();
     }
 
     @Override
     public long getSeed() {
-        return 0;
+        return worldData.getSeed();
     }
 
     @Override
