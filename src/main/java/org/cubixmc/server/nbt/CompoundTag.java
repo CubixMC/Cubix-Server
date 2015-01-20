@@ -15,7 +15,7 @@ public class CompoundTag extends NBTTag {
 
     protected CompoundTag(String name) {
         this();
-        this.name = name;
+        this.name = (name == null || name.isEmpty()) ? "root" : name;
     }
 
     public CompoundTag() {
@@ -155,6 +155,10 @@ public class CompoundTag extends NBTTag {
 
     public byte[] getByteArray(String key) throws NBTException {
         return getTag(key, ByteArrayTag.class).value();
+    }
+
+    public int[] getIntArray(String key) throws NBTException {
+        return getTag(key, IntArrayTag.class).value();
     }
 
     public ListTag getList(String key) throws NBTException {

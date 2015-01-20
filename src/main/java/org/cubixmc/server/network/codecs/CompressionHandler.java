@@ -51,7 +51,7 @@ public class CompressionHandler extends MessageToMessageCodec<ByteBuf, ByteBuf> 
         } else {
             Codec.writeVarInt(prefix, 0);
             byteBuf.retain();
-            list.add(byteBuf);
+            list.add(Unpooled.wrappedBuffer(prefix, byteBuf));
         }
     }
 

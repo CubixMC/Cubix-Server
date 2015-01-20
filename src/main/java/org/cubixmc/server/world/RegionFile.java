@@ -18,9 +18,9 @@ import java.util.zip.InflaterInputStream;
  * Format bytes:
  * 0    - 4096: Chunk offsets
  * 4096 - 8192: Chunk timestamps
- * 8192 - ????: Chunk sections
+ * 8192 - ????: Chunk sectors
  *
- * More sections get added as it needs them along the way, to ensure storage efficiency.
+ * More sectors get added as it needs them along the way, to ensure storage efficiency.
  */
 public class RegionFile {
     /**

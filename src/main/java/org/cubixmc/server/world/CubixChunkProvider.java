@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
+import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.util.Vector2I;
 
 import java.io.File;
@@ -58,15 +59,20 @@ public class CubixChunkProvider {
 
         // Load chunk from file
         Vector2I filePos = new Vector2I(x >> 5, z >> 5);
-        int relX = Math.abs(x % 32);
-        int relZ = Math.abs(z % 32);
+        int relX = x < 0 ? 32 + (x % 32) : x % 32;
+        int relZ = z < 0 ? 32 + (z % 32) : z % 32;
         try {
             RegionFile regionFile = regionFileCache.get(filePos);
             CompoundTag chunkData = regionFile.loadChunk(relX, relZ);
             if(chunkData != null) {
                 chunk = new CubixChunk(world, x, z);
-                // TODO: Load chunk data
                 chunkMap.put(position, chunk);
+                try {
+                    chunk.load(chunkData);
+                } catch(NBTException e) {
+                    CubixServer.getLogger().log(Level.WARNING, "Corrupted chunk data for " + chunk.toString());
+                    chunk = null;
+                }
             } else if(generate) {
                 // TODO: Generate chunk
             }

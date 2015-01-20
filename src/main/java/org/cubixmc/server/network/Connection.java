@@ -19,6 +19,8 @@ import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 import org.cubixmc.server.network.packets.play.*;
+import org.cubixmc.server.world.CubixChunk;
+import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
 
 import java.util.UUID;
@@ -48,6 +50,9 @@ public class Connection {
         CubixServer.getInstance().addPlayer(player);
         setPlayer(player);
 
+        CubixWorld world = CubixServer.getInstance().getMainWorld();
+        Position spawn = world.getSpawnPosition();
+
         setPhase(Phase.PLAY);
         PacketOutJoinGame packet = new PacketOutJoinGame();
         packet.setEntityID(player.getEntityId());
@@ -60,7 +65,7 @@ public class Connection {
         sendPacket(packet);
 
         PacketOutSpawnPosition packet2 = new PacketOutSpawnPosition();
-        packet2.setLocation(new Position(null, 0, 80, 0));
+        packet2.setLocation(spawn);
         sendPacket(packet2);
 
         PacketOutPlayerAbilities packet3 = new PacketOutPlayerAbilities();
@@ -69,12 +74,26 @@ public class Connection {
         packet3.setFlags(6);
         sendPacket(packet3);
 
+        // Send the chunks
+        int cx = ((int) spawn.getX()) >> 4;
+        int cz = ((int) spawn.getZ()) >> 4;
+        int radius = 4;
+        sendPacket(world.getChunk(cx, cz).getPacket());
+        for(int dx = -radius; dx <= radius; dx++) {
+            for(int dz = -radius; dz <= radius; dz++) {
+                CubixChunk chunk = world.getChunk(cx + dx, cz + dz);
+                if(chunk != null) {
+                    sendPacket(chunk.getPacket());
+                }
+            }
+        }
+
         PacketOutPlayerPositionLook packet4 = new PacketOutPlayerPositionLook();
-        packet4.setX(0);
-        packet4.setY(80);
-        packet4.setZ(0);
-        packet4.setYaw(0f);
-        packet4.setPitch(0f);
+        packet4.setX(spawn.getX());
+        packet4.setY(spawn.getY());
+        packet4.setZ(spawn.getZ());
+        packet4.setYaw(spawn.getYaw());
+        packet4.setPitch(spawn.getPitch());
         packet4.setRelativePos(false);
         packet4.setRelativeLook(false);
         sendPacket(packet4);
@@ -104,25 +123,30 @@ public class Connection {
 
     }
 
-    public void setCompression(int compression) {
+    public void setCompression(final int compression) {
+        GenericFutureListener<ChannelFuture> listener = new GenericFutureListener<ChannelFuture>() {
+            @Override
+            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                if(Connection.this.compression < 0 && compression >= 0) {
+                    channel.pipeline().replace("compression", "compression", new CompressionHandler(Connection.this));
+                } else if(Connection.this.compression >= 0 && compression < 0) {
+                    channel.pipeline().replace("compression", "compression", DummyHandler.INSTANCE);
+                }
+
+                Connection.this.compression = compression;
+            }
+        };
+
         switch(phase) {
             case LOGIN:
-                sendPacket(new PacketOutSetCompression(compression));
+                sendPacket(new PacketOutSetCompression(compression), listener);
                 break;
             case PLAY:
-                sendPacket(new org.cubixmc.server.network.packets.play.PacketOutSetCompression(compression));
+                sendPacket(new org.cubixmc.server.network.packets.play.PacketOutSetCompression(compression), listener);
                 break;
             default:
                 throw new IllegalStateException("Cannot set compression during " + phase.toString() + "!");
         }
-
-        if(this.compression < 0 && compression >= 0) {
-            channel.pipeline().replace("compression", "compression", new CompressionHandler(this));
-        } else if(this.compression >= 0 && compression < 0) {
-            channel.pipeline().replace("compression", "compression", DummyHandler.INSTANCE);
-        }
-
-        this.compression = compression;
     }
 
     public void setPhase(Phase phase) {

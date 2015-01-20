@@ -16,7 +16,7 @@ public enum NBTType {
     STRING(8, StringTag.class),
     LIST(9, ListTag.class),
     COMPOUND(10, CompoundTag.class),
-    INT_ARRAY(11, null),
+    INT_ARRAY(11, IntArrayTag.class),
     END(0, null);
 
     private final int typeId;

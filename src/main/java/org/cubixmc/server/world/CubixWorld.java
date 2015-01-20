@@ -3,7 +3,9 @@ package org.cubixmc.server.world;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.NBTException;
+import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector2I;
+import org.cubixmc.world.Chunk;
 import org.cubixmc.world.World;
 
 import java.io.*;
@@ -16,6 +18,7 @@ import java.util.logging.Level;
 public class CubixWorld implements World {
     private final String name;
     private CubixWorldData worldData;
+    private CubixChunkProvider chunkProvider;
 
     public CubixWorld(String name) {
         this.name = name;
@@ -39,6 +42,7 @@ public class CubixWorld implements World {
             // TODO: Regenerate
         }
 
+        this.chunkProvider = new CubixChunkProvider(this);
         return true;
     }
 
@@ -57,8 +61,23 @@ public class CubixWorld implements World {
         return worldData.getSeed();
     }
 
+    public Position getSpawnPosition() {
+        return worldData.getSpawnPosition();
+    }
+
     @Override
     public List<Entity> getEntities() {
         return null;
+    }
+
+    /**
+     * Get chunk, load or generate if needed.
+     *
+     * @param x of chunk
+     * @param z of chunk
+     * @return Chunk instance
+     */
+    public CubixChunk getChunk(int x, int z) {
+        return chunkProvider.getChunk(x, z, true, true);
     }
 }
