@@ -1,6 +1,7 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -20,5 +21,6 @@ public class PacketInChatMessage extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
+        connection.getPlayer().chat(message);
     }
 }

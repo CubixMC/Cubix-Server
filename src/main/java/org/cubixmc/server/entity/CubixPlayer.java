@@ -8,6 +8,7 @@ import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.entity.Player;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.PacketOutChatMessage;
@@ -87,6 +88,9 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public void chat(String msg) {
+        for(Player p : CubixServer.getInstance().getOnlinePlayers()){
+            p.sendMessage(username + " : " + msg);
+        }
     }
 
     @Override
