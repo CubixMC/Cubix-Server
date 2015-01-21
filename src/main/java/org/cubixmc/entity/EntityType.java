@@ -85,9 +85,9 @@ public enum EntityType {
     }
 
     public static EntityType getByTypeId(int id) {
-        for(int i = 0; i < values().length; i++) {
+        for (int i = 0; i < values().length; i++) {
             EntityType type = values()[i];
-            if(type.getTypeId() == id) {
+            if (type.getTypeId() == id) {
                 return type;
             }
         }
@@ -95,12 +95,12 @@ public enum EntityType {
     }
 
     public boolean isMonster() {
-        if(type.equals(Type.MONSTER)) return true;
+        if (type.equals(Type.MONSTER)) return true;
         return false;
     }
 
     public boolean isAnimal() {
-        if(type.equals(Type.MOB)) return true;
+        if (type.equals(Type.MOB)) return true;
         return false;
     }
 

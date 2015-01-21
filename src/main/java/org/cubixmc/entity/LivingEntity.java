@@ -1,7 +1,6 @@
 package org.cubixmc.entity;
 
-public interface LivingEntity extends Entity {
-
+public interface LivingEntity extends Entity, Damageable {
 
     /**
      * Get the entity's name.
