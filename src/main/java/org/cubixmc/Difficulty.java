@@ -13,14 +13,11 @@ public enum Difficulty {
     }
 
     public static Difficulty getById(int id) {
-        Difficulty difficulty = PEACEFUL;
         for(Difficulty mode : values()) {
-            if(difficulty.id == id) {
-                difficulty = mode;
-                break;
+            if (mode.id == id) {
+                return mode;
             }
         }
-
-        return difficulty;
+        return null;
     }
 }

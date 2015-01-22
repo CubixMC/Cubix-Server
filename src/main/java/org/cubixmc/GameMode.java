@@ -16,14 +16,11 @@ public enum GameMode {
     }
 
     public static GameMode getById(int id) {
-        GameMode gameMode = GameMode.SURVIVAL;
         for(GameMode mode : values()) {
-            if(gameMode.id == id) {
-                gameMode = mode;
-                break;
+            if(mode.id == id) {
+                return mode;
             }
         }
-
-        return gameMode;
+        return null;
     }
 }
