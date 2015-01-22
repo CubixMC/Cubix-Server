@@ -12,7 +12,7 @@ public enum Difficulty {
         this.id = id;
     }
 
-    public static Difficulty getById(int id) {
+    public static Difficulty getById(int id){
         for(Difficulty mode : values()) {
             if (mode.id == id) {
                 return mode;
