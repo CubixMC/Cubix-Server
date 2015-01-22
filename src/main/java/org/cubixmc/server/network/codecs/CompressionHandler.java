@@ -60,7 +60,7 @@ public class CompressionHandler extends MessageToMessageCodec<ByteBuf, ByteBuf> 
         int index = byteBuf.readerIndex();
         int decompressedLength = Codec.readVarInt(byteBuf, 32);
         if(decompressedLength == 0) {
-            int length = byteBuf.readerIndex();
+            int length = byteBuf.readableBytes();
             if(length >= connection.getCompression()) {
                 throw new IOException("Received uncompressed packet with a greater size than the threshold!");
             }
@@ -78,6 +78,7 @@ public class CompressionHandler extends MessageToMessageCodec<ByteBuf, ByteBuf> 
             inflater.reset();
 
             if(decompressedSize == 0) {
+                System.out.println("WTF");
                 // Failed to compress, revert to index.
                 byteBuf.readerIndex(index);
                 byteBuf.retain();

@@ -3,6 +3,7 @@ package org.cubixmc.server.network.packets.play;
 import lombok.Data;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.server.util.QueuedChunk;
 
 @Data
 public class PacketOutChunkData extends PacketOut {
@@ -16,7 +17,11 @@ public class PacketOutChunkData extends PacketOut {
         super(0x21);
     }
 
-    public PacketOutChunkData(int chunkX, int chunkZ, boolean groundUpContinuous, int primaryBitMap, int size, byte[] data) {
+    public PacketOutChunkData(QueuedChunk chunk) {
+        this(chunk.getX(), chunk.getZ(), true, chunk.getSections(), chunk.getBuffer());
+    }
+
+    public PacketOutChunkData(int chunkX, int chunkZ, boolean groundUpContinuous, int primaryBitMap, byte[] data) {
         super(0x21);
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;

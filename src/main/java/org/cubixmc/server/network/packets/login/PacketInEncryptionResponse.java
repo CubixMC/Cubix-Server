@@ -66,7 +66,7 @@ public class PacketInEncryptionResponse extends PacketIn {
             byte[] secretKeyBytes = cipher.doFinal(sharedSecret);
             SecretKey secretKey = new SecretKeySpec(secretKeyBytes, "AES");
             connection.enableEncryption(secretKey);
-//            connection.setCompression(256);
+            connection.setCompression(256);
 
             new AuthenticationThread(connection, username, secretKey);
         } catch(GeneralSecurityException e) {

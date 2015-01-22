@@ -2,6 +2,8 @@ package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
 import org.cubixmc.server.network.Codec;
+import org.cubixmc.server.network.Connection;
+import org.cubixmc.server.network.packets.PacketIn;
 import org.cubixmc.server.network.packets.PacketOut;
 
 /**
@@ -10,13 +12,17 @@ import org.cubixmc.server.network.packets.PacketOut;
  * It has none...
  */
 @Getter
-public class PacketIntAnimation extends PacketOut {
+public class PacketInArmAnimation extends PacketIn {
 
-    public PacketIntAnimation() {
+    public PacketInArmAnimation() {
         super(0x0A);
     }
 
     @Override
-    public void encode(Codec codec) {
+    public void decode(Codec codec) {
+    }
+
+    @Override
+    public void handle(Connection connection) {
     }
 }

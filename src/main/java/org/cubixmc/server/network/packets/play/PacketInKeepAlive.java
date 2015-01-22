@@ -23,8 +23,8 @@ public class PacketInKeepAlive extends PacketIn {
     public void handle(Connection connection) {
         long ping = System.currentTimeMillis() - connection.getPlayer().getKeepAliveCount();
         if(!connection.getPlayer().getKeepAliveIds().remove(keepAliveID)) {
-            connection.disconnect("Invalid KeepAlive id!");
-            return;
+//            connection.disconnect("Invalid KeepAlive id!");
+//            return;
         }
 
         connection.sendPacket(new PacketOutChatMessage(ChatMessage.fromString("Your ping is " + ping).toString(), 0));

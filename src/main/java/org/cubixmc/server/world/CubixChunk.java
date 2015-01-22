@@ -25,6 +25,7 @@ public class CubixChunk implements Chunk {
      */
     @Getter
     private final ChunkSection[] sections = new ChunkSection[16];
+    @Getter
     private int sectionCount; // The amount of non-null sections
 
     /**
@@ -267,62 +268,5 @@ public class CubixChunk implements Chunk {
                 ", x=" + x +
                 ", z=" + z +
                 '}';
-    }
-
-    public PacketOutChunkData getPacket() {
-        PacketOutChunkData packet = new PacketOutChunkData();
-        packet.setChunkX(x);
-        packet.setChunkZ(z);
-
-        int length = (1 << sectionCount) - 1;
-        byte[] buffer = new byte[arrayLength(Integer.bitCount(length), true, true)];
-        int index = 0;
-
-        // Write block id & data
-        for(int i = 0; i < sectionCount; i++) {
-            ChunkSection section = sections[i];
-            char[] blocks = section.getBlocks();
-            for(int j = 0; j < blocks.length; j++) {
-                char hash = blocks[j];
-                buffer[index++] = (byte) (hash & 0xFF);
-                buffer[index++] = (byte) (hash >> '\b' & 0xFF);
-            }
-        }
-
-        // Write block light
-        for(int i = 0; i < sectionCount; i++) {
-            ChunkSection section = sections[i];
-            byte[] blockLightBytes = section.getBlockLight().getHandle();
-            System.arraycopy(blockLightBytes, 0, buffer, index, blockLightBytes.length);
-            index += blockLightBytes.length;
-        }
-
-        // Write sky light TODO: Check for overworld
-        for(int i = 0; i < sectionCount; i++) {
-            ChunkSection section = sections[i];
-            byte[] skyLightBytes = section.getSkyLight().getHandle();
-            System.arraycopy(skyLightBytes, 0, buffer, index, skyLightBytes.length);
-            index += skyLightBytes.length;
-        }
-
-        // Write biome info TODO: Check if not flat map
-        byte[] biomeBytes = new byte[256];
-        Arrays.fill(biomeBytes, (byte) 1); // PLAINS
-        System.arraycopy(biomeBytes, 0, buffer, index, biomeBytes.length);
-
-        // Write to packet
-        packet.setGroundUpContinuous(true);
-        packet.setPrimaryBitMap(length & 0xFFFF);
-        packet.setData(buffer);
-
-        return packet;
-    }
-
-    private int arrayLength(int bitSize, boolean biomeInfo, boolean skyLight) {
-        int sectionLength = bitSize * 2 * 16 * 16 * 16; // sections * section width ^ 3 * 2 cause block id and block data
-        int blockLightLength = bitSize * 16 * 16 * 16 / 2; // sections * section width ^ 3 / 2 cause nibble is half a byte
-        int skyLightLength = skyLight ? bitSize * 16 * 16 * 16 / 2 : 0; // Only if overworld
-        int biomeLength = biomeInfo ? 256 : 0; // Only if not a flat map
-        return sectionLength + blockLightLength + skyLightLength + biomeLength;
     }
 }

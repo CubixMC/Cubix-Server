@@ -1,5 +1,6 @@
 package org.cubixmc.server.network;
 
+import com.google.common.collect.Lists;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
@@ -19,10 +20,14 @@ import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 import org.cubixmc.server.network.packets.play.*;
+import org.cubixmc.server.util.QueuedChunk;
 import org.cubixmc.server.world.CubixChunk;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import javax.crypto.SecretKey;
@@ -30,6 +35,7 @@ import javax.crypto.SecretKey;
 @Data
 @RequiredArgsConstructor
 public class Connection {
+    private static final int NETWORK_LIMIT = 2097152;
     private final SocketChannel channel;
     private int compression = -1;
     private Phase phase;
@@ -78,15 +84,34 @@ public class Connection {
         int cx = ((int) spawn.getX()) >> 4;
         int cz = ((int) spawn.getZ()) >> 4;
         int radius = 4;
-        sendPacket(world.getChunk(cx, cz).getPacket());
+        List<QueuedChunk> queuedChunks = Lists.newArrayList();
+        List<PacketOutMapChunkBulk> chunkPackets = Lists.newArrayList();
+        int bytesLeft = NETWORK_LIMIT - 3; // VarInt and bool should fit in 3 bytes
         for(int dx = -radius; dx <= radius; dx++) {
             for(int dz = -radius; dz <= radius; dz++) {
                 CubixChunk chunk = world.getChunk(cx + dx, cz + dz);
                 if(chunk != null) {
-                    sendPacket(chunk.getPacket());
+                    QueuedChunk queuedChunk = new QueuedChunk(chunk);
+                    queuedChunk.build();
+                    bytesLeft -= queuedChunk.size();
+                    if(bytesLeft < 0) {
+                        bytesLeft = NETWORK_LIMIT - 3 - queuedChunk.size(); // Reset
+                        chunkPackets.add(new PacketOutMapChunkBulk(true, new ArrayList<>(queuedChunks)));
+                        queuedChunks.clear();
+                    }
+
+                    queuedChunks.add(queuedChunk);
                 }
             }
         }
+        if(!queuedChunks.isEmpty()) {
+            chunkPackets.add(new PacketOutMapChunkBulk(true, new ArrayList<>(queuedChunks)));
+            queuedChunks.clear();
+        }
+        for(PacketOutMapChunkBulk chunkPacket : chunkPackets) {
+            sendPacket(chunkPacket);
+        }
+        chunkPackets.clear();
 
         PacketOutPlayerPositionLook packet4 = new PacketOutPlayerPositionLook();
         packet4.setX(spawn.getX());
