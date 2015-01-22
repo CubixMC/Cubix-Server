@@ -14,9 +14,11 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     protected final int entityId;
     protected final Metadata metadata;
     private final UUID uuid;
+    protected CubixWorld world;
     protected Position position;
 
     protected CubixEntity(CubixWorld world) {
+        this.world = world;
         this.entityId = ENTITY_ID++;
         this.uuid = UUID.randomUUID();
         this.metadata = new Metadata();

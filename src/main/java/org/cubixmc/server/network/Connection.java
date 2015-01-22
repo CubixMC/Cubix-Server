@@ -35,12 +35,17 @@ import javax.crypto.SecretKey;
 @Data
 @RequiredArgsConstructor
 public class Connection {
-    private static final int NETWORK_LIMIT = 2097152;
     private final SocketChannel channel;
     private int compression = -1;
     private Phase phase;
     private CubixPlayer player;
     private PacketHandler packetHandler;
+
+    public void sendPackets(PacketOut... packets) {
+        for(PacketOut packet : packets) {
+            sendPacket(packet);
+        }
+    }
 
     public void sendPacket(PacketOut packet) {
         channel.writeAndFlush(packet);
@@ -51,83 +56,16 @@ public class Connection {
     }
 
     public void play(UUID uuid, String name) {
-        CubixPlayer player = new CubixPlayer(null, this, uuid, name);
+        setPhase(Phase.PLAY);
+        CubixWorld world = CubixServer.getInstance().getMainWorld();
+        CubixPlayer player = new CubixPlayer(world, this, uuid, name);
         player.spawn(new Position(null, 0, 80, 0));
         CubixServer.getInstance().addPlayer(player);
         setPlayer(player);
 
-        CubixWorld world = CubixServer.getInstance().getMainWorld();
+        // Make player spawn in
         Position spawn = world.getSpawnPosition();
-
-        setPhase(Phase.PLAY);
-        PacketOutJoinGame packet = new PacketOutJoinGame();
-        packet.setEntityID(player.getEntityId());
-        packet.setGamemode(0);
-        packet.setDimension(0);
-        packet.setDifficulty(0);
-        packet.setMaxPlayers(60);
-        packet.setLevelType("default");
-        packet.setReducedDebugInfo(false);
-        sendPacket(packet);
-
-        PacketOutSpawnPosition packet2 = new PacketOutSpawnPosition();
-        packet2.setLocation(spawn);
-        sendPacket(packet2);
-
-        PacketOutPlayerAbilities packet3 = new PacketOutPlayerAbilities();
-        packet3.setFlyingSpeed(0.2f);
-        packet3.setWalkingSpeed(0.2f);
-        packet3.setFlags(6);
-        sendPacket(packet3);
-
-        // Send the chunks
-        int cx = ((int) spawn.getX()) >> 4;
-        int cz = ((int) spawn.getZ()) >> 4;
-        int radius = 4;
-        List<QueuedChunk> queuedChunks = Lists.newArrayList();
-        List<PacketOutMapChunkBulk> chunkPackets = Lists.newArrayList();
-        int bytesLeft = NETWORK_LIMIT - 3; // VarInt and bool should fit in 3 bytes
-        for(int dx = -radius; dx <= radius; dx++) {
-            for(int dz = -radius; dz <= radius; dz++) {
-                CubixChunk chunk = world.getChunk(cx + dx, cz + dz);
-                if(chunk != null) {
-                    QueuedChunk queuedChunk = new QueuedChunk(chunk);
-                    queuedChunk.build();
-                    bytesLeft -= queuedChunk.size();
-                    if(bytesLeft < 0) {
-                        bytesLeft = NETWORK_LIMIT - 3 - queuedChunk.size(); // Reset
-                        chunkPackets.add(new PacketOutMapChunkBulk(true, new ArrayList<>(queuedChunks)));
-                        queuedChunks.clear();
-                    }
-
-                    queuedChunks.add(queuedChunk);
-                }
-            }
-        }
-        if(!queuedChunks.isEmpty()) {
-            chunkPackets.add(new PacketOutMapChunkBulk(true, new ArrayList<>(queuedChunks)));
-            queuedChunks.clear();
-        }
-        for(PacketOutMapChunkBulk chunkPacket : chunkPackets) {
-            sendPacket(chunkPacket);
-        }
-        chunkPackets.clear();
-
-        PacketOutPlayerPositionLook packet4 = new PacketOutPlayerPositionLook();
-        packet4.setX(spawn.getX());
-        packet4.setY(spawn.getY());
-        packet4.setZ(spawn.getZ());
-        packet4.setYaw(spawn.getYaw());
-        packet4.setPitch(spawn.getPitch());
-        packet4.setRelativePos(false);
-        packet4.setRelativeLook(false);
-        sendPacket(packet4);
-
-        for(CubixPlayer p : CubixServer.getInstance().getOnlinePlayers()){
-            p.sendMessage(ChatColor.AQUA + name + " has joined!");
-            spawnPlayer(this, p);
-            spawnPlayer(p.getConnection(), player);
-        }
+        player.spawn(spawn);
     }
 
     public void disconnect(String message) {

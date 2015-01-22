@@ -27,6 +27,7 @@ import java.util.logging.Level;
 public class NetManager extends ChannelInitializer<SocketChannel> {
     public static final AttributeKey<byte[]> VERIFY_TOKEN = AttributeKey.valueOf("verifyToken");
     public static final AttributeKey<String> USERNAME = AttributeKey.valueOf("username");
+    public static final int NETWORK_LIMIT = 2097152;
 
     private final Set<Connection> connections = new ConcurrentSet<>();
     private final NioEventLoopGroup bossGroup;

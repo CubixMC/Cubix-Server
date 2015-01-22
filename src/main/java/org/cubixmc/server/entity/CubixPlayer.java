@@ -11,11 +11,11 @@ import org.cubixmc.inventory.PlayerInventory;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.server.network.packets.play.PacketOutChatMessage;
-import org.cubixmc.server.network.packets.play.PacketOutKeepAlive;
-import org.cubixmc.server.network.packets.play.PacketOutSpawnPlayer;
+import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.server.world.CubixWorld;
+import org.cubixmc.server.world.PlayerChunkMap;
 import org.cubixmc.util.MathHelper;
+import org.cubixmc.util.Position;
 
 import java.net.InetSocketAddress;
 import java.util.Set;
@@ -24,6 +24,7 @@ import java.util.UUID;
 public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
     private final @Getter Connection connection;
+    private final PlayerChunkMap playerChunkMap;
     private final UUID uniqueUserId;
     private final String username;
     private GameMode gameMode = GameMode.SURVIVAL;
@@ -37,6 +38,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         this.keepAliveCount = System.currentTimeMillis() + 5000L;
         this.uniqueUserId = uuid;
         this.username = name;
+        this.playerChunkMap = new PlayerChunkMap(this);
     }
 
     public void tick() {
@@ -50,6 +52,30 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
             connection.sendPacket(new PacketOutKeepAlive(keepAliveId));
             this.keepAliveCount = System.currentTimeMillis();
         }
+    }
+
+    @Override
+    public boolean spawn(Position position) {
+        if(!super.spawn(position)) {
+            return false;
+        }
+
+        // Send properties fo world and player
+        PacketOutJoinGame join = new PacketOutJoinGame(entityId, 0, 0, 0, 60, "default", false);
+        PacketOutSpawnPosition compass = new PacketOutSpawnPosition(position);
+        PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.1F, 0.2F);
+        connection.sendPackets(join, compass, abilities);
+
+        // Send the chunks
+        playerChunkMap.sendAll(4);
+
+        PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
+        connection.sendPacket(coords);
+        return true;
+    }
+
+    public CubixWorld getWorld() {
+        return world;
     }
 
     @Override

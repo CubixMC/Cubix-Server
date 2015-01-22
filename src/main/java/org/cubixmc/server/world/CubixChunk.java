@@ -7,13 +7,11 @@ import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.ListTag;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.nbt.NBTType;
-import org.cubixmc.server.network.packets.play.PacketOutChunkData;
 import org.cubixmc.server.util.NibbleArray;
 import org.cubixmc.util.Vector2I;
 import org.cubixmc.world.Chunk;
 import org.cubixmc.world.World;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 
 public class CubixChunk implements Chunk {
