@@ -4,6 +4,7 @@ import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.GameMode;
+import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.Player;
@@ -199,6 +200,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public void sendMessage(String message) {
+        message = ChatColor.replace('&', message);
         ChatMessage chatMessage = ChatMessage.fromString(message);
         connection.sendPacket(new PacketOutChatMessage(chatMessage.toString(), 0));
     }

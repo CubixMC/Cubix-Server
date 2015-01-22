@@ -20,5 +20,6 @@ public class PacketInPing extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
+        connection.sendPacket(new PacketOutPing(time));
     }
 }
