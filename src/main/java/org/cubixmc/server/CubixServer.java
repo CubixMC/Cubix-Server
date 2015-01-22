@@ -5,10 +5,12 @@ import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.threads.Threads;
+import org.cubixmc.server.util.ForwardLogHandler;
 import org.cubixmc.server.world.CubixWorld;
 
 import java.io.IOException;
@@ -19,12 +21,10 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Main class
@@ -49,14 +49,13 @@ public class CubixServer implements Runnable {
         // Load property file here....
         // Cant bother atm
 
-        try {
-            FileHandler fileHandler = new FileHandler("server.log", true);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.addHandler(fileHandler);
-            logger.setLevel(Level.ALL);
-        } catch(IOException e) {
-            logger.log(Level.SEVERE, "Failed to initiate logger handler", e);
+        // We actually use log4j2 because Minecraft uses it too.
+        // However i prefer java logging so we use a forward handler
+        logger.setUseParentHandlers(false);
+        for(Handler handler : logger.getHandlers()) {
+            logger.removeHandler(handler);
         }
+        logger.addHandler(new ForwardLogHandler());
 
         logger.log(Level.INFO, "Generating key pair...");
         generateKeyPair();

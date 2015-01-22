@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.GameMode;
 import org.cubixmc.chat.ChatMessage;
+import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.Player;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
@@ -225,11 +226,6 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     @Override
     public void setFooter(String message) {
 
-    }
-
-    @Override
-    public double getMaxHealth() {
-        return 20.0;
     }
 
     @Override

@@ -1,12 +1,14 @@
 package org.cubixmc.server.entity;
 
+import org.cubixmc.entity.Damageable;
+import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.LivingEntity;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.PacketOutSpawnMob;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.MathHelper;
 
-public abstract  class CubixEntityLiving extends CubixEntity implements LivingEntity {
+public abstract class CubixEntityLiving extends CubixEntity implements LivingEntity, Damageable {
     private String customName;
     private boolean customNameVisible;
     private double health;
@@ -49,6 +51,26 @@ public abstract  class CubixEntityLiving extends CubixEntity implements LivingEn
     @Override
     public String getCustomName() {
         return customName;
+    }
+
+    @Override
+    public void damage(double amount) {
+        damageEntity(amount);
+    }
+
+    @Override
+    public void damage(double amount, Entity source) {
+        damageEntity(amount);
+    }
+
+    @Override
+    public double getMaxHealth() {
+        return 20.0;
+    }
+
+    @Override
+    public void resetMaxHealth() {
+        setHealth(getMaxHealth());
     }
 
     public PacketOut getSpawnPacket() {

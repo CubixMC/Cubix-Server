@@ -35,6 +35,12 @@
             <version>4.0.19.Final</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -69,6 +75,7 @@
                                     <include>mysql:mysql-connector-java</include>
                                     <include>org.projectlombok:lombok</include>
                                     <include>io.netty:netty-all</include>
+                                    <include>log4j:log4j</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
