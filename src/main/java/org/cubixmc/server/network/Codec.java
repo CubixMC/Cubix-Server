@@ -3,10 +3,17 @@ package org.cubixmc.server.network;
 import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
+import org.cubixmc.server.nbt.CompoundTag;
+import org.cubixmc.server.nbt.NBTStorage;
 import org.cubixmc.util.Position;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.UUID;
 
 public class Codec {
@@ -81,8 +88,25 @@ public class Codec {
         byteBuf.writeByte(bool ? 1 : 0);
     }
 
+    public void writeCompoundTag(CompoundTag compound) {
+        if(compound == null) {
+            writeByte(0);
+        } else {
+            NBTStorage.writeCompound(compound, new ByteBufOutputStream(byteBuf));
+        }
+    }
+
     public void writeSlot(ItemStack item) {
-        throw new UnsupportedOperationException("Not made yet");
+        if(item.getType() == Material.AIR) {
+            writeShort(-1);
+            return;
+        }
+
+        writeShort(item.getType().getId());
+        writeByte(item.getAmount());
+        writeShort(item.getData());
+        // TODO: Support enchantments
+        writeCompoundTag(null);
     }
 
     public void writePosition(Position position) {
@@ -177,8 +201,29 @@ public class Codec {
         return byteBuf.readUnsignedShort();
     }
 
+    public CompoundTag readCompoundTag() {
+        int index = byteBuf.readerIndex();
+        if(readByte() == 0) {
+            return null;
+        }
+        byteBuf.readerIndex(index);
+        return NBTStorage.readCompound(new ByteBufInputStream(byteBuf));
+    }
+
     public ItemStack readSlot() {
-        throw new UnsupportedOperationException("Not made yet");
+        int id = readShort();
+        if(id < 0) {
+            // Return air
+            return new ItemStack();
+        }
+
+        Material type = Material.getMaterial(id);
+        int amount = readByte();
+        short data = readShort();
+        ItemStack item = new ItemStack(type, amount, data);
+        CompoundTag enchantments = readCompoundTag();
+        // TODO: Apply enchantments
+        return item;
     }
 
     public Position readPosition() {

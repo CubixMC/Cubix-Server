@@ -64,7 +64,7 @@ public class AuthenticationThread implements Runnable {
             PacketOutLoginSuccess success = new PacketOutLoginSuccess();
             success.setUsername(username);
             success.setUUID(uuid.toString());
-            System.out.println(uuid + ": " + name);
+            System.out.println(uuid + ": " + username);
             connection.sendPacket(success, new GenericFutureListener<ChannelFuture>() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
