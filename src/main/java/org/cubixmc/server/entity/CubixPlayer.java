@@ -26,7 +26,7 @@ import java.util.UUID;
 public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
     private final @Getter Connection connection;
-    private final PlayerChunkMap playerChunkMap;
+    private final @Getter PlayerChunkMap playerChunkMap;
     private final UUID uniqueUserId;
     private final String username;
     private GameMode gameMode = GameMode.SURVIVAL;
@@ -69,7 +69,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         connection.sendPackets(join, compass, abilities);
 
         // Send the chunks
-        playerChunkMap.sendAll(4);
+        playerChunkMap.sendAll();
 
         PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
         connection.sendPacket(coords);

@@ -1,6 +1,7 @@
 package org.cubixmc.server;
 
 import com.google.common.collect.Maps;
+import io.netty.util.ResourceLeakDetector;
 import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class CubixServer implements Runnable {
 
     public static void main(String[] args) {
         // TODO: Parse args
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         new CubixServer();
     }
 

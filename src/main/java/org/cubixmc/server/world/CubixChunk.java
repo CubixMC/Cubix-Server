@@ -22,9 +22,9 @@ public class CubixChunk implements Chunk {
      * Size of each is 16 ^ 3 = 4096 blocks
      */
     @Getter
-    private final ChunkSection[] sections = new ChunkSection[16];
+    protected final ChunkSection[] sections = new ChunkSection[16];
     @Getter
-    private int sectionCount; // The amount of non-null sections
+    protected int sectionCount; // The amount of non-null sections
 
     /**
      * The heigh map for maximum block height per x/z coord.
