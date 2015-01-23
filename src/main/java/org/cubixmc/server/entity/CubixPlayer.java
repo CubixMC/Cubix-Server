@@ -14,6 +14,7 @@ import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.*;
+import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
 import org.cubixmc.util.MathHelper;
@@ -57,7 +58,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public boolean spawn(Position position) {
+    public boolean spawn(final Position position) {
         if(!super.spawn(position)) {
             return false;
         }
@@ -68,11 +69,15 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.1F, 0.2F);
         connection.sendPackets(join, compass, abilities);
 
-        // Send the chunks
-        playerChunkMap.sendAll();
-
-        PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
-        connection.sendPacket(coords);
+        // Send the chunks and perform the reast in the world thread
+        Threads.worldExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                playerChunkMap.sendAll();
+                PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
+                connection.sendPacket(coords);
+            }
+        });
         return true;
     }
 
