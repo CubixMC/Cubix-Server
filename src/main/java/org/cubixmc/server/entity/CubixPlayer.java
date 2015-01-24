@@ -1,5 +1,8 @@
 package org.cubixmc.server.entity;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +19,7 @@ import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.server.network.packets.play.PacketOutPlayerListItem.ListAction;
 import org.cubixmc.server.threads.Threads;
+import org.cubixmc.server.util.auth.GameProfile;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
 import org.cubixmc.util.MathHelper;
@@ -30,19 +34,17 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
     private final @Getter Connection connection;
     private final @Getter PlayerChunkMap playerChunkMap;
-    private final UUID uniqueUserId;
-    private final String username;
+    private final @Getter GameProfile profile;
     private GameMode gameMode = GameMode.SURVIVAL;
     
     private @Getter long keepAliveCount;
     private @Getter @Setter int ping;
 
-    public CubixPlayer(CubixWorld world, Connection connection, UUID uuid, String name) {
+    public CubixPlayer(CubixWorld world, Connection connection, GameProfile profile) {
         super(world);
         this.connection = connection;
         this.keepAliveCount = System.currentTimeMillis() + 5000L;
-        this.uniqueUserId = uuid;
-        this.username = name;
+        this.profile = profile;
         this.playerChunkMap = new PlayerChunkMap(this);
     }
 
@@ -104,12 +106,12 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public String getName() {
-        return username;
+        return profile.getName();
     }
 
     @Override
     public UUID getUniqueId() {
-        return uniqueUserId;
+        return profile.getUuid();
     }
 
     @Override
@@ -139,7 +141,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     @Override
     public void chat(String msg) {
         for(Player p : CubixServer.getInstance().getOnlinePlayers()){
-            p.sendMessage(username + " : " + msg);
+            p.sendMessage(getDisplayName() + " : " + msg);
         }
     }
 
@@ -256,7 +258,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     public PacketOut getSpawnPacket() {
         PacketOutSpawnPlayer packet = new PacketOutSpawnPlayer();
         packet.setEntityID(entityId);
-        packet.setPlayerUUID(uniqueUserId);
+        packet.setPlayerUUID(profile.getUuid());
         packet.setCurrentItem((short) 0);
         packet.setX(MathHelper.floor(position.getX() * 32.0));
         packet.setY(MathHelper.floor(position.getY() * 32.0));

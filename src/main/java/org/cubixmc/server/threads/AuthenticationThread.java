@@ -7,6 +7,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.login.PacketOutLoginSuccess;
+import org.cubixmc.server.util.auth.GameProfile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,18 +58,15 @@ public class AuthenticationThread implements Runnable {
             JsonObject object = (JsonObject) parser.parse(reader);
             reader.close();
 
-            String id = object.get("id").getAsString();
-            final String username = object.get("name").getAsString();
-            final UUID uuid = uuid(id);
-
+            final GameProfile profile = new GameProfile(object);
             PacketOutLoginSuccess success = new PacketOutLoginSuccess();
-            success.setUsername(username);
-            success.setUUID(uuid.toString());
-            System.out.println(uuid + ": " + username);
+            success.setUsername(profile.getName());
+            success.setUUID(profile.getUuid().toString());
+            System.out.println(success.getUUID() + ": " + success.getUsername());
             connection.sendPacket(success, new GenericFutureListener<ChannelFuture>() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    connection.play(uuid, username);
+                    connection.play(profile);
                 }
             });
         } catch(GeneralSecurityException e) {
@@ -78,11 +76,5 @@ public class AuthenticationThread implements Runnable {
         }
     }
 
-    private UUID uuid(String id) {
-        return UUID.fromString(id.substring(0, 8) + '-'
-                    + id.substring(8, 12) + '-'
-                    + id.substring(12, 16) + '-'
-                    + id.substring(16, 20) + '-'
-                    + id.substring(20));
-    }
+
 }

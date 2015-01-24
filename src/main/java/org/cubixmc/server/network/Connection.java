@@ -21,6 +21,7 @@ import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.server.util.QueuedChunk;
+import org.cubixmc.server.util.auth.GameProfile;
 import org.cubixmc.server.world.CubixChunk;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
@@ -55,10 +56,10 @@ public class Connection {
         channel.writeAndFlush(packet).addListener(future);
     }
 
-    public void play(UUID uuid, String name) {
+    public void play(GameProfile profile) {
         setPhase(Phase.PLAY);
         CubixWorld world = CubixServer.getInstance().getMainWorld();
-        CubixPlayer player = new CubixPlayer(world, this, uuid, name);
+        CubixPlayer player = new CubixPlayer(world, this, profile);
         player.spawn(new Position(null, 0, 80, 0));
         CubixServer.getInstance().addPlayer(player);
         setPlayer(player);

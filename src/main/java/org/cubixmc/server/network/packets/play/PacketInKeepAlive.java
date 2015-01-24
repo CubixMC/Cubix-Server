@@ -2,9 +2,14 @@ package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
 import org.cubixmc.chat.ChatMessage;
+import org.cubixmc.server.CubixServer;
+import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
+import org.cubixmc.server.network.packets.play.PacketOutPlayerListItem.ListAction;
+
+import java.util.Arrays;
 
 @Getter
 public class PacketInKeepAlive extends PacketIn {
@@ -27,8 +32,11 @@ public class PacketInKeepAlive extends PacketIn {
 //            return;
         }
 
-        connection.sendPacket(new PacketOutChatMessage(ChatMessage.fromString("Your ping is " + ping).toString(), 0));
         connection.getPlayer().setPing((int) ping);
+        PacketOutPlayerListItem packet = new PacketOutPlayerListItem(ListAction.UPDATE_PING, Arrays.asList(connection.getPlayer()));
+        for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
+            player.getConnection().sendPacket(packet);
+        }
     }
 
     @Override

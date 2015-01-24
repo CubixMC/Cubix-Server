@@ -59,8 +59,9 @@ public class CubixChunkProvider {
 
         // Load chunk from file
         Vector2I filePos = new Vector2I(x >> 5, z >> 5);
-        int relX = x < 0 ? 31 + (x % 32) : x % 32;
-        int relZ = z < 0 ? 31 + (z % 32) : z % 32;
+        int relX = rel(x);
+        int relZ = rel(z);
+
         try {
             RegionFile regionFile = regionFileCache.get(filePos);
             CompoundTag chunkData = regionFile.loadChunk(relX, relZ);
@@ -81,6 +82,14 @@ public class CubixChunkProvider {
         }
 
         return chunk;
+    }
+
+    private int rel(int coord) {
+        if(coord < 0) {
+            return 32 + (coord % 32);
+        } else {
+            return coord % 32;
+        }
     }
 
     private static class RegionFileLoader extends CacheLoader<Vector2I, RegionFile> {

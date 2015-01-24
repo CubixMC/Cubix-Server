@@ -1,9 +1,14 @@
 package org.cubixmc.server.network.packets.play;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.Data;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.server.util.auth.GameProfile;
+import org.cubixmc.server.util.auth.Property;
 
 import java.util.Collection;
 
@@ -31,7 +36,20 @@ public class PacketOutPlayerListItem extends PacketOut {
             switch(action) {
                 case ADD_PLAYER:
                     codec.writeString(player.getName());
-                    codec.writeVarInt(0);
+
+                    // Write properties for skin
+                    GameProfile profile = player.getProfile();
+                    Collection<Property> properties = profile.getProperties();
+                    codec.writeVarInt(properties.size());
+                    for(Property property : properties) {
+                        codec.writeString(property.getName());
+                        codec.writeString(property.getValue());
+                        codec.writeBoolean(property.isSigned());
+                        if(property.isSigned()) {
+                            codec.writeString(property.getSignature());
+                        }
+                    }
+
                     codec.writeVarInt(player.getGameMode().ordinal());
                     codec.writeVarInt(player.getPing());
                     codec.writeBoolean(false);
