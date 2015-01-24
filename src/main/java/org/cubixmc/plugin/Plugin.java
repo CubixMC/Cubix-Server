@@ -1,15 +1,14 @@
 package org.cubixmc.plugin;
 
-import com.sun.tools.javac.util.List;
-import lombok.Getter;
 import org.cubixmc.Server;
 
 import java.util.Collection;
+import java.util.List;
 
 public abstract class Plugin {
 
-    private @Getter Server server;
-    private @Getter List<Object> commands;
+    private Server server;
+    private List<Object> commands;
 
     public abstract void onEnable();
     public abstract void onDisable();
@@ -28,7 +27,7 @@ public abstract class Plugin {
     }
 
     public Collection<?> getOnlinePlayers(){
-        return getServer().getOnlinePlayers();
+        return server.getOnlinePlayers();
     }
 
 }

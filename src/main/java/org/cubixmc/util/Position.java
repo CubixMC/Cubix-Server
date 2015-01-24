@@ -2,7 +2,7 @@ package org.cubixmc.util;
 
 import org.cubixmc.world.World;
 
-public class Position {
+public class Position implements Cloneable {
     private final World world;
     private double x;
     private double y;
@@ -69,7 +69,16 @@ public class Position {
         this.pitch = pitch;
     }
 
-    // TODO: Math code
+    public Position subtract(double dx, double dy, double dz) {
+        return add(dx * -1, dy * -1, dz * -1);
+    }
+
+    public Position add(double dx, double dy, double dz) {
+        this.x += dx;
+        this.y += dy;
+        this.z += dz;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -130,5 +139,10 @@ public class Position {
                 ", yaw=" + yaw +
                 ", pitch=" + pitch +
                 '}';
+    }
+
+    @Override
+    public Position clone() {
+        return new Position(world, x, y, z, yaw, pitch);
     }
 }

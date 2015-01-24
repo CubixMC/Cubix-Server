@@ -53,6 +53,14 @@ public class ChatMessage {
         return object.toString();
     }
 
+    public JsonObject getJsonObject() {
+        if(extras.size() > 0 && !object.has("extra")) {
+            object.add("extra", extras);
+        }
+
+        return object;
+    }
+
     public static ChatMessage fromString(String rawMessage) {
         rawMessage = rawMessage.replace("\n", ChatColor.RESET + "\n") + ChatColor.AQUA;
         boolean inMessage = true;
