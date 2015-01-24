@@ -14,6 +14,7 @@ import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.*;
+import org.cubixmc.server.network.packets.play.PacketOutPlayerListItem.ListAction;
 import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
@@ -21,6 +22,7 @@ import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -74,8 +76,23 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
             @Override
             public void run() {
                 playerChunkMap.sendAll();
+
                 PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
                 connection.sendPacket(coords);
+
+                connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
+                for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
+                    if(player.equals(CubixPlayer.this)) {
+                        continue;
+                    }
+
+                    // Spawn players
+                    player.getConnection().sendPacket(getSpawnPacket());
+                    connection.sendPacket(player.getSpawnPacket());
+
+                    // Update list
+                    player.getConnection().sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Arrays.asList(CubixPlayer.this)));
+                }
             }
         });
         return true;
