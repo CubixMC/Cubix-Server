@@ -12,8 +12,6 @@ import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTStorage;
 import org.cubixmc.util.Position;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.util.UUID;
 
 public class Codec {
