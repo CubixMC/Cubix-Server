@@ -1,5 +1,7 @@
 package org.cubixmc;
 
+import org.cubixmc.plugin.Plugin;
+
 /**
  * @author Matthew Hogan
  */
@@ -19,6 +21,7 @@ public enum GameMode {
         for(GameMode mode : values()) {
             if(mode.id == id) {
                 return mode;
+
             }
         }
         return null;
