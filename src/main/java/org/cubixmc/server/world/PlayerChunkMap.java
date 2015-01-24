@@ -29,8 +29,6 @@ public class PlayerChunkMap {
     /**
      * Send all near chunks to the player with as few packets as possible.
      * It checks to see if the size goes above the network limit.
-     *
-     * @param radius of chunks to load
      */
     public void sendAll() {
         int cx = ((int) player.getPosition().getX()) >> 4;
@@ -47,6 +45,7 @@ public class PlayerChunkMap {
                 QueuedChunk queuedChunk = new QueuedChunk(chunk);
                 queuedChunk.build();
                 queuedChunks.add(queuedChunk);
+                chunks.add(chunk.getPosition());
             }
         }
         loadChunkBulk(queuedChunks);

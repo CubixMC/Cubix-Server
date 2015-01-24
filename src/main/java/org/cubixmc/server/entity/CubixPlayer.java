@@ -40,12 +40,17 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     private @Getter long keepAliveCount;
     private @Getter @Setter int ping;
 
+    private String displayName;
+    private String header = "";
+    private String footer = "";
+
     public CubixPlayer(CubixWorld world, Connection connection, GameProfile profile) {
         super(world);
         this.connection = connection;
         this.keepAliveCount = System.currentTimeMillis() + 5000L;
         this.profile = profile;
         this.playerChunkMap = new PlayerChunkMap(this);
+        this.displayName = profile.getName();
     }
 
     public void tick() {
@@ -116,11 +121,12 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public String getDisplayName() {
-        return null;
+        return displayName;
     }
 
     @Override
     public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
@@ -246,12 +252,24 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public void setHeader(String message) {
+        if(message == null) {
+            throw new IllegalArgumentException("The message cannot be null!");
+        }
 
+        message = ChatMessage.fromString(message).toString();
+        PacketOutPlayerListHeaderFooter packet = new PacketOutPlayerListHeaderFooter(this.header = message, footer);
+        connection.sendPacket(packet);
     }
 
     @Override
     public void setFooter(String message) {
+        if(message == null) {
+            throw new IllegalArgumentException("The message cannot be null!");
+        }
 
+        message = ChatMessage.fromString(message).toString();
+        PacketOutPlayerListHeaderFooter packet = new PacketOutPlayerListHeaderFooter(header, this.footer = message);
+        connection.sendPacket(packet);
     }
 
     @Override
