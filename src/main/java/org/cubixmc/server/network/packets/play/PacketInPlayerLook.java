@@ -25,8 +25,6 @@ public class PacketInPlayerLook extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
-        Position position = connection.getPlayer().getPosition();
-        position.setYaw(yaw);
-        position.setPitch(pitch);
+        connection.getPlayer().setRotation(yaw, pitch);
     }
 }

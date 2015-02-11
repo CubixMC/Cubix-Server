@@ -7,9 +7,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
+import org.cubixmc.server.entity.CubixEntity;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
+import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.server.network.packets.play.PacketOutSpawnPlayer;
 import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.ForwardLogHandler;
 import org.cubixmc.server.world.CubixWorld;
@@ -33,6 +36,16 @@ import java.util.logging.Logger;
 public class CubixServer implements Runnable {
     private static @Getter @Setter(AccessLevel.PRIVATE) CubixServer instance;
     private static @Getter @Setter(AccessLevel.PRIVATE) Logger logger;
+
+    public static void broadcast(PacketOut packet, CubixWorld world, CubixEntity exempt) {
+        for(CubixPlayer player : instance.getOnlinePlayers()) {
+            if(player.equals(exempt)) {
+                continue;
+            }
+
+            player.getConnection().sendPacket(packet);
+        }
+    }
 
     public static void main(String[] args) {
         // TODO: Parse args
@@ -85,8 +98,14 @@ public class CubixServer implements Runnable {
             connection.getPacketHandler().execute();
         }
 
-        for(CubixPlayer player : players.values()) {
-            player.tick();
+        // Entity tick (for now just players)
+        for(final CubixPlayer player : players.values()) {
+            Threads.entityExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    player.tick();
+                }
+            });
         }
     }
 

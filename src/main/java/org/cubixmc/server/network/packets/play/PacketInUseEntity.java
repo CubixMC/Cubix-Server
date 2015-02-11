@@ -8,7 +8,7 @@ import org.cubixmc.server.network.packets.PacketIn;
 @Getter
 public class PacketInUseEntity extends PacketIn {
     private int target;
-    private int type;
+    private Interaction type;
     private float targetX;
     private float targetY;
     private float targetZ;
@@ -20,13 +20,21 @@ public class PacketInUseEntity extends PacketIn {
     @Override
     public void decode(Codec codec) {
         this.target = codec.readVarInt();
-        this.type = codec.readVarInt();
-        this.targetX = codec.readFloat();
-        this.targetY = codec.readFloat();
-        this.targetZ = codec.readFloat();
+        this.type = Interaction.values()[codec.readVarInt()];
+        if(type == Interaction.INTERACT_AT) {
+            this.targetX = codec.readFloat();
+            this.targetY = codec.readFloat();
+            this.targetZ = codec.readFloat();
+        }
     }
 
     @Override
     public void handle(Connection connection) {
+    }
+
+    public static enum Interaction {
+        INTERACT,
+        ATTACK,
+        INTERACT_AT
     }
 }

@@ -1,8 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.cubixmc.server.entity.CubixEntity;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.util.MathHelper;
 
 @Data
 public class PacketOutEntityLook extends PacketOut {
@@ -13,6 +15,12 @@ public class PacketOutEntityLook extends PacketOut {
 
     public PacketOutEntityLook() {
         super(0x16);
+    }
+
+    public PacketOutEntityLook(CubixEntity entity) {
+        this(entity.getEntityId(),
+                MathHelper.byteToDegree(entity.getPosition().getYaw()),
+                MathHelper.byteToDegree(entity.getPosition().getPitch()), true);
     }
 
     public PacketOutEntityLook(int entityID, int yaw, int pitch, boolean onGround) {

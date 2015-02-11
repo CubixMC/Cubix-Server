@@ -53,7 +53,21 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         this.displayName = profile.getName();
     }
 
+    @Override
+    public void move(double dx, double dy, double dz) {
+        int cx = MathHelper.floor(position.getX()) >> 4;
+        int cz = MathHelper.floor(position.getZ()) >> 4;
+        super.move(dx, dy, dz);
+        int newX = MathHelper.floor(position.getX()) >> 4;
+        int newZ = MathHelper.floor(position.getZ()) >> 4;
+        if(cx != newX || cz != newZ) {
+            playerChunkMap.movePlayer();
+        }
+    }
+
+    @Override
     public void tick() {
+        super.tick();
         if(keepAliveCount < System.currentTimeMillis() - 5000L) {
             int keepAliveId = random.nextInt(1024);
             while(keepAliveIds.contains(keepAliveId)) {
@@ -68,6 +82,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public boolean spawn(final Position position) {
+        metadata.set(10, (byte) 127);
         if(!super.spawn(position)) {
             return false;
         }
@@ -78,7 +93,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.1F, 0.2F);
         connection.sendPackets(join, compass, abilities);
 
-        // Send the chunks and perform the reast in the world thread
+        // Send the chunks and perform the rest in the world thread
         Threads.worldExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -88,17 +103,15 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
                 connection.sendPacket(coords);
 
                 connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
+                CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Arrays.asList(CubixPlayer.this)), world, CubixPlayer.this);
+                CubixServer.broadcast(CubixPlayer.this.getSpawnPacket(), world, CubixPlayer.this);
                 for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
                     if(player.equals(CubixPlayer.this)) {
                         continue;
                     }
 
                     // Spawn players
-                    player.getConnection().sendPacket(getSpawnPacket());
                     connection.sendPacket(player.getSpawnPacket());
-
-                    // Update list
-                    player.getConnection().sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Arrays.asList(CubixPlayer.this)));
                 }
             }
         });

@@ -32,16 +32,12 @@ public class PacketInPlayerPositionAndLook extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
-        Position position = connection.getPlayer().getPosition();
-        int dx = (MathHelper.floor(x) >> 4) - (MathHelper.floor(position.getX()) >> 4);
-        int dz = (MathHelper.floor(z) >> 4) - (MathHelper.floor(position.getZ()) >> 4);
-        position.setX(x);
-        position.setY(feetY);
-        position.setZ(z);
-        position.setYaw(yaw);
-        position.setPitch(pitch);
-        if(dx != 0 || dz != 0) {
-            connection.getPlayer().getPlayerChunkMap().movePlayer(dx, dz);
-        }
+        // Make the absolute position relative
+        Position pos = connection.getPlayer().getPosition();
+        double dx = x - pos.getX();
+        double dy = feetY - pos.getY();
+        double dz = z - pos.getZ();
+        connection.getPlayer().move(dx, dy, dz);
+        connection.getPlayer().setRotation(yaw, pitch);
     }
 }

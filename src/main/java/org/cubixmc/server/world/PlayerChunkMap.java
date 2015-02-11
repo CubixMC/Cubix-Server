@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class PlayerChunkMap {
     private static final int VIEW_DISTANCE = 4;
-    private static final int SINGLE_CHUNK_LIMIT = 9;
+    private static final int SINGLE_CHUNK_LIMIT = 15;
 
     private final CubixPlayer player;
     private final Set<Vector2I> chunks = Sets.newConcurrentHashSet();
@@ -52,7 +52,7 @@ public class PlayerChunkMap {
         queuedChunks.clear();
     }
 
-    public void movePlayer(int dx, int dz) {
+    public void movePlayer() {
         List<Vector2I> newList = Lists.newArrayList();
         List<QueuedChunk> loadQueue = Lists.newArrayList();
 
@@ -102,7 +102,6 @@ public class PlayerChunkMap {
         List<PacketOutMapChunkBulk> chunkPackets = Lists.newArrayList();
         int bytesLeft = NetManager.NETWORK_LIMIT - 3; // VarInt and bool should fit in 3 bytes
         for(QueuedChunk chunk : chunks) {
-//            chunk.build();
             bytesLeft -= chunk.size();
             if(bytesLeft < 0) {
                 bytesLeft = NetManager.NETWORK_LIMIT - 3 - chunk.size(); // Reset bytes left
