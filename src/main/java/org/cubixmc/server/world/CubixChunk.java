@@ -1,5 +1,6 @@
 package org.cubixmc.server.world;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import lombok.Getter;
 import org.cubixmc.inventory.Material;
@@ -10,6 +11,7 @@ import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.nbt.NBTType;
 import org.cubixmc.server.network.packets.play.PacketOutBlockChange;
 import org.cubixmc.server.network.packets.play.PacketOutChunkData;
+import org.cubixmc.server.network.packets.play.PacketOutMultiBlockChange;
 import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.NibbleArray;
 import org.cubixmc.server.util.QueuedChunk;
@@ -19,6 +21,7 @@ import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.Chunk;
 import org.cubixmc.world.World;
 
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -77,6 +80,19 @@ public class CubixChunk implements Chunk {
                 CubixServer.broadcast(packet, world, null);
             } else if(queuedBlockChanges.size() < 64) {
                 // Send multi block change packet
+                List<int[]> blocks = Lists.newArrayList();
+                while(queuedBlockChanges.size() > 0) {
+                    Vector3I pos = queuedBlockChanges.poll();
+                    int x = pos.getX() % 16;
+                    int z = pos.getZ() % 16;
+                    int[] data = new int[3];
+                    data[0] = x << 4 & 0xFF | z & 0xF;
+                    data[1] = pos.getY();
+                    data[2] = getType(x, pos.getY(), z).getId() << 4 | getData(x, pos.getY(), z);
+                    blocks.add(data);
+                }
+                PacketOutMultiBlockChange packet = new PacketOutMultiBlockChange(getPosition(), blocks);
+                CubixServer.broadcast(packet, world, null);
             } else {
                 // Resend chunk
                 final QueuedChunk queuedChunk = new QueuedChunk(this);
