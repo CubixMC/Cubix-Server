@@ -1,18 +1,16 @@
 package org.cubixmc.server.world;
 
 import org.cubixmc.entity.Entity;
+import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.util.Position;
-import org.cubixmc.util.Vector2I;
-import org.cubixmc.world.Chunk;
+import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.World;
 
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class CubixWorld implements World {
@@ -26,6 +24,13 @@ public class CubixWorld implements World {
 
     public File getWorldFolder() {
         return new File(name);
+    }
+
+    public void tick() {
+        // Update chunk blocks
+        for(final CubixChunk chunk : chunkProvider.getLoadedChunks()) {
+            chunk.tick();
+        }
     }
 
     public boolean load() {
@@ -79,5 +84,23 @@ public class CubixWorld implements World {
      */
     public CubixChunk getChunk(int x, int z) {
         return chunkProvider.getChunk(x, z, true, true);
+    }
+
+    public CubixBlock getBlock(Position pos) {
+        return getBlock(new Vector3I(pos));
+    }
+
+    public CubixBlock getBlock(Vector3I pos) {
+        return getBlock(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public CubixBlock getBlock(int x, int y, int z) {
+        return new CubixBlock(this, x, y, z);
+    }
+
+    public void breakNaturally(int x, int y, int z) {
+        CubixBlock block = new CubixBlock(this, x, y, z);
+        block.setType(Material.AIR);
+        // TODO: Drop item
     }
 }

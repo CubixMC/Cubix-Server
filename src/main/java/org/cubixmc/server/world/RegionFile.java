@@ -20,6 +20,11 @@ import java.util.zip.InflaterInputStream;
  * 4096 - 8192: Chunk timestamps
  * 8192 - ????: Chunk sectors
  *
+ * Chunk offset bits:
+ * 0    - 24: Position (24bit)
+ * 24   - 32: Length (8bit)
+ *
+ * Timestamp is current time millis divided by 1000, so the current time in seconds.
  * More sectors get added as it needs them along the way, to ensure storage efficiency.
  */
 public class RegionFile {
@@ -30,7 +35,7 @@ public class RegionFile {
     /**
      * A cached empty sector to write out
      */
-    private static final byte[] EMPTRY_SECTOR = new byte[SECTOR_LENGTH];
+    private static final byte[] EMPTY_SECTOR = new byte[SECTOR_LENGTH];
 
     private final File file;
     /**
@@ -220,9 +225,9 @@ public class RegionFile {
                 if(end >= sectorCount) {
                     // File is too small, grow the file.
                     raf.seek(raf.length());
-                    for(int i = start; i < (start + end); i++) {
+                    for(int i = sectorCount; i < end; i++) {
                         this.sectorCount += 1;
-                        raf.write(EMPTRY_SECTOR);
+                        raf.write(EMPTY_SECTOR);
                     }
                 }
 

@@ -39,7 +39,7 @@ public class CubixServer implements Runnable {
 
     public static void broadcast(PacketOut packet, CubixWorld world, CubixEntity exempt) {
         for(CubixPlayer player : instance.getOnlinePlayers()) {
-            if(player.equals(exempt)) {
+            if(exempt != null && player.equals(exempt)) {
                 continue;
             }
 

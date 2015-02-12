@@ -1,5 +1,6 @@
 package org.cubixmc.server.world;
 
+import com.google.common.collect.Queues;
 import lombok.Getter;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
@@ -7,11 +8,20 @@ import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.ListTag;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.nbt.NBTType;
+import org.cubixmc.server.network.packets.play.PacketOutBlockChange;
+import org.cubixmc.server.network.packets.play.PacketOutChunkData;
+import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.NibbleArray;
+import org.cubixmc.server.util.QueuedChunk;
+import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector2I;
+import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.Chunk;
 import org.cubixmc.world.World;
 
+import java.util.Queue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
 
 public class CubixChunk implements Chunk {
@@ -30,6 +40,10 @@ public class CubixChunk implements Chunk {
      * The heigh map for maximum block height per x/z coord.
      */
     private final int[] heightMap = new int[256];
+    /**
+     * Block change queue
+     */
+    private LinkedBlockingDeque<Vector3I> queuedBlockChanges = Queues.newLinkedBlockingDeque(64);
 
     /**
      * Information on chunk population.
@@ -46,6 +60,36 @@ public class CubixChunk implements Chunk {
         this.world = world;
         this.x = x;
         this.z = z;
+    }
+
+    public void queueBlockChange(Vector3I pos) {
+        queuedBlockChanges.offer(pos);
+    }
+
+    public void tick() {
+        if(queuedBlockChanges.size() > 0) {
+            if(queuedBlockChanges.size() == 1) {
+                Vector3I pos = queuedBlockChanges.poll();
+                Material type = getType(pos.getX() % 16, pos.getY(), pos.getZ() % 16);
+                byte data = getData(pos.getX() % 16, pos.getY(), pos.getZ() % 16);
+                int blockId = type.getId() << 4 | data;
+                PacketOutBlockChange packet = new PacketOutBlockChange(new Position(world, pos.getX(), pos.getY(), pos.getZ()), blockId);
+                CubixServer.broadcast(packet, world, null);
+            } else if(queuedBlockChanges.size() < 64) {
+                // Send multi block change packet
+            } else {
+                // Resend chunk
+                final QueuedChunk queuedChunk = new QueuedChunk(this);
+                Threads.worldExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        queuedChunk.build();
+                        CubixServer.broadcast(new PacketOutChunkData(queuedChunk), world, null);
+                    }
+                });
+                queuedBlockChanges.clear();
+            }
+        }
     }
 
     public boolean load(CompoundTag data) throws NBTException {

@@ -8,9 +8,11 @@ import com.google.common.collect.Queues;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTException;
+import org.cubixmc.server.util.EmptyChunk;
 import org.cubixmc.util.Vector2I;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
@@ -47,6 +49,9 @@ public class CubixChunkProvider {
                 .softValues().build(regionFileLoader);
     }
 
+    public Collection<CubixChunk> getLoadedChunks() {
+        return chunkMap.values();
+    }
 
     public CubixChunk getChunk(int x, int z, boolean load, boolean generate) {
         Vector2I position = new Vector2I(x, z);
@@ -72,10 +77,12 @@ public class CubixChunkProvider {
                     chunk.load(chunkData);
                 } catch(NBTException e) {
                     CubixServer.getLogger().log(Level.WARNING, "Corrupted chunk data for " + chunk.toString());
-                    chunk = null;
+                    chunk = new EmptyChunk(world, x, z);
                 }
             } else if(generate) {
                 // TODO: Generate chunk
+            } else {
+                chunk = new EmptyChunk(world, x, z);
             }
         } catch(ExecutionException e) {
             CubixServer.getLogger().log(Level.WARNING, "Failed to load region file", e);
