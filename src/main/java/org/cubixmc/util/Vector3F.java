@@ -15,6 +15,20 @@ public class Vector3F {
     }
 
     /**
+     * Construct the vector with all components as 0.
+     */
+    public Vector3F(Position position) {
+        this(position.getX(), position.getY(), position.getZ());
+    }
+
+    /**
+     * Construct the vector with all components as 0.
+     */
+    public Vector3F(double x, double y, double z) {
+        this((float) x, (float) y, (float) z);
+    }
+
+    /**
      * Construct the vector with provided float components.
      *
      * @param x X component

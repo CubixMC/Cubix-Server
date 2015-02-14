@@ -10,7 +10,6 @@ public class Position implements Cloneable {
 
     private float yaw;
     private float pitch;
-    private Position position;
 
     public Position(World world, double x, double y, double z) {
         this(world, x, y, z, 0F, 0F);
@@ -97,10 +96,22 @@ public class Position implements Cloneable {
         return true;
     }
 
+    /**
+     * The real distance between this point and a desired target.
+     *
+     * @param pos The target
+     * @return The real distance in blocks between the two points
+     */
     public double distance(Position pos) {
         return Math.sqrt(distanceSquared(pos));
     }
 
+    /**
+     * Get the squared distance between this point and a desired target.
+     *
+     * @param pos The target
+     * @return The distance to the power of 2
+     */
     public double distanceSquared(Position pos) {
         double x2 = pos.getX();
         double y2 = pos.getY();
@@ -111,6 +122,51 @@ public class Position implements Cloneable {
         double deltaZ = z2 - z;
 
         return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+    }
+
+    /**
+     * Get a Vector3I for this position.
+     *
+     * @return A vector with x, y and z as integers
+     */
+    public Vector3I toVector3I() {
+        return new Vector3I(this);
+    }
+
+    /**
+     * Get a Vector2I for this position.
+     *
+     * @return A vector with x and z as integers
+     */
+    public Vector2I toVector2I() {
+        return new Vector2I(this);
+    }
+
+    /**
+     * Get a Vector3F for this position.
+     *
+     * @return A vector with x, y and z as floats
+     */
+    public Vector3F toVector3F() {
+        return new Vector3F(this);
+    }
+
+    /**
+     * Get a Vector3D for this position.
+     *
+     * @return A vector with x, y, and z as doubles
+     */
+    public Vector3D toVector3D() {
+        return new Vector3D(this);
+    }
+
+    /**
+     * Get a Vector2I representing the chunk coordinates of this position.
+     *
+     * @return The chunk coordinates of this position
+     */
+    public Vector2I getChunkCoords() {
+        return new Vector2I(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4);
     }
 
     @Override

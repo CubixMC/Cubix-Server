@@ -15,6 +15,13 @@ public class Vector3D {
     }
 
     /**
+     * Construct the vector with all components as 0.
+     */
+    public Vector3D(Position position) {
+        this(position.getX(), position.getY(), position.getZ());
+    }
+
+    /**
      * Construct the vector with provided double components.
      *
      * @param x X component

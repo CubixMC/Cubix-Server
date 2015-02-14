@@ -6,188 +6,188 @@ public enum Material {
      * solid = destroyed by water, opaque = light, block placable
      */
     AIR(0, false, false, true),
-    STONE(1, true, true, true),
-    GRASS(2, true, true, true),
-    DIRT(3, true, true, true),
-    COBBLESTONE(4, true, true, true),
-    WOOD(5, true, true, true),
-    SAPLING(6, false, false, true),
+    STONE(1, true, true, true, 4),
+    GRASS(2, true, true, true, 3),
+    DIRT(3, true, true, true, 3),
+    COBBLESTONE(4, true, true, true, 4),
+    WOOD(5, true, true, true, 5),
+    SAPLING(6, false, false, true, 6),
     BEDROCK(7, true, true, true),
     WATER(8, true, false, true),
     STATIONARY_WATER(9, false, false, true),
     LAVA(10, false, true, true),
     STATIONARY_LAVA(11, true, true, true),
-    SAND(12, true, true, true),
-    GRAVEL(13, true, true, true),
-    GOLD_ORE(14, true, true, true),
-    IRON_ORE(15, true, true, true),
-    COAL_ORE(16, true, true, true),
-    LOG(17, true, true, true),
-    LEAVES(18, true, false, true),
-    SPONGE(19, true, true, true),
+    SAND(12, true, true, true, 12),
+    GRAVEL(13, true, true, true, 13), // Special case of flint drop handled elsewhere
+    GOLD_ORE(14, true, true, true, 14),
+    IRON_ORE(15, true, true, true, 15),
+    COAL_ORE(16, true, true, true, 16),
+    LOG(17, true, true, true, 17),
+    LEAVES(18, true, false, true), // Special case of shears used handled elsewhere
+    SPONGE(19, true, true, true, 19),
     GLASS(20, true, false, true),
-    LAPIS_ORE(21, true, true, true),
-    LAPIS_BLOCK(22, true, true, true),
-    DISPENSER(23, true, true, true),
-    SANDSTONE(24, true, true, true),
-    NOTE_BLOCK(25, true, true, true),
-    BED_BLOCK(26, true, true, true),
-    POWERED_RAIL(27, false, false, true),
-    DETECTOR_RAIL(28, false, false, true),
-    PISTON_STICKY_BASE(29, true, true, true),
-    WEB(30, true, false, true),
-    LONG_GRASS(31, false, false, true),
+    LAPIS_ORE(21, true, true, true, 21),
+    LAPIS_BLOCK(22, true, true, true, 22),
+    DISPENSER(23, true, true, true, 23),
+    SANDSTONE(24, true, true, true, 24),
+    NOTE_BLOCK(25, true, true, true, 25),
+    BED_BLOCK(26, true, true, true, 26),
+    POWERED_RAIL(27, false, false, true, 27),
+    DETECTOR_RAIL(28, false, false, true, 28),
+    PISTON_STICKY_BASE(29, true, true, true, 29),
+    WEB(30, true, false, true, 30),
+    LONG_GRASS(31, false, false, true), // Special case of seeds handles elsewhere
     DEAD_BUSH(32, false, false, true),
-    PISTON_BASE(33, true, true, true),
+    PISTON_BASE(33, true, true, true, 33),
     PISTON_EXTENSION(34, true, false, true),
-    WOOL(35, true, true, true),
+    WOOL(35, true, true, true, 35),
     PISTON_MOVING_PIECE(36, true, false, true),
-    YELLOW_FLOWER(37, false, false, true),
-    RED_ROSE(38, false, false, true),
-    BROWN_MUSHROOM(39, false, false, true),
-    RED_MUSHROOM(40, false, false, true),
-    GOLD_BLOCK(41, true, true, true),
-    IRON_BLOCK(42),
-    DOUBLE_STEP(43, true, true, true),
-    STEP(44, true, false, true),
-    BRICK(45, true, true, true),
-    TNT(46, true, true, true),
-    BOOKSHELF(47, true, true, true),
-    MOSSY_COBBLESTONE(48, true, true, true),
-    OBSIDIAN(49, true, true, true),
-    TORCH(50, false, false, true),
+    YELLOW_FLOWER(37, false, false, true, 37),
+    RED_ROSE(38, false, false, true, 38),
+    BROWN_MUSHROOM(39, false, false, true, 39),
+    RED_MUSHROOM(40, false, false, true, 40),
+    GOLD_BLOCK(41, true, true, true, 41),
+    IRON_BLOCK(42, true, true, true, 42),
+    DOUBLE_STEP(43, true, true, true, 44, 2),
+    STEP(44, true, false, true, 44),
+    BRICK(45, true, true, true, 45),
+    TNT(46, true, true, true, 46),
+    BOOKSHELF(47, true, true, true, 340, 1, 3),
+    MOSSY_COBBLESTONE(48, true, true, true, 48),
+    OBSIDIAN(49, true, true, true, 49),
+    TORCH(50, false, false, true, 50),
     FIRE(51, false, false, true),
     MOB_SPAWNER(52, true, true, true),
-    WOOD_STAIRS(53, true, false, true),
-    CHEST(54, true, false, true),
-    REDSTONE_WIRE(55, false, false, true),
-    DIAMOND_ORE(56, true, true, true),
-    DIAMOND_BLOCK(57, true, true, true),
-    WORKBENCH(58, true, true, true),
-    CROPS(59, false, false, true),
-    SOIL(60, true, true, true),
-    FURNACE(61, true, true, true),
-    BURNING_FURNACE(62, true, true, true),
-    SIGN_POST(63, true, false, true),
-    WOODEN_DOOR(64, true, false, true),
-    LADDER(65, true, false, true),
-    RAILS(66, false, false, true),
-    COBBLESTONE_STAIRS(67, true, false, true),
-    WALL_SIGN(68, true, false, true),
-    LEVER(69, false, false, true),
-    STONE_PLATE(70, true, false, true),
-    IRON_DOOR_BLOCK(71, true, false, true),
-    WOOD_PLATE(72, true, false, true),
-    REDSTONE_ORE(73, true, true, true),
+    WOOD_STAIRS(53, true, false, true, 53),
+    CHEST(54, true, false, true, 54),
+    REDSTONE_WIRE(55, false, false, true, 55),
+    DIAMOND_ORE(56, true, true, true, 56),
+    DIAMOND_BLOCK(57, true, true, true, 57),
+    WORKBENCH(58, true, true, true, 58),
+    CROPS(59, false, false, true, 295, 1),
+    SOIL(60, true, true, true, 3),
+    FURNACE(61, true, true, true, 61),
+    BURNING_FURNACE(62, true, true, true, 61),
+    SIGN_POST(63, true, false, true, 323),
+    WOODEN_DOOR(64, true, false, true, 64),
+    LADDER(65, true, false, true, 65),
+    RAILS(66, false, false, true, 66),
+    COBBLESTONE_STAIRS(67, true, false, true, 67),
+    WALL_SIGN(68, true, false, true, 323),
+    LEVER(69, false, false, true, 69),
+    STONE_PLATE(70, true, false, true, 70),
+    IRON_DOOR_BLOCK(71, true, false, true, 330),
+    WOOD_PLATE(72, true, false, true, 72),
+    REDSTONE_ORE(73, true, true, true, 331, 3, 5), // IDK if its rly 3-5
     GLOWING_REDSTONE_ORE(74, true, true, true),
-    REDSTONE_TORCH_OFF(75, false, false, true),
-    REDSTONE_TORCH_ON(76, false, false, true),
-    STONE_BUTTON(77, false, false, true),
-    SNOW(78, true, true, true),
+    REDSTONE_TORCH_OFF(75, false, false, true, 75),
+    REDSTONE_TORCH_ON(76, false, false, true, 75),
+    STONE_BUTTON(77, false, false, true, 77),
+    SNOW(78, true, true, true, 332, 1, 5), // IDK if its rly 1-5
     ICE(79, true, false, true),
-    SNOW_BLOCK(80, true, true, true),
-    CACTUS(81, true, false, true),
-    CLAY(82, true, true, true),
-    SUGAR_CANE_BLOCK(83, true, false, true),
-    JUKEBOX(84, true, true, true),
-    FENCE(85, true, false, true),
-    PUMPKIN(86, true, true, true),
-    NETHERRACK(87, true, true, true),
-    SOUL_SAND(88, true, true, true),
-    GLOWSTONE(89, true, true, true),
+    SNOW_BLOCK(80, true, true, true, 332, 8), // Still dont know if its true
+    CACTUS(81, true, false, true, 81),
+    CLAY(82, true, true, true, 337, 1, 3), // 1-3 not sure either
+    SUGAR_CANE_BLOCK(83, true, false, true, 338, 3), // 3 not sure
+    JUKEBOX(84, true, true, true, 84),
+    FENCE(85, true, false, true, 85),
+    PUMPKIN(86, true, true, true, 86),
+    NETHERRACK(87, true, true, true, 87),
+    SOUL_SAND(88, true, true, true, 88),
+    GLOWSTONE(89, true, true, true, 348, 1, 4), // IDK again
     PORTAL(90, true, false, true),
-    JACK_O_LANTERN(91, true, true, true),
+    JACK_O_LANTERN(91, true, true, true, 91),
     CAKE_BLOCK(92, true, false, true),
-    REPEATER_BLOCK_OFF(93, false, false, true),
-    REPEATER_BLOCK_ON(94, false, false, true),
+    REPEATER_BLOCK_OFF(93, false, false, true, 93),
+    REPEATER_BLOCK_ON(94, false, false, true, 93),
     STAINED_GLASS(95, true, false, true),
-    TRAP_DOOR(96, true, false, true),
+    TRAP_DOOR(96, true, false, true, 96),
     MONSTER_EGGS(97),
-    SMOOTH_BRICK(98, true, true, true),
+    SMOOTH_BRICK(98, true, true, true, 98),
     HUGE_MUSHROOM_1(99, true, true, true),
     HUGE_MUSHROOM_2(100, true, true, true),
-    IRON_FENCE(101, true, false, true),
+    IRON_FENCE(101, true, false, true, 101),
     THIN_GLASS(102, true, false, true),
-    MELON_BLOCK(103, true, true, true),
-    PUMPKIN_STEM(104, false, false, true),
-    MELON_STEM(105, false, false, true),
+    MELON_BLOCK(103, true, true, true, 360, 1, 4), // 1-4 not sure
+    PUMPKIN_STEM(104, false, false, true, 361),
+    MELON_STEM(105, false, false, true, 362),
     VINE(106, false, false, true),
-    FENCE_GATE(107, true, false, true),
-    BRICK_STAIRS(108, true, false, true),
-    SMOOTH_STAIRS(109, true, false, true),
-    MYCEL(110, true, true, true),
-    WATER_LILY(111, true, false, true),
-    NETHER_BRICK(112, true, true, true),
-    NETHER_FENCE(113, true, false, true),
-    NETHER_BRICK_STAIRS(114, true, false, true),
-    NETHER_WARTS(115, false, false, true),
-    ENCHANTMENT_TABLE(116, true, false, true),
-    BREWING_STAND(117, true, false, true),
-    CAULDRON(118, true, false, true),
+    FENCE_GATE(107, true, false, true, 107),
+    BRICK_STAIRS(108, true, false, true, 108),
+    SMOOTH_STAIRS(109, true, false, true, 109),
+    MYCEL(110, true, true, true, 3),
+    WATER_LILY(111, true, false, true, 111),
+    NETHER_BRICK(112, true, true, true, 112),
+    NETHER_FENCE(113, true, false, true, 113),
+    NETHER_BRICK_STAIRS(114, true, false, true, 114),
+    NETHER_WARTS(115, false, false, true, 115, 1, 3), // 1-3 not sure
+    ENCHANTMENT_TABLE(116, true, false, true, 116),
+    BREWING_STAND(117, true, false, true, 117),
+    CAULDRON(118, true, false, true, 118),
     ENDER_PORTAL(119, true, false, true),
     ENDER_PORTAL_FRAME(120, true, false, true),
-    ENDER_STONE(121, true, true, true),
+    ENDER_STONE(121, true, true, true, 121),
     DRAGON_EGG(122, true, false, true),
-    REDSTONE_LAMP_OFF(123, true, true, true),
-    REDSTONE_LAMP_ON(124, true, true, true),
-    WOOD_DOUBLE_STEP(125, true, true, true),
-    WOOD_STEP(126, true, false, true),
-    COCOA(127, false, false, true),
-    SANDSTONE_STAIRS(128, true, false, true),
-    EMERALD_ORE(129, true, true, true),
-    ENDER_CHEST(130, true, false, true),
-    TRIPWIRE_HOOK(131, false, false, true),
-    TRIPWIRE(132, false, false, true),
-    EMERALD_BLOCK(133, true, true, true),
-    SPRUCE_WOOD_STAIRS(134, true, false, true),
-    BIRCH_WOOD_STAIRS(135, true, false, true),
-    JUNGLE_WOOD_STAIRS(136, true, false, true),
+    REDSTONE_LAMP_OFF(123, true, true, true, 123),
+    REDSTONE_LAMP_ON(124, true, true, true, 123),
+    WOOD_DOUBLE_STEP(125, true, true, true, 126, 2),
+    WOOD_STEP(126, true, false, true, 126),
+    COCOA(127, false, false, true, 127),
+    SANDSTONE_STAIRS(128, true, false, true, 128),
+    EMERALD_ORE(129, true, true, true, 338),
+    ENDER_CHEST(130, true, false, true, 130),
+    TRIPWIRE_HOOK(131, false, false, true, 131),
+    TRIPWIRE(132, false, false, true, 287),
+    EMERALD_BLOCK(133, true, true, true, 133),
+    SPRUCE_WOOD_STAIRS(134, true, false, true, 134),
+    BIRCH_WOOD_STAIRS(135, true, false, true, 135),
+    JUNGLE_WOOD_STAIRS(136, true, false, true, 136),
     COMMAND(137, true, true, true),
-    BEACON(138, true, false, true),
-    COBBLE_WALL(139, true, false, true),
-    FLOWER_POT(140, false, false, true),
-    CARROT(141, false, false, true),
-    POTATO(142, false, false, true),
-    WOOD_BUTTON(143, false, false, true),
-    SKULL(144, true, false, true),
-    ANVIL(145, true, false, true),
-    TRAPPED_CHEST(146, true, false, true),
-    GOLD_PLATE(147, true, false, true),
-    IRON_PLATE(148, true, false, true),
-    REDSTONE_COMPARATOR_OFF(149, false, false, true),
-    REDSTONE_COMPARATOR_ON(150, false, false, true),
-    DAYLIGHT_DETECTOR(151, true, true, true),
-    REDSTONE_BLOCK(152, true, true, true),
-    QUARTZ_ORE(153, true, true, true),
-    HOPPER(154, true, true, true),
-    QUARTZ_BLOCK(155, true, true, true),
-    QUARTZ_STAIRS(156, true, false, true),
-    ACTIVATOR_RAIL(157, false, false, true),
-    DROPPER(158, true, true, true),
-    STAINED_CLAY(159, true, true, true),
+    BEACON(138, true, false, true, 138),
+    COBBLE_WALL(139, true, false, true, 139),
+    FLOWER_POT(140, false, false, true, 140),
+    CARROT(141, false, false, true, 391),
+    POTATO(142, false, false, true, 392),
+    WOOD_BUTTON(143, false, false, true, 143),
+    SKULL(144, true, false, true, 397),
+    ANVIL(145, true, false, true, 145),
+    TRAPPED_CHEST(146, true, false, true, 146),
+    GOLD_PLATE(147, true, false, true, 147),
+    IRON_PLATE(148, true, false, true, 148),
+    REDSTONE_COMPARATOR_OFF(149, false, false, true, 149),
+    REDSTONE_COMPARATOR_ON(150, false, false, true, 149),
+    DAYLIGHT_DETECTOR(151, true, true, true, 151),
+    REDSTONE_BLOCK(152, true, true, true, 152),
+    QUARTZ_ORE(153, true, true, true, 406, 1, 3), // 1-3 not sure
+    HOPPER(154, true, true, true, 154),
+    QUARTZ_BLOCK(155, true, true, true, 155),
+    QUARTZ_STAIRS(156, true, false, true, 156),
+    ACTIVATOR_RAIL(157, false, false, true, 157),
+    DROPPER(158, true, true, true, 158),
+    STAINED_CLAY(159, true, true, true, 159),
     STAINED_GLASS_PANE(160, true, false, true),
     LEAVES_2(161, true, false, true),
-    LOG_2(162, true, true, true),
-    ACACIA_STAIRS(163, true, false, true),
-    DARK_OAK_STAIRS(164, true, false, true),
-    SLIME_BLOCK(165, true, false, true),
+    LOG_2(162, true, true, true, 162),
+    ACACIA_STAIRS(163, true, false, true, 163),
+    DARK_OAK_STAIRS(164, true, false, true, 164),
+    SLIME_BLOCK(165, true, false, true, 165),
     BARRIER(166, true, false, true),
-    IRON_TRAPDOOR(167, true, false, true),
-    PRISMARINE(168, true, true, true),
-    SEA_LANTERN(169),
-    HAY_BLOCK(170, true, true, true),
-    CARPET(171, false, false, true),
-    HARD_CLAY(172, true, true, true),
-    COAL_BLOCK(173, true, true, true),
+    IRON_TRAPDOOR(167, true, false, true, 167),
+    PRISMARINE(168, true, true, true, 168),
+    SEA_LANTERN(169, 196),
+    HAY_BLOCK(170, true, true, true, 170),
+    CARPET(171, false, false, true, 171),
+    HARD_CLAY(172, true, true, true, 172),
+    COAL_BLOCK(173, true, true, true, 173),
     PACKED_ICE(174, true, true, true),
     DOUBLE_PLANT(175, false, false, true),
-    STANDING_BANNER(176, false, false, true),
-    WALL_BANNER(177, false, false, true),
-    INVERT_DAYLIGHT_SENSOR(178, true, false, true),
-    RED_SANDSTONE(179, true, true, true),
-    RED_SANDSTONE_STAIR(180, true, false, true),
-    RED_SANDSTONE_DOUBLESLAB(181, true, false, true),
-    RED_SANDSTONE_SLAB(182, true, false, true),
+    STANDING_BANNER(176, false, false, true, 425),
+    WALL_BANNER(177, false, false, true, 425),
+    INVERT_DAYLIGHT_SENSOR(178, true, false, true, 178),
+    RED_SANDSTONE(179, true, true, true, 197),
+    RED_SANDSTONE_STAIR(180, true, false, true, 180),
+    RED_SANDSTONE_DOUBLESLAB(181, true, false, true, 182, 2),
+    RED_SANDSTONE_SLAB(182, true, false, true, 182),
 
     // ----- Item Separator -----
     IRON_SPADE(256),
@@ -379,21 +379,49 @@ public enum Material {
     RECORD_11(2266),
     RECORD_12(2267),;
 
-    private final int id;
+    private final int id, minDropped, maxDropped;
     private final boolean solid, opaque, block;
+    private final int droppedType;
+
+    private Material(int id) {
+        this(id, 0);
+    }
+
+    private Material(int id, int drop) {
+        this(id, drop, 1);
+    }
+
+    private Material(int id, int drop, int amount) {
+        this(id, drop, amount, amount);
+    }
+
+    private Material(int id, int drop, int min, int max) {
+        this(id, false, false, false, drop, min, max);
+    }
 
     /**
      * solid = placable, opaque = light, block placable
      */
     private Material(int id, boolean solid, boolean opaque, boolean block) {
+        this(id, solid, opaque, block, 0);
+    }
+
+    private Material(int id, boolean solid, boolean opaque, boolean block, int drop) {
+        this(id, solid, opaque, block, drop, 1);
+    }
+
+    private Material(int id, boolean solid, boolean opaque, boolean block, int drop, int amount) {
+        this(id, solid, opaque, block, drop, amount, amount);
+    }
+
+    private Material(int id, boolean solid, boolean opaque, boolean block, int drop, int min, int max) {
         this.id = id;
         this.solid = solid;
         this.opaque = opaque;
         this.block = block;
-    }
-
-    private Material(int id) {
-        this(id, false, false, false);
+        this.minDropped = min;
+        this.maxDropped = max;
+        this.droppedType = drop;
     }
 
     public static Material getMaterial(int id) {
@@ -418,6 +446,18 @@ public enum Material {
 
     public int getId() {
         return id;
+    }
+
+    public int getMinDropped() {
+        return minDropped;
+    }
+
+    public int getMaxDropped() {
+        return maxDropped;
+    }
+
+    public Material getDroppedType() {
+        return getMaterial(droppedType);
     }
 
     /**
