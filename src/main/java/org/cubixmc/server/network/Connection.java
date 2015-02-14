@@ -124,8 +124,4 @@ public class Connection {
     public void disableEncryption() {
         channel.pipeline().replace("encryption", "encryption", DummyHandler.INSTANCE);
     }
-
-    private void spawnPlayer(Connection connection, CubixPlayer player) {
-        connection.sendPacket(player.getSpawnPacket());
-    }
 }

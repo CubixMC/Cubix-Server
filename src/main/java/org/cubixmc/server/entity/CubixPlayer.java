@@ -1,5 +1,6 @@
 package org.cubixmc.server.entity;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -26,9 +27,7 @@ import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
 
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
@@ -104,14 +103,14 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
                 connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
                 CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Arrays.asList(CubixPlayer.this)), world, CubixPlayer.this);
-                CubixServer.broadcast(CubixPlayer.this.getSpawnPacket(), world, CubixPlayer.this);
+                CubixServer.broadcast(CubixPlayer.this.getSpawnPackets().get(0), world, CubixPlayer.this);
                 for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
                     if(player.equals(CubixPlayer.this)) {
                         continue;
                     }
 
                     // Spawn players
-                    connection.sendPacket(player.getSpawnPacket());
+                    connection.sendPacket(player.getSpawnPackets().get(0));
                 }
             }
         });
@@ -286,7 +285,8 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public PacketOut getSpawnPacket() {
+    public List<PacketOut> getSpawnPackets() {
+        List<PacketOut> list = Lists.newArrayList();
         PacketOutSpawnPlayer packet = new PacketOutSpawnPlayer();
         packet.setEntityID(entityId);
         packet.setPlayerUUID(profile.getUuid());
@@ -297,6 +297,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         packet.setYaw(MathHelper.byteToDegree(position.getYaw()));
         packet.setPitch(MathHelper.byteToDegree(position.getPitch()));
         packet.setMetadata(metadata);
-        return packet;
+        list.add(packet);
+        return list;
     }
 }

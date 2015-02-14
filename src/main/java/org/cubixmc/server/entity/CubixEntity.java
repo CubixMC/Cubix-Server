@@ -13,6 +13,7 @@ import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3I;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -50,6 +51,12 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         this.position = position;
         movement.reset(position);
         metadata.set(0, (byte) 0);
+        if(!(this instanceof CubixPlayer)) {
+            for(PacketOut packet : getSpawnPackets()) {
+                CubixServer.broadcast(packet, world, null);
+            }
+        }
+
         return true;
     }
 
@@ -138,5 +145,5 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         return teleport(target.getPosition(), cause);
     }
 
-    public abstract PacketOut getSpawnPacket();
+    public abstract List<PacketOut> getSpawnPackets();
 }

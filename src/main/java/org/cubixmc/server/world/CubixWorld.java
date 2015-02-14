@@ -1,8 +1,10 @@
 package org.cubixmc.server.world;
 
 import org.cubixmc.entity.Entity;
+import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
+import org.cubixmc.server.entity.other.CubixDroppedItem;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.util.EmptyChunk;
 import org.cubixmc.util.Position;
@@ -11,6 +13,7 @@ import org.cubixmc.world.World;
 
 import java.io.*;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -18,6 +21,7 @@ public class CubixWorld implements World {
     private final String name;
     private CubixWorldData worldData;
     private CubixChunkProvider chunkProvider;
+    private final Random random = new Random();
 
     public CubixWorld(String name) {
         this.name = name;
@@ -109,7 +113,17 @@ public class CubixWorld implements World {
 
     public void breakNaturally(int x, int y, int z) {
         CubixBlock block = new CubixBlock(this, x, y, z);
+        Material type = block.getType();
+        short data = block.getData();
         block.setType(Material.AIR);
-        // TODO: Drop item
+        Material drop = type.getDroppedType();
+        if(drop != null && drop != Material.AIR) {
+            int amount = type.getMinDropped() + (type.getMaxDropped() > type.getMinDropped() ? random.nextInt(type.getMaxDropped() - type.getMinDropped()) : 0);
+            ItemStack itemStack = new ItemStack(drop, amount, drop == type ? data : 0);
+            if(amount > 0) {
+                CubixDroppedItem droppedItem = new CubixDroppedItem(this, itemStack);
+                droppedItem.spawn(new Position(this, block.getX(), block.getY(), block.getZ()).add(.5, 0, .5));
+            }
+        }
     }
 }
