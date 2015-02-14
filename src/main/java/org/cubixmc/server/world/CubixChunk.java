@@ -71,10 +71,11 @@ public class CubixChunk implements Chunk {
 
     public void tick() {
         if(queuedBlockChanges.size() > 0) {
-            if(queuedBlockChanges.size() == 1) {
+            // For same reason single block change doesn' t work
+            if(queuedBlockChanges.size() == 0) {
                 Vector3I pos = queuedBlockChanges.poll();
-                Material type = getType(pos.getX() % 16, pos.getY(), pos.getZ() % 16);
-                byte data = getData(pos.getX() % 16, pos.getY(), pos.getZ() % 16);
+                Material type = getType(pos.getX(), pos.getY(), pos.getZ());
+                byte data = getData(pos.getX(), pos.getY(), pos.getZ());
                 int blockId = type.getId() << 4 | data;
                 PacketOutBlockChange packet = new PacketOutBlockChange(new Position(world, pos.getX(), pos.getY(), pos.getZ()), blockId);
                 CubixServer.broadcast(packet, world, null);
@@ -83,8 +84,8 @@ public class CubixChunk implements Chunk {
                 List<int[]> blocks = Lists.newArrayList();
                 while(queuedBlockChanges.size() > 0) {
                     Vector3I pos = queuedBlockChanges.poll();
-                    int x = pos.getX() % 16;
-                    int z = pos.getZ() % 16;
+                    int x = rel(pos.getX());
+                    int z = rel(pos.getZ());
                     int[] data = new int[3];
                     data[0] = x << 4 & 0xFF | z & 0xF;
                     data[1] = pos.getY();
@@ -179,7 +180,7 @@ public class CubixChunk implements Chunk {
             return Material.AIR;
         }
 
-        return section.getType(x, y % 16, z);
+        return section.getType(rel(x), y % 16, rel(z));
     }
 
     public byte getData(int x, int y, int z) {
@@ -188,7 +189,7 @@ public class CubixChunk implements Chunk {
             return (byte) 0;
         }
 
-        return section.getData(x, y % 16, z);
+        return section.getData(rel(x), y % 16, rel(z));
     }
 
     public void setType(int x, int y, int z, Material type) {
@@ -200,6 +201,8 @@ public class CubixChunk implements Chunk {
     }
 
     public void setTypeAndData(int x, int y, int z, Material type, int data) {
+        x = rel(x);
+        z = rel(z);
         ChunkSection section = getSection(y);
         section.setTypeAndData(x, y % 16, z, type, data);
 
@@ -230,7 +233,7 @@ public class CubixChunk implements Chunk {
             return (byte) 0;
         }
 
-        return section.getSkyLight(x, y % 16, z);
+        return section.getSkyLight(rel(x), y % 16, rel(z));
     }
 
     public byte getBlockLight(int x, int y, int z) {
@@ -239,17 +242,17 @@ public class CubixChunk implements Chunk {
             return (byte) 0;
         }
 
-        return section.getBlockLight(x, y % 16, z);
+        return section.getBlockLight(rel(x), y % 16, rel(z));
     }
 
     public void setSkyLight(int x, int y, int z, int light) {
         ChunkSection section = getSection(y);
-        section.setSkyLight(x, y % 16, z, light);
+        section.setSkyLight(rel(x), y % 16, rel(z), light);
     }
 
     public void setBlockLight(int x, int y, int z, int light) {
         ChunkSection section = getSection(y);
-        section.setBlockLight(x, y % 16, z, light);
+        section.setBlockLight(rel(x), y % 16, rel(z), light);
     }
 
     public int getHeight(int x, int z) {
@@ -267,6 +270,14 @@ public class CubixChunk implements Chunk {
         }
 
         return sections[y];
+    }
+
+    private int rel(int value) {
+        if(value < 0) {
+            return 16 + value % 16;
+        } else {
+            return value % 16;
+        }
     }
 
     @Override

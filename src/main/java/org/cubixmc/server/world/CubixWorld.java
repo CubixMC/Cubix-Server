@@ -4,6 +4,7 @@ import org.cubixmc.entity.Entity;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.NBTException;
+import org.cubixmc.server.util.EmptyChunk;
 import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.World;
@@ -27,8 +28,16 @@ public class CubixWorld implements World {
     }
 
     public void tick() {
+        if(chunkProvider == null) {
+            return;
+        }
+
         // Update chunk blocks
         for(final CubixChunk chunk : chunkProvider.getLoadedChunks()) {
+            if(chunk == null || chunk instanceof EmptyChunk) {
+                continue;
+            }
+
             chunk.tick();
         }
     }

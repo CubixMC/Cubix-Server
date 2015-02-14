@@ -10,6 +10,7 @@ import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTStorage;
+import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
 
 import java.util.UUID;
@@ -108,9 +109,9 @@ public class Codec {
     }
 
     public void writePosition(Position position) {
-        int x = (int) position.getX();
-        int y = (int) position.getY();
-        int z = (int) position.getZ();
+        int x = MathHelper.floor(position.getX());
+        int y = MathHelper.floor(position.getY());
+        int z = MathHelper.floor(position.getZ());
         long value = ((x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF);
         writeLong(value);
     }

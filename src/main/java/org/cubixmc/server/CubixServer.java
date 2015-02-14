@@ -107,6 +107,16 @@ public class CubixServer implements Runnable {
                 }
             });
         }
+
+        // Tick the worlds
+        for(final CubixWorld world : worlds.values()) {
+            Threads.worldExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    world.tick();
+                }
+            });
+        }
     }
 
     public void addPlayer(CubixPlayer player) {

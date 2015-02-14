@@ -11,7 +11,7 @@ public class CubixBlock {
     private short data;
 
     CubixBlock(CubixWorld world, int x, int y, int z) {
-        this(world, x, y, z, world.getChunk(x >> 4, z >> 4).getType(x % 16, y, z % 16), world.getChunk(x >> 4, z >> 4).getData(x % 16, y, z % 16));
+        this(world, x, y, z, world.getChunk(x >> 4, z >> 4).getType(x, y, z), world.getChunk(x >> 4, z >> 4).getData(x, y, z));
     }
 
     CubixBlock(CubixWorld world, int x, int y, int z, Material type, short data) {
@@ -56,7 +56,7 @@ public class CubixBlock {
     public void setData(short data) {
         this.data = data;
         CubixChunk chunk = world.getChunk(getX() >> 4, getZ() >> 4);
-        chunk.setData(getX() % 16, getY(), getZ() % 16, data);
+        chunk.setData(getX(), getY(), getZ(), data);
         chunk.queueBlockChange(position);
     }
 
@@ -67,7 +67,7 @@ public class CubixBlock {
             throw new IllegalArgumentException("Block data must be between 0 and 16!");
         }
         CubixChunk chunk = world.getChunk(getX() >> 4, getZ() >> 4);
-        chunk.setTypeAndData(getX() % 16, getY(), getZ() % 16, type, data);
+        chunk.setTypeAndData(getX(), getY(), getZ(), type, data);
         chunk.queueBlockChange(position);
     }
 }
