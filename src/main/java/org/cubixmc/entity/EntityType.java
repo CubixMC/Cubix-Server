@@ -1,7 +1,7 @@
 package org.cubixmc.entity;
 
 public enum EntityType {
-    DROPPED_ITEM(0x01),
+    DROPPED_ITEM(0x02),
     XP_ORB(0x02),
     LEAD(0x08),
     PAINTING(0x09),

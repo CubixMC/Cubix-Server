@@ -425,10 +425,11 @@ public enum Material {
     }
 
     public static Material getMaterial(int id) {
-        for(Material material : Material.values())
+        for(Material material : Material.values()) {
             if(material.getId() == id) {
                 return material;
             }
+        }
         return null;
     }
 
