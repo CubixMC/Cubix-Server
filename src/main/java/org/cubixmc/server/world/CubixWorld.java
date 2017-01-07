@@ -1,27 +1,32 @@
 package org.cubixmc.server.world;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
+import org.cubixmc.server.entity.CubixEntity;
+import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.entity.other.CubixDroppedItem;
 import org.cubixmc.server.nbt.NBTException;
+import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.EmptyChunk;
 import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector2I;
 import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.World;
 
 import java.io.*;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 public class CubixWorld implements World {
+    private final Set<CubixEntity> entities = Sets.newConcurrentHashSet();
     private final String name;
+    private final Random random = new Random();
     private CubixWorldData worldData;
     private CubixChunkProvider chunkProvider;
-    private final Random random = new Random();
 
     public CubixWorld(String name) {
         this.name = name;
@@ -30,6 +35,10 @@ public class CubixWorld implements World {
     public File getWorldFolder() {
         return new File(name);
     }
+
+    /*
+     * Update methods
+     */
 
     public void tick() {
         if(chunkProvider == null) {
@@ -45,6 +54,33 @@ public class CubixWorld implements World {
             chunk.tick();
         }
     }
+
+    public void tickEntities() {
+        for(CubixEntity entity : entities) {
+            Threads.entityExecutor.execute(entity);
+        }
+    }
+
+    //Entity Methods
+
+    public void addEntity(CubixEntity entity) {
+        entities.add(entity);
+    }
+
+    public List<CubixEntity> getEntityList() {
+        return Lists.newArrayList(entities);
+    }
+
+    public List<CubixEntity> getEntitiesInArea(Position center, double radius) {
+        List<CubixEntity> list = Lists.newArrayList();
+        for(CubixEntity entity : entities) {
+            if(entity.getPosition().distanceSquared(center) > radius * radius) continue;
+            list.add(entity);
+        }
+        return list;
+    }
+
+    // Load & Unload methods
 
     public boolean load() {
         getWorldFolder().mkdirs();
@@ -63,6 +99,10 @@ public class CubixWorld implements World {
         this.chunkProvider = new CubixChunkProvider(this);
         return true;
     }
+
+    /*
+     * Implemented methods
+     */
 
     @Override
     public String getName() {
@@ -85,8 +125,14 @@ public class CubixWorld implements World {
 
     @Override
     public List<Entity> getEntities() {
-        return null;
+        List<Entity> list = Lists.newArrayListWithCapacity(entities.size());
+        list.addAll(entities);
+        return list;
     }
+
+    /*
+     * Chunk methods
+     */
 
     /**
      * Get chunk, load or generate if needed.
@@ -116,13 +162,22 @@ public class CubixWorld implements World {
         Material type = block.getType();
         short data = block.getData();
         block.setType(Material.AIR);
-        Material drop = type.getDroppedType();
+        Material drop = type; // TODO Implement better drop system..
         if(drop != null && drop != Material.AIR) {
-            int amount = type.getMinDropped() + (type.getMaxDropped() > type.getMinDropped() ? random.nextInt(type.getMaxDropped() - type.getMinDropped()) : 0);
+            int amount = 1; // TODO Implement better drop system..
             ItemStack itemStack = new ItemStack(drop, amount, drop == type ? data : 0);
             if(amount > 0) {
-                CubixDroppedItem droppedItem = new CubixDroppedItem(this, itemStack);
+                CubixDroppedItem droppedItem = new CubixDroppedItem(this, itemStack, 10);
                 droppedItem.spawn(new Position(this, block.getX(), block.getY(), block.getZ()).add(.5, 0, .5));
+            }
+        }
+    }
+
+    public void refreshChunks(CubixPlayer player) {
+        Vector2I pos = player.getPosition().getChunkCoords();
+        for(int x = -4; x >= 4; x++) {
+            for(int z = -4; z >= 4; z++) {
+                chunkProvider.recalculateLight(pos.getX() + x, pos.getZ() + z);
             }
         }
     }

@@ -24,5 +24,6 @@ public class PacketInConfirmTransaction extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
+        connection.getPlayer().getContainerManager().handleApology(actionNumber);
     }
 }

@@ -9,6 +9,7 @@ import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.util.EmptyChunk;
+import org.cubixmc.server.world.lighting.LightingManager;
 import org.cubixmc.util.Vector2I;
 
 import java.io.File;
@@ -39,9 +40,11 @@ public class CubixChunkProvider {
     private final Map<Vector2I, CubixChunk> chunkMap = Maps.newConcurrentMap();
     private final Queue<Vector2I> unloadQueue = Queues.newConcurrentLinkedQueue();
     private final CubixWorld world;
+    private final LightingManager lightingManager;
 
     public CubixChunkProvider(CubixWorld world) {
         this.world = world;
+        this.lightingManager = new LightingManager(world);
         File regionFile = new File(world.getWorldFolder(), "region");
         RegionFileLoader regionFileLoader = new RegionFileLoader(regionFile);
         this.regionFileCache = CacheBuilder.newBuilder()
@@ -64,8 +67,8 @@ public class CubixChunkProvider {
 
         // Load chunk from file
         Vector2I filePos = new Vector2I(x >> 5, z >> 5);
-        int relX = rel(x);
-        int relZ = rel(z);
+        int relX = x & 31;
+        int relZ = z & 31;
 
         try {
             RegionFile regionFile = regionFileCache.get(filePos);
@@ -91,12 +94,16 @@ public class CubixChunkProvider {
         return chunk;
     }
 
-    private int rel(int coord) {
-        if(coord < 0) {
-            return 32 + (coord % 32);
-        } else {
-            return coord % 32;
+    public boolean recalculateLight(int x, int z) {
+        CubixChunk chunk = getChunk(x, z, true, false);
+        if(chunk == null) {
+            return false;
         }
+
+        chunk.clearSkyLight();
+        chunk.clearBlockLight();
+        lightingManager.initLight(chunk, false);
+        return true;
     }
 
     private static class RegionFileLoader extends CacheLoader<Vector2I, RegionFile> {

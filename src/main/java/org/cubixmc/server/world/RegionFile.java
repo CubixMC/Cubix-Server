@@ -129,7 +129,13 @@ public class RegionFile {
 
             // Look position up
             int hash = x + z * 32;
-            long offset = offsets[hash];
+            long offset;
+            try {
+                offset = offsets[hash];
+            } catch(ArrayIndexOutOfBoundsException e) {
+                System.out.println("hash: " + hash + " (" + x + ", " + z + ")");
+                throw e;
+            }
             if(offset == 0) {
                 // Offset not set, chunk not exist
                 return null;

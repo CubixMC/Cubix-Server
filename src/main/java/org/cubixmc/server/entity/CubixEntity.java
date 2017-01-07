@@ -7,17 +7,16 @@ import org.cubixmc.server.network.packets.play.PacketOutEntityHeadLook;
 import org.cubixmc.server.network.packets.play.PacketOutEntityLook;
 import org.cubixmc.server.network.packets.play.PacketOutEntityLookandRelativeMove;
 import org.cubixmc.server.network.packets.play.PacketOutEntityRelativeMove;
+import org.cubixmc.server.util.BoundingBox;
 import org.cubixmc.server.util.Movement;
 import org.cubixmc.server.world.CubixWorld;
-import org.cubixmc.util.MathHelper;
-import org.cubixmc.util.Position;
-import org.cubixmc.util.Vector3I;
+import org.cubixmc.util.*;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class CubixEntity implements org.cubixmc.entity.Entity {
+public abstract class CubixEntity implements org.cubixmc.entity.Entity, Runnable {
     private static int ENTITY_ID = 0;
 
     protected final Random random = new Random();
@@ -26,6 +25,7 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     private final UUID uuid;
     protected CubixWorld world;
     protected Position position;
+    protected BoundingBox boundingBox;
 
     private final Movement movement;
     private boolean rotChanged;
@@ -39,6 +39,20 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         this.movement = new Movement(this);
     }
 
+    protected void setBounds(Vector3D dimensions) {
+        setBounds(dimensions, new Vector3F(0.5F, 0.0F, 0.5F));
+    }
+
+    protected void setBounds(Vector3D dimensions, Vector3F origin) {
+        this.boundingBox = new BoundingBox(this, dimensions, origin);
+    }
+
+    public List<CubixEntity> getNearEntities(double radius) {
+        List<CubixEntity> entities = world.getEntitiesInArea(position, radius);
+        entities.remove(this);
+        return entities;
+    }
+
     public boolean isSpawned() {
         return position != null;
     }
@@ -49,8 +63,13 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         }
 
         this.position = position;
-        movement.reset(position);
+        movement.reset(position); // Reset movement tracking
+        if(boundingBox != null) {
+            boundingBox.update(); // Update bounding box
+        }
+
         metadata.set(0, (byte) 0);
+        world.addEntity(this); // Register entity in world
         if(!(this instanceof CubixPlayer)) {
             for(PacketOut packet : getSpawnPackets()) {
                 CubixServer.broadcast(packet, world, null);
@@ -79,8 +98,19 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
         rotChanged = true;
     }
 
+    @Override
+    public final void run() {
+        tick();
+    }
+
     public void tick() {
+        if(hasMoved && boundingBox != null) {
+            // Update bounding box
+            boundingBox.update();
+        }
+
         if(hasMoved || rotChanged) {
+            // Update clients
             PacketOut packet;
             if(hasMoved && rotChanged) {
                 packet = new PacketOutEntityLookandRelativeMove(this, movement.update());
@@ -116,12 +146,7 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     }
 
     @Override
-    public boolean teleport(Position position) {
-        return teleport(position, "unknown");
-    }
-
-    @Override
-    public boolean teleport(Position to, String cause) {
+    public boolean teleport(Position to) {
         if(!position.getWorld().equals(to.getWorld())) {
             return false;
         }
@@ -138,11 +163,6 @@ public abstract class CubixEntity implements org.cubixmc.entity.Entity {
     @Override
     public boolean teleport(org.cubixmc.entity.Entity target) {
         return teleport(target.getPosition());
-    }
-
-    @Override
-    public boolean teleport(org.cubixmc.entity.Entity target, String cause) {
-        return teleport(target.getPosition(), cause);
     }
 
     public abstract List<PacketOut> getSpawnPackets();

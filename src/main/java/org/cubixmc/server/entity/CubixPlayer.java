@@ -1,20 +1,22 @@
 package org.cubixmc.server.entity;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.GameMode;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
-import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.Player;
 import org.cubixmc.inventory.Inventory;
+import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.inventory.Material;
 import org.cubixmc.inventory.PlayerInventory;
 import org.cubixmc.server.CubixServer;
+import org.cubixmc.server.inventory.Container;
+import org.cubixmc.server.inventory.ContainerManager;
+import org.cubixmc.server.inventory.CubixInventory;
+import org.cubixmc.server.inventory.CubixPlayerInventory;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.*;
@@ -25,6 +27,7 @@ import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
 import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -34,6 +37,8 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Connection connection;
     private final @Getter PlayerChunkMap playerChunkMap;
     private final @Getter GameProfile profile;
+    private final CubixPlayerInventory inventory;
+    private final @Getter ContainerManager containerManager;
     private GameMode gameMode = GameMode.SURVIVAL;
     
     private @Getter long keepAliveCount;
@@ -50,6 +55,16 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         this.profile = profile;
         this.playerChunkMap = new PlayerChunkMap(this);
         this.displayName = profile.getName();
+        this.inventory = new CubixPlayerInventory(this);
+        this.containerManager = new ContainerManager(this, inventory);
+        inventory.setItem(1, new ItemStack(Material.WOOD, 32));
+        setBounds(new Vector3D(0.6, 1.8, 0.6));
+
+        // Set default settings (for now)
+        metadata.set(10, (byte) 127);
+        metadata.set(16, (byte) 0);
+        metadata.set(17, 0F);
+        metadata.set(18, 0);
     }
 
     @Override
@@ -77,6 +92,9 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
             connection.sendPacket(new PacketOutKeepAlive(keepAliveId));
             this.keepAliveCount = System.currentTimeMillis();
         }
+
+        // Update inventory
+        containerManager.updateCurrentContainer();
     }
 
     @Override
@@ -89,7 +107,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         // Send properties fo world and player
         PacketOutJoinGame join = new PacketOutJoinGame(entityId, 0, 0, 0, 60, "default", false);
         PacketOutSpawnPosition compass = new PacketOutSpawnPosition(position);
-        PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.1F, 0.2F);
+        PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.05F, 0.1F);
         connection.sendPackets(join, compass, abilities);
 
         // Send the chunks and perform the rest in the world thread
@@ -102,16 +120,22 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
                 connection.sendPacket(coords);
 
                 connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
-                CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Arrays.asList(CubixPlayer.this)), world, CubixPlayer.this);
+                connection.sendPacket(new PacketOutEntityMetadata(entityId, metadata));
+                CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Collections.singletonList(CubixPlayer.this)), world, CubixPlayer.this);
                 CubixServer.broadcast(CubixPlayer.this.getSpawnPackets().get(0), world, CubixPlayer.this);
-                for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
-                    if(player.equals(CubixPlayer.this)) {
+
+                // Spawn entities
+                for(CubixEntity entity : world.getEntityList()) {
+                    if(entity.equals(CubixPlayer.this)) {
                         continue;
                     }
 
                     // Spawn players
-                    connection.sendPacket(player.getSpawnPackets().get(0));
+                    connection.sendPackets(entity.getSpawnPackets().toArray(new PacketOut[0]));
                 }
+
+                // Set window
+                inventory.syncAllSlots();
             }
         });
         return true;
@@ -143,7 +167,22 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public PlayerInventory getInventory() {
-        throw new UnsupportedOperationException("Not done yet!");
+        return inventory;
+    }
+
+    @Override
+    public void closeInventory() {
+        containerManager.closeCurrentContainer();
+    }
+
+    @Override
+    public boolean isInsideInventory() {
+        return containerManager.getCurrentContainer() != null;
+    }
+
+    @Override
+    public Inventory getOpenInventory() {
+        return containerManager.getCurrentContainer().getInventory();
     }
 
     @Override
@@ -164,14 +203,6 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public void saveData() {
-    }
-
-    @Override
-    public void loadData() {
-    }
-
-    @Override
     public boolean performCommand(String command) {
         return false;
     }
@@ -182,62 +213,8 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public void setSneaking(boolean sneak) {
-    }
-
-    @Override
     public boolean isSprinting() {
         return false;
-    }
-
-    @Override
-    public void setSprinting(boolean sprinting) {
-    }
-
-    @Override
-    public void giveExp(float amount) {
-    }
-
-    @Override
-    public void giveExpLevels(int amount) {
-    }
-
-    @Override
-    public float getExp() {
-        return 0;
-    }
-
-    @Override
-    public void setExp(float exp) {
-    }
-
-    @Override
-    public int getLevel() {
-        return 0;
-    }
-
-    @Override
-    public void setLevel(int level) {
-    }
-
-    @Override
-    public float getTotalExperience() {
-        return 0;
-    }
-
-    @Override
-    public void setTotalExperience(float exp) {
-
-    }
-
-    @Override
-    public void askResourcePack(String url) {
-        throw new UnsupportedOperationException("Packet not added yet!");
-    }
-
-    @Override
-    public void setResourcePack(String url) {
-        askResourcePack(url);
     }
 
     @Override
@@ -249,7 +226,8 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public void openInventory(Inventory inventory) {
-        throw new UnsupportedOperationException("Not done yet!");
+        Container container = containerManager.newContainer((CubixInventory) inventory);
+        containerManager.openContainer(container);
     }
 
     @Override

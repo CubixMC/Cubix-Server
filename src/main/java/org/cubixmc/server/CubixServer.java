@@ -98,14 +98,9 @@ public class CubixServer implements Runnable {
             connection.getPacketHandler().execute();
         }
 
-        // Entity tick (for now just players)
-        for(final CubixPlayer player : players.values()) {
-            Threads.entityExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    player.tick();
-                }
-            });
+        // Entity tick
+        for(final CubixWorld world : worlds.values()) {
+            world.tickEntities();
         }
 
         // Tick the worlds

@@ -22,5 +22,6 @@ public class PacketInChatMessage extends PacketIn {
     @Override
     public void handle(Connection connection) {
         connection.getPlayer().chat(message);
+        connection.getPlayer().getWorld().refreshChunks(connection.getPlayer());
     }
 }

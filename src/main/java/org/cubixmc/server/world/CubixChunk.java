@@ -255,11 +255,40 @@ public class CubixChunk implements Chunk {
         section.setBlockLight(rel(x), y % 16, rel(z), light);
     }
 
-    public int getHeight(int x, int z) {
-        return heightMap[z << 4 | x];
+    public void clearSkyLight() {
+        for(ChunkSection section : sections) {
+            if(section != null) {
+                section.clearSkyLight();
+            }
+        }
     }
 
-    private ChunkSection getSection(int y) {
+    public void clearBlockLight() {
+        for(ChunkSection section : sections) {
+            if(section != null) {
+                section.clearBlockLight();
+            }
+        }
+    }
+
+    public int getHeight(int x, int z) {
+        try {
+            return heightMap[z << 4 | x];
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println(x + ", " + z);
+            throw e;
+        }
+    }
+
+    public void setHeight(int x, int z, int height) {
+        heightMap[z << 4 | x] = height;
+    }
+
+    public boolean sectionExists(int y) {
+        return y < 16 && sections[y] != null;
+    }
+
+    public ChunkSection getSection(int y) {
         y >>= 4;// divide by 16
         if(y >= sectionCount) {
             // Missing sections
@@ -278,6 +307,30 @@ public class CubixChunk implements Chunk {
         } else {
             return value % 16;
         }
+    }
+
+    public boolean isTerrainPopulated() {
+        return terrainPopulated;
+    }
+
+    public void setTerrainPopulated(boolean terrainPopulated) {
+        this.terrainPopulated = terrainPopulated;
+    }
+
+    public boolean isLightPopulated() {
+        return lightPopulated;
+    }
+
+    public void setLightPopulated(boolean lightPopulated) {
+        this.lightPopulated = lightPopulated;
+    }
+
+    public long getInhabitedTime() {
+        return inhabitedTime;
+    }
+
+    public void setInhabitedTime(long inhabitedTime) {
+        this.inhabitedTime = inhabitedTime;
     }
 
     @Override

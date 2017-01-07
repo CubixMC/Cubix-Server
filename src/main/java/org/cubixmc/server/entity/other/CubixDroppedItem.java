@@ -1,28 +1,58 @@
 package org.cubixmc.server.entity.other;
 
-import com.google.common.collect.Lists;
 import org.cubixmc.entity.other.Item;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.inventory.PlayerInventory;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixEntity;
+import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.packets.PacketOut;
+import org.cubixmc.server.network.packets.play.PacketOutCollectItem;
 import org.cubixmc.server.network.packets.play.PacketOutEntityMetadata;
-import org.cubixmc.server.network.packets.play.PacketOutSpawnMob;
 import org.cubixmc.server.network.packets.play.PacketOutSpawnObject;
 import org.cubixmc.server.world.CubixWorld;
-import org.cubixmc.util.MathHelper;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CubixDroppedItem extends CubixEntity implements Item {
+    private int pickupDelay;
 
-    public CubixDroppedItem(CubixWorld world, ItemStack itemStack) {
+    public CubixDroppedItem(CubixWorld world, ItemStack itemStack, int pickupDelay) {
         this(world);
         setItemStack(itemStack);
+        setPickupDelay(pickupDelay);
     }
 
     public CubixDroppedItem(CubixWorld world) {
         super(world);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(pickupDelay-- > 0) {
+            return;
+        }
+
+        List<CubixEntity> entities = getNearEntities(1.0);
+        for(CubixEntity entity : entities) {
+            if(entity instanceof CubixPlayer) {
+                CubixPlayer player = (CubixPlayer) entity;
+                ItemStack item = getItemStack();
+                PlayerInventory inventory = player.getInventory();
+                if(inventory.receive(item)) {
+                    // Play effect
+                    PacketOutCollectItem packet = new PacketOutCollectItem(entityId, player.getEntityId());
+                    CubixServer.broadcast(packet, world, null);
+                }
+
+                if(item.getAmount() == 0) {
+                    // TODO: Mark for removal
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -50,5 +80,6 @@ public class CubixDroppedItem extends CubixEntity implements Item {
 
     @Override
     public void setPickupDelay(int delay) {
+        this.pickupDelay = delay;
     }
 }

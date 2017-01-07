@@ -9,7 +9,9 @@ import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.nbt.CompoundTag;
+import org.cubixmc.server.nbt.ListTag;
 import org.cubixmc.server.nbt.NBTStorage;
+import org.cubixmc.server.nbt.NBTType;
 import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Position;
 
@@ -96,7 +98,7 @@ public class Codec {
     }
 
     public void writeSlot(ItemStack item) {
-        if(item.getType() == Material.AIR) {
+        if(item == null || item.getType() == Material.AIR) {
             writeShort(-1);
             return;
         }
@@ -213,7 +215,7 @@ public class Codec {
         int id = readShort();
         if(id < 0) {
             // Return air
-            return new ItemStack();
+            return null;
         }
 
         Material type = Material.getMaterial(id);

@@ -1,7 +1,9 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.cubixmc.inventory.ClickType;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -31,5 +33,7 @@ public class PacketInClickWindow extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
+        CubixPlayer player = connection.getPlayer();
+        player.getContainerManager().performInventoryAction(this);
     }
 }

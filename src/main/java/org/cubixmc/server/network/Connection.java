@@ -1,6 +1,5 @@
 package org.cubixmc.server.network;
 
-import com.google.common.collect.Lists;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
-import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.codecs.CompressionHandler;
@@ -19,17 +17,9 @@ import org.cubixmc.server.network.codecs.PacketHandler;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
-import org.cubixmc.server.network.packets.play.*;
-import org.cubixmc.server.util.QueuedChunk;
 import org.cubixmc.server.util.auth.GameProfile;
-import org.cubixmc.server.world.CubixChunk;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 import javax.crypto.SecretKey;
 

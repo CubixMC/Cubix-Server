@@ -90,6 +90,14 @@ public class ChunkSection {
         blockLight.set(x, y, z, value);
     }
 
+    public void clearSkyLight() {
+        skyLight.fill((byte) 0);
+    }
+
+    public void clearBlockLight() {
+        blockLight.fill((byte) 0);
+    }
+
     private int block(int x, int y, int z) {
         int hash = y << 8 | z << 4 | x;
         return blocks[hash];
