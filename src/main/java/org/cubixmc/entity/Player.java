@@ -35,6 +35,30 @@ public interface Player extends LivingEntity {
     PlayerInventory getInventory();
 
     /**
+     * Close inventory.
+     */
+    void closeInventory();
+
+    /**
+     * Check whether or not the player is currently inside of an inventory.
+     *
+     * @return True if in inventory, false otherwise
+     */
+    boolean isInsideInventory();
+
+    /**
+     * Get the inventory the player is currently in.
+     *
+     * @return Current inventory
+     */
+    Inventory getOpenInventory();
+
+    /**
+     * @param inventory for the player to open
+     */
+    void openInventory(Inventory inventory);
+
+    /**
      * Gets the socket address of this player
      *
      * @return the player's address
@@ -59,24 +83,6 @@ public interface Player extends LivingEntity {
 
 
     /**
-     * Saves the players current information,
-     * including; location, health, inventory, motion, and
-     * other information into the players data file.
-     */
-    void saveData();
-
-
-    /**
-     * Loads the players current information,
-     * including; location, health, inventory, motion, and
-     * other information into the players data file.
-     * Note: This should overwrite the players current inventory, health,
-     * motion, etc, with the state from the saved data file.
-     */
-    void loadData();
-
-
-    /**
      * Makes the player perform the given command
      *
      * @param command Command to perform
@@ -92,13 +98,6 @@ public interface Player extends LivingEntity {
     boolean isSneaking();
 
     /**
-     * Sets the sneak mode the player
-     *
-     * @param sneak true if player should appear sneaking
-     */
-    void setSneaking(boolean sneak);
-
-    /**
      * Gets whether the player is sprinting or not.
      *
      * @return true if player is sprinting.
@@ -106,98 +105,11 @@ public interface Player extends LivingEntity {
     boolean isSprinting();
 
     /**
-     * Sets whether the player is sprinting or not.
-     *
-     * @param sprinting true if the player should be sprinting
-     */
-    void setSprinting(boolean sprinting);
-
-    /**
-     * Gives the player the amount of experience specified.
-     *
-     * @param amount Exp amount to give
-     */
-    void giveExp(float amount);
-
-    /**
-     * Gives the player the amount of experience levels specified. Levels can
-     * be taken by specifying a negative amount.
-     *
-     * @param amount amount of experience levels to give or take
-     */
-    void giveExpLevels(int amount);
-
-    /**
-     * Gets the players current experience points towards the next level.
-     * <p/>
-     * This is a percentage value. 0 is "no progress" and 1 is "next level".
-     *
-     * @return Current experience points
-     */
-    float getExp();
-
-    /**
-     * Sets the players current experience points towards the next level
-     * <p/>
-     * This is a percentage value. 0 is "no progress" and 1 is "next level".
-     *
-     * @param exp New experience points
-     */
-    void setExp(float exp);
-
-    /**
-     * Gets the players current experience level
-     *
-     * @return Current experience level
-     */
-    int getLevel();
-
-    /**
-     * Sets the players current experience level
-     *
-     * @param level New experience level
-     */
-    void setLevel(int level);
-
-    /**
-     * Gets the players total experience points
-     *
-     * @return Current total experience points
-     */
-    float getTotalExperience();
-
-    /**
-     * Sets the players current experience level
-     *
-     * @param exp New experience level
-     */
-    void setTotalExperience(float exp);
-
-    /**
-     * Will request if the player would like to use the texture pack
-     *
-     * @param url The url of the pack
-     */
-    void askResourcePack(String url);
-
-    /**
-     * Will force the player to use the texture pack
-     *
-     * @param url The url of the pack
-     */
-    void setResourcePack(String url);
-
-    /**
      * Will send a message to the player
      *
      * @param message to the player a message
      */
     void sendMessage(String message);
-
-    /**
-     * @param inventory for the player to open
-     */
-    void openInventory(Inventory inventory);
 
     /**
      * Sets the player's GameMode

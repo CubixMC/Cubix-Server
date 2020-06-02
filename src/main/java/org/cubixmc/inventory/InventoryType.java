@@ -6,75 +6,86 @@ public enum InventoryType {
      * A chest inventory, with 0, 9, 18, 27, 36, 45, or 54 slots of type
      * CONTAINER.
      */
-    CHEST(27, "Chest"),
+    CHEST("minecraft:chest", 27, "Chest"),
     /**
      * A dispenser inventory, with 9 slots of type CONTAINER.
      */
-    DISPENSER(9, "Dispenser"),
+    DISPENSER("minecraft:dispenser", 9, "Dispenser"),
     /**
      * A dropper inventory, with 9 slots of type CONTAINER.
      */
-    DROPPER(9, "Dropper"),
+    DROPPER("minecraft:dropper", 9, "Dropper"),
     /**
      * A furnace inventory, with a RESULT slot, a CRAFTING slot, and a FUEL
      * slot.
      */
-    FURNACE(3, "Furnace"),
+    FURNACE("minecraft:furnace", 3, "Furnace"),
     /**
      * A workbench inventory, with 9 CRAFTING slots and a RESULT slot.
      */
-    WORKBENCH(10, "Crafting"),
+    WORKBENCH("minecraft:crafting_table", 10, "Crafting"),
     /**
      * A player's crafting inventory, with 4 CRAFTING slots and a RESULT slot.
      * Also implies that the 4 ARMOR slots are accessible.
      */
-    CRAFTING(5, "Crafting"),
+    //CRAFTING(5, "Crafting"),
     /**
      * An enchantment table inventory, with one CRAFTING slot and three
      * enchanting buttons.
      */
-    ENCHANTING(1, "Enchanting"),
+    ENCHANTING("minecraft:enchanting_table", 1, "Enchanting"),
     /**
      * A brewing stand inventory, with one FUEL slot and three CRAFTING slots.
      */
-    BREWING(4, "Brewing"),
+    BREWING("minecraft:brewing_stand", 4, "Brewing"),
     /**
      * A player's inventory, with 9 QUICKBAR slots, 27 CONTAINER slots, and 4
      * ARMOR slots. The ARMOUR slots may not be visible to the player, though.
      */
-    PLAYER(36, "Player"),
+    PLAYER(null, 36, "Player"),
     /**
      * The creative mode inventory, with only 9 QUICKBAR slots and nothing
      * else. (The actual creative interface with the items is client-side and
      * cannot be altered by the server.)
      */
-    CREATIVE(9, "Creative"),
+    CREATIVE(null, 9, "Creative"),
     /**
      * The merchant inventory, with 2 TRADE-IN slots, and 1 RESULT slot.
      */
-    MERCHANT(3, "Villager"),
+    MERCHANT("minecraft:villager", 3, "Villager"),
     /**
      * The ender chest inventory, with 27 slots.
      */
-    ENDER_CHEST(27, "Ender Chest"),
+    ENDER_CHEST("minecraft:chest", 27, "Ender Chest"),
     /**
      * An anvil inventory, with 2 CRAFTING slots and 1 RESULT slot
      */
-    ANVIL(3, "Repairing"),
+    ANVIL("minecraft:anvil", 3, "Repairing"),
     /**
      * A beacon inventory, with 1 CRAFTING slot
      */
-    BEACON(1, "container.beacon"),
+    BEACON("minecraft:beacon", 1, "container.beacon"),
     /**
      * A hopper inventory, with 5 slots of type CONTAINER.
      */
-    HOPPER(5, "Item Hopper"),;
+    HOPPER("minecraft:hopper", 5, "Item Hopper"),
+    /**
+     * Horse inventory
+     */
+    HORSE("EntityHorse", 0, "Horse");
+
+    private final String networkId;
     private final int size;
     private final String title;
 
-    private InventoryType(int defaultSize, String defaultTitle) {
-        size = defaultSize;
-        title = defaultTitle;
+    InventoryType(String networkId, int defaultSize, String defaultTitle) {
+        this.networkId = networkId;
+        this.size = defaultSize;
+        this.title = defaultTitle;
+    }
+
+    public String getNetworkId() {
+        return networkId;
     }
 
     public int getDefaultSize() {

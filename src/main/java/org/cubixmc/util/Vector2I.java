@@ -13,8 +13,7 @@ public class Vector2I {
     }
 
     public Vector2I(int x, int z) {
-        this.x = x;
-        this.z = z;
+        set(x, z);
     }
 
     public int getX() {
@@ -30,6 +29,11 @@ public class Vector2I {
     }
 
     public void setZ(int z) {
+        this.z = z;
+    }
+
+    public void set(int x, int z) {
+        this.x = x;
         this.z = z;
     }
 

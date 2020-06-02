@@ -15,7 +15,7 @@ public class Vector3D {
     }
 
     /**
-     * Construct the vector with all components as 0.
+     * Construct the vector with all components copied from position.
      */
     public Vector3D(Position position) {
         this(position.getX(), position.getY(), position.getZ());
@@ -29,9 +29,41 @@ public class Vector3D {
      * @param z Z component
      */
     public Vector3D(double x, double y, double z) {
+        set(x, y, z);
+    }
+
+    public void set(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public boolean gt(Vector3D vec) {
+        return x > vec.x && y > vec.y && z > vec.z;
+    }
+
+    public boolean gte(Vector3D vec) {
+        return x >= vec.x && y >= vec.y && z >= vec.z;
+    }
+
+    public boolean lt(Vector3D vec) {
+        return !gte(vec);
+    }
+
+    public boolean lte(Vector3D vec) {
+        return !gt(vec);
     }
 
     /**

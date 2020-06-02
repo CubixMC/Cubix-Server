@@ -1,7 +1,5 @@
 package org.cubixmc.entity;
 
-import org.cubixmc.entity.Explosive;
-import org.cubixmc.entity.Projectile;
 import org.cubixmc.util.Vector3D;
 
 /**

@@ -1,6 +1,6 @@
 package org.cubixmc.inventory;
 
-public class ItemStack {
+public class ItemStack implements Cloneable {
     private final Material material;
     private int amount;
     private short data;
@@ -47,6 +47,10 @@ public class ItemStack {
         this.data = data;
     }
 
+    public boolean canStackWith(ItemStack other) {
+        return material == other.getType() && data == other.getData();
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
@@ -76,5 +80,10 @@ public class ItemStack {
                 ", amount=" + amount +
                 ", data=" + data +
                 '}';
+    }
+
+    @Override
+    public ItemStack clone() {
+        return new ItemStack(material, amount, data);
     }
 }

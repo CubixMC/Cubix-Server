@@ -37,16 +37,6 @@ public interface Entity {
 
 
     /**
-     * Teleports this entity to the given position. Note: If entity is riding a vehicle, not sure if to teleport
-     *
-     * @param position New position to teleport this entity to
-     * @param cause    The reason of this teleportation
-     * @return true if the teleport was successful
-     */
-    boolean teleport(Position position, String cause);
-
-
-    /**
      * Teleports this entity to the target Entity. If this entity is riding a
      * vehicle, it will be dismounted prior to teleportation.
      *
@@ -54,15 +44,4 @@ public interface Entity {
      * @return true if the teleport was successful
      */
     boolean teleport(Entity target);
-
-
-    /**
-     * Teleports this entity to the target Entity. If this entity is riding a
-     * vehicle, it will be dismounted prior to teleportation.
-     *
-     * @param target Entity to teleport this entity to
-     * @param cause  The reason of this teleportation
-     * @return true if the teleport was successful
-     */
-    boolean teleport(Entity target, String cause);
 }

@@ -16,7 +16,7 @@ public interface Inventory {
      *
      * @return The String with the name of the inventory
      */
-    String getName();
+    String getTitle();
 
     /**
      * Clears out the whole Inventory.
@@ -41,4 +41,38 @@ public interface Inventory {
      * @return The holder of the inventory; null if it has no holder.
      */
     Entity getHolder();
+
+    /**
+     * Get an array of all items inside of inventory.
+     *
+     * @return Array of items
+     */
+    ItemStack[] getContents();
+
+    /**
+     * Set all contents inside of inventory to array of items.
+     *
+     * @param contents Array of items
+     */
+    void setContents(ItemStack[] contents);
+
+    /**
+     * Get item from inventory.
+     *
+     * @param index of item
+     * @return Item
+     */
+    ItemStack getItem(int index);
+
+    /**
+     * Set slot in inventory to item.
+     *
+     * @param index of the slot
+     * @param item to put in slot
+     */
+    void setItem(int index, ItemStack item);
+
+    boolean receive(ItemStack item);
+
+    boolean addItem(ItemStack item);
 }

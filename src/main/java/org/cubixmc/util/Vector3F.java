@@ -41,6 +41,18 @@ public class Vector3F {
         this.z = z;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
     /**
      * Adds a vector to this one
      *
