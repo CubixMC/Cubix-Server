@@ -60,6 +60,7 @@ public class SpreadSkyLight implements Runnable {
         queuedChunk.build();
         for(CubixPlayer player : CubixServer.getInstance().getOnlinePlayers()) {
             player.getConnection().sendPacket(new PacketOutChunkData(queuedChunk));
+            System.out.println("sent result");
         }
     }
 }

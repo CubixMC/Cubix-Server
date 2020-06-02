@@ -190,6 +190,13 @@ public class Codec {
         return bytes;
     }
 
+    public byte[] remainingBytes() {
+        int length = byteBuf.readableBytes();
+        byte[] bytes = new byte[length];
+        byteBuf.readBytes(bytes);
+        return bytes;
+    }
+
     public boolean readBool() {
         return byteBuf.readByte() != 0;
     }

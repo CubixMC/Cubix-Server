@@ -34,6 +34,7 @@ public class ListTag extends NBTTag {
     @Override
     public void encode(DataOutput output) throws IOException {
         output.writeByte(innerType.getTypeId());
+        output.writeInt(value.size());
         for(NBTTag tag : value) {
             tag.encode(output);
         }

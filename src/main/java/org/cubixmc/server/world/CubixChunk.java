@@ -5,10 +5,7 @@ import com.google.common.collect.Queues;
 import lombok.Getter;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
-import org.cubixmc.server.nbt.CompoundTag;
-import org.cubixmc.server.nbt.ListTag;
-import org.cubixmc.server.nbt.NBTException;
-import org.cubixmc.server.nbt.NBTType;
+import org.cubixmc.server.nbt.*;
 import org.cubixmc.server.network.packets.play.PacketOutBlockChange;
 import org.cubixmc.server.network.packets.play.PacketOutChunkData;
 import org.cubixmc.server.network.packets.play.PacketOutMultiBlockChange;
@@ -21,6 +18,11 @@ import org.cubixmc.util.Vector3I;
 import org.cubixmc.world.Chunk;
 import org.cubixmc.world.World;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
@@ -172,6 +174,56 @@ public class CubixChunk implements Chunk {
 
         this.sectionCount = sections.size();
         return true;
+    }
+
+    public CompoundTag saveToTag() {
+        CompoundTag tag = new CompoundTag();
+
+        CompoundTag level = new CompoundTag();
+        level.addTag("xPos", new IntTag(x));
+        level.addTag("zPos", new IntTag(z));
+        level.addTag("HeightMap", new IntArrayTag(heightMap));
+        level.addTag("TerrainPopulated", ByteTag.ofBoolean(terrainPopulated));
+        level.addTag("LightPopulated", ByteTag.ofBoolean(lightPopulated));
+        level.addTag("InHabitedTime", new LongTag(inhabitedTime));
+
+        ListTag sectionsTag = new ListTag(NBTType.COMPOUND);
+        for(int i = 0; i < sections.length; i++) {
+            ChunkSection section = sections[i];
+            if(section == null) break;
+            CompoundTag sectionTag = new CompoundTag();
+            sectionTag.addTag("Data", blocksToNibbles(section.getBlocks(), 0));
+            sectionTag.addTag("Blocks", blocksToBytes(section.getBlocks(), 4));
+            sectionTag.addTag("Add", blocksToNibbles(section.getBlocks(), 12));
+            sectionTag.addTag("BlockLight", new ByteArrayTag(section.getBlockLight().getHandle()));
+            sectionTag.addTag("SkyLight", new ByteArrayTag(section.getSkyLight().getHandle()));
+            sectionsTag.addTag(sectionTag);
+        }
+        level.addTag("Sections", sectionsTag);
+        tag.addTag("Level", level);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        DataOutputStream daos = new DataOutputStream(baos);
+//        NBTStorage.writeCompound(tag, daos);
+//        System.out.println(baos.toByteArray().length);
+//        NBTStorage.readCompound(new DataInputStream(new ByteArrayInputStream(baos.toByteArray())));
+
+        return tag;
+    }
+
+    private ByteArrayTag blocksToBytes(char[] blocks, int shift) {
+        byte[] bytes = new byte[blocks.length];
+        for(int i = 0; i < blocks.length; i++) {
+            bytes[i] = (byte) ((blocks[i] >> shift) & 0xff);
+        }
+        return new ByteArrayTag(bytes);
+    }
+
+    private ByteArrayTag blocksToNibbles(char[] blocks, int shift) {
+        NibbleArray nibbleArray = new NibbleArray(blocks.length);
+        for(int i = 0; i < blocks.length; i++) {
+            nibbleArray.set(i, (blocks[i] >> shift) & 0xf);
+        }
+        return new ByteArrayTag(nibbleArray.getHandle());
     }
 
     public Material getType(int x, int y, int z) {

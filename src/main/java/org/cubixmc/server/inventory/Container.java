@@ -1,7 +1,5 @@
 package org.cubixmc.server.inventory;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import org.cubixmc.inventory.ClickType;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.entity.CubixPlayer;

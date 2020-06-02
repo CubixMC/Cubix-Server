@@ -8,6 +8,7 @@ import com.google.common.collect.Queues;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTException;
+import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.EmptyChunk;
 import org.cubixmc.server.world.lighting.LightingManager;
 import org.cubixmc.util.Vector2I;
@@ -50,6 +51,30 @@ public class CubixChunkProvider {
         this.regionFileCache = CacheBuilder.newBuilder()
                 .expireAfterAccess(CACHE_EXPIRY, TimeUnit.MINUTES)
                 .softValues().build(regionFileLoader);
+    }
+
+    public void update() {
+        chunkMap.values().stream()
+                .filter(chunk -> CubixServer.getInstance().getOnlinePlayers().stream()
+                        .noneMatch(player -> player.getPlayerChunkMap().isChunkLoaded(chunk)))
+                //.limit(10) // max unloads per tick
+                .forEach(this::unloadChunk);
+
+//        System.out.println(chunkMap.size());
+    }
+
+    private void unloadChunk(CubixChunk chunk) {
+        Threads.worldExecutor.execute(() -> {
+            if(!(chunk instanceof EmptyChunk)) {
+                RegionFile regionFile = regionFileCache.getUnchecked(new Vector2I(chunk.getX() >> 5, chunk.getZ() >> 5));
+                regionFile.saveChunk(chunk.getX() & 31, chunk.getZ() & 31, chunk.saveToTag());
+            }
+            // one last check to see if this chunk is still unused
+            if(CubixServer.getInstance().getOnlinePlayers().stream()
+                    .noneMatch(player -> player.getPlayerChunkMap().isChunkLoaded(chunk))) {
+                chunkMap.remove(chunk.getPosition());
+            }
+        });
     }
 
     public Collection<CubixChunk> getLoadedChunks() {

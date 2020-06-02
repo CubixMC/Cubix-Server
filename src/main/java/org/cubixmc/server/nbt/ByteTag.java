@@ -16,6 +16,10 @@ public class ByteTag extends NBTTag {
         super(NBTType.BYTE);
     }
 
+    public static ByteTag ofBoolean(boolean value) {
+        return new ByteTag(value ? (byte) 1 : (byte) 0);
+    }
+
     @Override
     public void decode(DataInput input) throws IOException {
         this.value = input.readByte();

@@ -13,13 +13,13 @@ public class CompoundTag extends NBTTag {
     private final Map<String, NBTTag> value = new HashMap<>();
     private String name;
 
-    protected CompoundTag(String name) {
-        this();
+    public CompoundTag(String name) {
+        super(NBTType.COMPOUND);
         this.name = (name == null || name.isEmpty()) ? "root" : name;
     }
 
     public CompoundTag() {
-        super(NBTType.COMPOUND);
+        this(null);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class CompoundTag extends NBTTag {
             output.writeByte(tag.getType().getTypeId());
 
             // Write tag name
+//            output.writeUTF(tagName);
             output.writeShort(tagName.length());
             output.write(tagName.getBytes(Charsets.UTF_8));
 

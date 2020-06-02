@@ -42,7 +42,9 @@ public class LightingManager {
      */
     public void initLight(CubixChunk chunk, boolean soft) {
         if(!chunk.isTerrainPopulated()) {
-            throw new IllegalStateException("Terrain of " + chunk + " was not populated when server wanted lighting patches!");
+            System.err.println("Terrain not generated");
+            return;
+//            throw new IllegalStateException("Terrain of " + chunk + " was not populated when server wanted lighting patches!");
         }
 
         Threads.worldExecutor.submit(new InitSkylightTask(this, world, chunk.getPosition(), false));

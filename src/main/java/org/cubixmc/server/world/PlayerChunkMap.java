@@ -137,4 +137,8 @@ public class PlayerChunkMap {
             player.getConnection().sendPacket(packet);
         }
     }
+
+    public boolean isChunkLoaded(CubixChunk chunk) {
+        return chunks.contains(chunk.getPosition());
+    }
 }

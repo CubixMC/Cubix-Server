@@ -57,7 +57,9 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         this.displayName = profile.getName();
         this.inventory = new CubixPlayerInventory(this);
         this.containerManager = new ContainerManager(this, inventory);
-        inventory.setItem(1, new ItemStack(Material.WOOD, 32));
+        inventory.setItem(1, new ItemStack(Material.WOOD, 64));
+        inventory.setItem(2, new ItemStack(Material.WOOD, 64));
+        inventory.setItem(3, new ItemStack(Material.WOOD, 64));
         setBounds(new Vector3D(0.6, 1.8, 0.6));
 
         // Set default settings (for now)

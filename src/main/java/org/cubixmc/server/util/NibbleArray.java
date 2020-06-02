@@ -22,7 +22,7 @@ public class NibbleArray {
     }
 
     public byte get(int x, int y, int z) {
-        return get(y << 8 | z << 4 | x);
+        return get((y << 8) | (z << 4) | x);
     }
 
     public byte get(int index) {
@@ -35,15 +35,15 @@ public class NibbleArray {
     }
 
     public void set(int x, int y, int z, int value) {
-        set(y << 8 | z << 4 | x, value);
+        set((y << 8) | (z << 4) | x, value);
     }
 
     public void set(int index, int value) {
-        index /= 2;
+        int half = index / 2;
         if(index % 2 == 0) {
-            handle[index] = (byte) (handle[index] & 0xF0 | value & 0xF);
+            handle[half] = (byte) ((handle[half] & 0xF0) | value & 0xF);
         } else {
-            handle[index] = (byte) (handle[index] & 0xF | (value & 0xF) << 4);
+            handle[half] = (byte) ((handle[half] & 0x0F) | ((value & 0xF) << 4));
         }
     }
 

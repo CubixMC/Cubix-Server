@@ -30,16 +30,19 @@ public class InitSkylightTask implements Runnable {
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
                 int topY = 0; // Top kek
-                for(int y = 15; y >= 0; y++) {
+                ycheck:
+                for(int y = 15; y >= 0; y--) {
                     if(chunk.sectionExists(y)) {
-                        topY = y << 4 + 15;
+                        topY = (y << 16) + 15;
+                        break ycheck;
                     }
                 }
+//                System.out.println(topY);
 
                 // Now we will generate the height map & init lighting
                 int height = 0;
                 int light = 15; // Start at 15 and count downwards (the higher the brighter)
-                for(int y = topY; y >= 0; y--) {
+                for(int y = topY; y >= 0 && light > 0; y--) {
                     if(!chunk.sectionExists(y >> 4)) {
                         // If its not set, we skip
                         continue;

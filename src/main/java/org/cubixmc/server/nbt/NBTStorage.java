@@ -47,6 +47,7 @@ public class NBTStorage {
             // Write name
             output.writeShort(compound.getName().length());
             output.write(compound.getName().getBytes(Charsets.UTF_8));
+//            output.writeUTF(compound.getName());
 
             // Write compound data
             compound.encode(output);

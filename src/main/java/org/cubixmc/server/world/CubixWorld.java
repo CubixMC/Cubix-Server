@@ -53,6 +53,8 @@ public class CubixWorld implements World {
 
             chunk.tick();
         }
+
+        chunkProvider.update();
     }
 
     public void tickEntities() {
@@ -175,8 +177,8 @@ public class CubixWorld implements World {
 
     public void refreshChunks(CubixPlayer player) {
         Vector2I pos = player.getPosition().getChunkCoords();
-        for(int x = -4; x >= 4; x++) {
-            for(int z = -4; z >= 4; z++) {
+        for(int x = -4; x <= 4; x++) {
+            for(int z = -4; z <= 4; z++) {
                 chunkProvider.recalculateLight(pos.getX() + x, pos.getZ() + z);
             }
         }

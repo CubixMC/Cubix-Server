@@ -1,5 +1,6 @@
 package org.cubixmc.server.world;
 
+import lombok.SneakyThrows;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTStorage;
@@ -190,9 +191,12 @@ public class RegionFile {
         }
     }
 
+    @SneakyThrows
     public void saveChunk(int x, int z, CompoundTag compound) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(8096);
-        NBTStorage.writeCompound(compound, new DataOutputStream(new DeflaterOutputStream(baos)));
+        DataOutputStream outputStream = new DataOutputStream(new DeflaterOutputStream(baos));
+        NBTStorage.writeCompound(compound, outputStream);
+        outputStream.close();
         byte[] compressed = baos.toByteArray();
 
         lock.writeLock().lock();
@@ -203,14 +207,14 @@ public class RegionFile {
             int length = offset & 0xFF; // The amount of sectors allocated
 
             // Calculate the amount of sectors we need to store the new data
-            int sectorsNeeded = (compressed.length + 5) / SECTOR_LENGTH + 1;
+            int sectorsNeeded = (int) Math.ceil((compressed.length + 5) / (double) SECTOR_LENGTH);
             if(sectorsNeeded >= 256) {
                 // Chunks can not be > 1MB
                 return;
             }
 
-            RandomAccessFile raf = new RandomAccessFile(file, "w");
-            if(length != 0 && length == sectorsNeeded) {
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            if(length != 0 && length >= sectorsNeeded) {
                 // Write new timestamp
                 raf.seek(SECTOR_LENGTH + hash * 4);
                 raf.writeInt((int) (System.currentTimeMillis() / 1000L));
@@ -244,6 +248,8 @@ public class RegionFile {
 
                 // Update offsets & timestamp
                 offsets[hash] = (start << 8) + sectorsNeeded;
+                raf.seek(hash * 4);
+                raf.writeInt(offsets[hash]);
                 raf.seek(SECTOR_LENGTH + hash * 4);
                 raf.writeInt((int) (System.currentTimeMillis() / 1000L));
 
@@ -282,6 +288,6 @@ public class RegionFile {
             }
         }
 
-        return index;
+        return index - found;
     }
 }
