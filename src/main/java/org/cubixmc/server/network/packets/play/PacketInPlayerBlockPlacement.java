@@ -2,6 +2,7 @@ package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
 import org.cubixmc.inventory.ItemStack;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -32,5 +33,16 @@ public class PacketInPlayerBlockPlacement extends PacketIn {
 
     @Override
     public void handle(Connection connection) {
+        System.out.println("place @" + location + " block " + heldItem);
+        if(direction == 0) location.add(0, -1, 0);
+        if(direction == 1) location.add(0, 1, 0);
+        if(direction == 2) location.add(0, 0, -1);
+        if(direction == 3) location.add(0, 0, 1);
+        if(direction == 4) location.add(-1, 0, 0);
+        if(direction == 5) location.add(1, 0, 0);
+        connection.getPlayer().getWorld().getBlock(location)
+                .setTypeAndData(heldItem.getType(), heldItem.getData());
+//        connection.getPlayer().getWorld().getChunk(location.getChunkCoords().getX(), location.getChunkCoords().getZ())
+//                .setTypeAndData((int) location.getX(), (int) location.getY(), (int) location.getZ(), heldItem.getType(), heldItem.getData());
     }
 }

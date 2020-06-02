@@ -1,5 +1,7 @@
 package org.cubixmc.server.network;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
@@ -22,6 +24,8 @@ import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
 
 import javax.crypto.SecretKey;
+import java.net.InetSocketAddress;
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -31,6 +35,9 @@ public class Connection {
     private Phase phase;
     private CubixPlayer player;
     private PacketHandler packetHandler;
+    private InetSocketAddress socketAddress;
+    private String spoofedUUID;
+    private JsonElement spoofedProfile;
 
     public void sendPackets(PacketOut... packets) {
         for(PacketOut packet : packets) {
