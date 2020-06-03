@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cubix" />
+        <module name="cubix-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cubix" target="1.5" />
+      <module name="cubix-server" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
