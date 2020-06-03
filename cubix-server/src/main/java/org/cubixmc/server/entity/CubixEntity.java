@@ -1,5 +1,6 @@
 package org.cubixmc.server.entity;
 
+import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.packets.PacketOut;
@@ -10,13 +11,16 @@ import org.cubixmc.server.network.packets.play.PacketOutEntityRelativeMove;
 import org.cubixmc.server.util.BoundingBox;
 import org.cubixmc.server.util.Movement;
 import org.cubixmc.server.world.CubixWorld;
-import org.cubixmc.util.*;
+import org.cubixmc.util.MathHelper;
+import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
+import org.cubixmc.util.Vector3F;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class CubixEntity implements org.cubixmc.entity.Entity, Runnable {
+public abstract class CubixEntity implements Entity, Runnable {
     private static int ENTITY_ID = 0;
 
     protected final Random random = new Random();

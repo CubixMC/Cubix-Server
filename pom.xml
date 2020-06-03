@@ -11,7 +11,12 @@
 
     <modules>
         <module>cubix-server</module>
+        <module>cubix-api</module>
     </modules>
+
+    <properties>
+        <maven.compiler.release>8</maven.compiler.release>
+    </properties>
 </project>
 
 <!--<?xml version="1.0" encoding="UTF-8"?>
