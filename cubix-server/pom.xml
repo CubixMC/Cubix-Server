@@ -34,9 +34,8 @@
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.0.19.Final</version>
-            <scope>compile</scope>
+            <artifactId>netty-handler</artifactId>
+            <version>${netty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

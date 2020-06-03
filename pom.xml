@@ -16,6 +16,8 @@
 
     <properties>
         <maven.compiler.release>8</maven.compiler.release>
+        <netty.version>4.1.50.Final</netty.version>
+        <mc.version>1.8.8</mc.version>
     </properties>
 </project>
 
