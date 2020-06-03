@@ -2,7 +2,6 @@ package org.cubixmc.server.threads;
 
 import lombok.Getter;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 

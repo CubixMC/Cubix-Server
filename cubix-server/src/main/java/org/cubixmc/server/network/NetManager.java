@@ -18,9 +18,6 @@ import org.cubixmc.server.network.codecs.DummyHandler;
 import org.cubixmc.server.network.codecs.PacketHandler;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 

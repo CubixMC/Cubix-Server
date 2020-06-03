@@ -4,13 +4,8 @@ import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.server.world.CubixBlock;
-import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.Position;
-import org.cubixmc.util.Vector2I;
 import org.cubixmc.util.Vector3I;
-
-import java.io.IOException;
 
 @Getter
 public class PacketInPlayerDigging extends PacketIn {

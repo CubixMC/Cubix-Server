@@ -1,8 +1,8 @@
 package org.cubixmc.entity;
 
+import org.cubixmc.GameMode;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.PlayerInventory;
-import org.cubixmc.GameMode;
 
 import java.net.InetSocketAddress;
 

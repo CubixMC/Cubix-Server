@@ -1,7 +1,6 @@
 package org.cubixmc.server.network;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.SocketChannel;
@@ -25,7 +24,6 @@ import org.cubixmc.util.Position;
 
 import javax.crypto.SecretKey;
 import java.net.InetSocketAddress;
-import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor

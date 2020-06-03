@@ -6,10 +6,6 @@ import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.InventoryType;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.entity.CubixEntity;
-import org.cubixmc.server.entity.CubixPlayer;
-import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.server.network.packets.play.PacketOutSetSlot;
-import org.cubixmc.server.network.packets.play.PacketOutWindowItems;
 
 import java.util.Arrays;
 import java.util.Set;

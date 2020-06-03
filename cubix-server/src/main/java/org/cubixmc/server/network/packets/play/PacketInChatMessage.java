@@ -1,7 +1,6 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
-import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;

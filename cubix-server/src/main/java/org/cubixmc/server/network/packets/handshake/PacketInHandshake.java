@@ -9,7 +9,6 @@ import org.cubixmc.server.network.Phase;
 import org.cubixmc.server.network.packets.PacketIn;
 
 import java.net.InetSocketAddress;
-import java.util.UUID;
 import java.util.logging.Level;
 
 @Getter

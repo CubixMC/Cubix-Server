@@ -21,7 +21,6 @@ import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.server.network.packets.play.*;
 import org.cubixmc.server.network.packets.play.PacketOutPlayerListItem.ListAction;
-import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.auth.GameProfile;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
@@ -30,7 +29,10 @@ import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3D;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
     private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();

@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.server.network.packets.PacketOut;
 
 /**
  * This packet is sent when a player swings his arm.

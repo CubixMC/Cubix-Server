@@ -2,7 +2,6 @@ package org.cubixmc.server.nbt;
 
 import org.cubixmc.server.CubixServer;
 
-import java.io.IOException;
 import java.util.logging.Level;
 
 public enum NBTType {

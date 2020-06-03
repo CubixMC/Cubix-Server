@@ -1,7 +1,10 @@
 package org.cubixmc.server.inventory;
 
 import org.cubixmc.server.entity.CubixPlayer;
-import org.cubixmc.server.network.packets.play.*;
+import org.cubixmc.server.network.packets.play.PacketInClickWindow;
+import org.cubixmc.server.network.packets.play.PacketOutCloseWindow;
+import org.cubixmc.server.network.packets.play.PacketOutConfirmTransaction;
+import org.cubixmc.server.network.packets.play.PacketOutOpenWindow;
 
 /**
  * ContainerManager

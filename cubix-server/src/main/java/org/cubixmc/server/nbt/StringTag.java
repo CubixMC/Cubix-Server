@@ -1,7 +1,5 @@
 package org.cubixmc.server.nbt;
 
-import com.google.common.base.Charsets;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;

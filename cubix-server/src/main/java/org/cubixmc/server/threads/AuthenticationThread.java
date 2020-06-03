@@ -9,6 +9,8 @@ import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.login.PacketOutLoginSuccess;
 import org.cubixmc.server.util.auth.GameProfile;
 
+import javax.crypto.SecretKey;
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,11 +19,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
-import java.util.UUID;
 import java.util.logging.Level;
-
-import javax.crypto.SecretKey;
-import javax.net.ssl.HttpsURLConnection;
 
 public class AuthenticationThread implements Runnable {
     private final Connection connection;

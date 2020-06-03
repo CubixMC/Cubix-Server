@@ -1,7 +1,7 @@
 package org.cubixmc.entity.vehicles;
 
-import org.cubixmc.util.Vector3D;
 import org.cubixmc.entity.Vehicle;
+import org.cubixmc.util.Vector3D;
 
 /**
  * org.cubixmc.entity.vehicles Created by Adam on 22/01/15.

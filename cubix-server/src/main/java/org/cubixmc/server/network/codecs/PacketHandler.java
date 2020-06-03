@@ -2,19 +2,14 @@ package org.cubixmc.server.network.codecs;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import lombok.RequiredArgsConstructor;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.Phase;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.server.threads.Threads;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {

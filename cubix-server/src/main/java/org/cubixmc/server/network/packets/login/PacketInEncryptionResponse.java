@@ -8,15 +8,14 @@ import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.network.packets.PacketIn;
 import org.cubixmc.server.threads.AuthenticationThread;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.logging.Level;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 @Getter
 public class PacketInEncryptionResponse extends PacketIn {

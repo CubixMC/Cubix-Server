@@ -2,7 +2,6 @@ package org.cubixmc.server.network.packets.status;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Codec;

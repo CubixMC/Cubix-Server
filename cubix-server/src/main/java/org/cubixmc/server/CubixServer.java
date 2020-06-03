@@ -5,18 +5,15 @@ import io.netty.util.ResourceLeakDetector;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.logging.log4j.LogManager;
 import org.cubixmc.server.entity.CubixEntity;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.server.network.packets.play.PacketOutSpawnPlayer;
 import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.ForwardLogHandler;
 import org.cubixmc.server.world.CubixWorld;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
