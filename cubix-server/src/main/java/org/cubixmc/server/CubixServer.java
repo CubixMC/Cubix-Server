@@ -2,7 +2,6 @@ package org.cubixmc.server;
 
 import com.google.common.collect.Maps;
 import io.netty.util.ResourceLeakDetector;
-import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +24,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -53,7 +53,7 @@ public class CubixServer implements Runnable {
         new CubixServer();
     }
 
-    private final Map<String, CubixWorld> worlds = new ConcurrentHashMapV8<>();
+    private final Map<String, CubixWorld> worlds = new ConcurrentHashMap<>();
     private final Map<UUID, CubixPlayer> players = Maps.newConcurrentMap();
     private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
