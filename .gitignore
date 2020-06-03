@@ -2,11 +2,13 @@
 # IntelliJ IDEA
 #################
 .idea/
-*.iml
+**/*.iml
 
-bukkit/**
-target/**
-target\*
+**/target/
+**/.class
+bukkit/
+world/
+logs/
 
 #################
 ## Eclipse

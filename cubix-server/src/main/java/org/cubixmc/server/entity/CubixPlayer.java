@@ -112,34 +112,31 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.05F, 0.1F);
         connection.sendPackets(join, compass, abilities);
 
-        // Send the chunks and perform the rest in the world thread
-        Threads.worldExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                playerChunkMap.sendAll();
+        // Send the chunks
+        playerChunkMap.sendAll();
 
-                PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
-                connection.sendPacket(coords);
+        // Send the player's spawn coordinate
+        PacketOutPlayerPositionLook coords = new PacketOutPlayerPositionLook(position.getX(), position.getY(), position.getZ());
+        connection.sendPacket(coords);
 
-                connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
-                connection.sendPacket(new PacketOutEntityMetadata(entityId, metadata));
-                CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Collections.singletonList(CubixPlayer.this)), world, CubixPlayer.this);
-                CubixServer.broadcast(CubixPlayer.this.getSpawnPackets().get(0), world, CubixPlayer.this);
+        // Send the spawn packet to other players
+        connection.sendPacket(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, CubixServer.getInstance().getOnlinePlayers()));
+        connection.sendPacket(new PacketOutEntityMetadata(entityId, metadata));
+        CubixServer.broadcast(new PacketOutPlayerListItem(ListAction.ADD_PLAYER, Collections.singletonList(CubixPlayer.this)), world, CubixPlayer.this);
+        CubixServer.broadcast(CubixPlayer.this.getSpawnPackets().get(0), world, CubixPlayer.this);
 
-                // Spawn entities
-                for(CubixEntity entity : world.getEntityList()) {
-                    if(entity.equals(CubixPlayer.this)) {
-                        continue;
-                    }
-
-                    // Spawn players
-                    connection.sendPackets(entity.getSpawnPackets().toArray(new PacketOut[0]));
-                }
-
-                // Set window
-                inventory.syncAllSlots();
+        // Spawn entities
+        for(CubixEntity entity : world.getEntityList()) {
+            if(entity.equals(CubixPlayer.this)) {
+                continue;
             }
-        });
+
+            // Spawn players
+            connection.sendPackets(entity.getSpawnPackets().toArray(new PacketOut[0]));
+        }
+
+        // Set window
+        inventory.syncAllSlots();
         return true;
     }
 

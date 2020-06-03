@@ -13,12 +13,4 @@ public class Threads {
      */
 //    public static final MainThread mainThread = new MainThread(20);
     public static final ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
-    /**
-     * World thread, chunk loading, saving and generating.
-     */
-    public static final ExecutorService worldExecutor = Executors.newFixedThreadPool(3);
-    /**
-     * Entity executor, AI and such
-     */
-    public static final ExecutorService entityExecutor = Executors.newFixedThreadPool(2);
 }
