@@ -21,13 +21,4 @@ public class Threads {
      * Entity executor, AI and such
      */
     public static final ExecutorService entityExecutor = Executors.newFixedThreadPool(2);
-    /**
-     * Player executor, packet processing
-     */
-    public static final ExecutorService playerExecutor = Executors.newFixedThreadPool(2);
-    /**
-     * Plugins, they don't need to worry about concurrency.
-     * Ill let them have that.
-     */
-    public static final ExecutorService pluginSecrive = Executors.newSingleThreadExecutor();
 }

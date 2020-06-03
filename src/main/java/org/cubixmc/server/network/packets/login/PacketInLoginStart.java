@@ -1,9 +1,7 @@
 package org.cubixmc.server.network.packets.login;
 
 import com.google.gson.JsonObject;
-import io.netty.channel.ChannelFuture;
 import io.netty.util.Attribute;
-import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Codec;
@@ -14,13 +12,14 @@ import org.cubixmc.server.util.auth.GameProfile;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
 @Getter
 public class PacketInLoginStart extends PacketIn {
-    private static final Random random = new Random();
+    private static final Random random = new SecureRandom();
     private String name;
 
     public PacketInLoginStart() {

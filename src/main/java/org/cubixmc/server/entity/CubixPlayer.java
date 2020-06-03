@@ -188,11 +188,6 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public InetSocketAddress getAddress() {
-        return connection.getChannel().remoteAddress();
-    }
-
-    @Override
     public void kickPlayer(String message) {
         connection.disconnect(message);
     }
@@ -230,6 +225,11 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     public void openInventory(Inventory inventory) {
         Container container = containerManager.newContainer((CubixInventory) inventory);
         containerManager.openContainer(container);
+    }
+
+    @Override
+    public InetSocketAddress getAddress() {
+        return connection.getSocketAddress();
     }
 
     @Override

@@ -11,12 +11,14 @@ import org.cubixmc.server.threads.Threads;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
-    private final Queue<PacketIn> packetQueue = new ArrayDeque<>();
+    private final Deque<PacketIn> packetQueue = new ConcurrentLinkedDeque<>();
     private Connection connection;
 
     @Override
@@ -48,15 +50,9 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
     }
 
     public void execute() {
-        PacketIn[] packets = packetQueue.toArray(new PacketIn[0]);
-        packetQueue.clear();
-        for(final PacketIn packet : packets) {
-            Threads.playerExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    packet.handle(connection);
-                }
-            });
+        PacketIn packet;
+        while((packet = packetQueue.poll()) != null) {
+            packet.handle(connection);
         }
     }
 }
