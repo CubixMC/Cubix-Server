@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PlayerChunkMap {
-    private static final int VIEW_DISTANCE = 4;
+    private static final int VIEW_DISTANCE = 10;
     private static final int SINGLE_CHUNK_LIMIT = 15;
 
     private final CubixPlayer player;
@@ -134,6 +134,7 @@ public class PlayerChunkMap {
             packet.setChunkX(position.getX());
             packet.setChunkZ(position.getZ());
             packet.setData(new byte[0]);
+            packet.setGroundUpContinuous(true);
             player.getConnection().sendPacket(packet);
         }
     }
