@@ -1,6 +1,5 @@
 package org.cubixmc.server;
 
-import co.aikar.timings.TimingsCommand;
 import com.google.common.collect.Maps;
 import io.netty.util.ResourceLeakDetector;
 import lombok.AccessLevel;
@@ -63,6 +62,13 @@ public class CubixServer implements Runnable {
         // Load property file here....
         // Cant bother atm
 
+//        LogManager.getRootLogger();
+//        PatternLayout layout = PatternLayout.newBuilder()
+//                .withPattern("[%d{HH:mm:ss} %level]: %msg%n")
+//                .build();
+//        ((org.apache.logging.log4j.core.Logger) LogManager.getRootLogger())
+//                .addAppender(TerminalConsoleAppender.createAppender(TerminalConsoleAppender.PLUGIN_NAME, null, layout, false));
+
         // We actually use log4j2 because Minecraft uses it too.
         // However i prefer java logging so we use a forward handler
         logger.setUseParentHandlers(false);
@@ -73,7 +79,7 @@ public class CubixServer implements Runnable {
 
         // Start terminal
         this.terminal = new CubixTerminal();
-        terminal.start();
+        new Thread(terminal::start).start();
 
         logger.log(Level.INFO, "Generating key pair...");
         generateKeyPair();

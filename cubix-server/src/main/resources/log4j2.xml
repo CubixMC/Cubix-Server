@@ -5,9 +5,12 @@
         <!--<Queue name="TerminalConsole">-->
             <!--<PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg%n" />-->
         <!--</Queue>-->
-        <Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n" />
-        </Console>
+<!--        <Console name="CONSOLE" target="SYSTEM_OUT">-->
+<!--            <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n" />-->
+<!--        </Console>-->
+        <TerminalConsole name="CONSOLE">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n"/>
+        </TerminalConsole>
         <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n" />
             <Policies>
