@@ -91,25 +91,29 @@ public class CubixServer implements Runnable {
 
     @Override
     public void run() {
-        long start = System.currentTimeMillis();
-        // This is the main thread
-        for(Connection connection : netManager.getConnections()) {
-            connection.getPacketHandler().execute();
-        }
+        try {
+            long start = System.currentTimeMillis();
+            // This is the main thread
+            for(Connection connection : netManager.getConnections()) {
+                connection.getPacketHandler().execute();
+            }
 
-        // Entity tick
-        for(final CubixWorld world : worlds.values()) {
-            world.tickEntities();
-        }
+            // Entity tick
+            for(final CubixWorld world : worlds.values()) {
+                world.tickEntities();
+            }
 
-        // Tick the worlds
-        for(final CubixWorld world : worlds.values()) {
-            world.tick();
-        }
+            // Tick the worlds
+            for(final CubixWorld world : worlds.values()) {
+                world.tick();
+            }
 
-        long end = System.currentTimeMillis();
-        if((end - start) > 1) {
-            getLogger().log(Level.INFO, "Tick duration: " + (end - start) + "ms");
+            long end = System.currentTimeMillis();
+            if((end - start) > 1) {
+                getLogger().log(Level.INFO, "Tick duration: " + (end - start) + "ms");
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Unhandled exception in main thread", e);
         }
     }
 
