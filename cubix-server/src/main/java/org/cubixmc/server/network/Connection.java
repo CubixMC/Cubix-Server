@@ -55,7 +55,7 @@ public class Connection {
         setPhase(Phase.PLAY);
         CubixWorld world = CubixServer.getInstance().getMainWorld();
         CubixPlayer player = new CubixPlayer(world, this, profile);
-        player.spawn(new Position(null, 0, 80, 0));
+//        player.spawn(new Position(null, 0, 80, 0));
         CubixServer.getInstance().addPlayer(player);
         setPlayer(player);
 

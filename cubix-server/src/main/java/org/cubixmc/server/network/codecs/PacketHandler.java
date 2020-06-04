@@ -47,6 +47,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<PacketIn> {
     public void execute() {
         PacketIn packet;
         while((packet = packetQueue.poll()) != null) {
+//            CubixServer.getLogger().log(Level.INFO, "Handling " + packet.getClass().getSimpleName());
             packet.handle(connection);
         }
     }

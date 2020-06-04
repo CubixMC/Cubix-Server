@@ -24,6 +24,7 @@ public class PacketOutMapChunkBulk extends PacketOut {
 
     @Override
     public void encode(Codec codec) {
+        chunks.forEach(QueuedChunk::build);
         codec.writeBool(hasSKyLight);
         codec.writeVarInt(chunks.size());
         for(QueuedChunk chunk : chunks) {

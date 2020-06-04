@@ -15,10 +15,26 @@
     </modules>
 
     <properties>
-        <maven.compiler.release>8</maven.compiler.release>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <netty.version>4.1.50.Final</netty.version>
         <mc.version>1.8.8</mc.version>
+
+        <sonar.organization>cubixmc</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
 
 <!--<?xml version="1.0" encoding="UTF-8"?>

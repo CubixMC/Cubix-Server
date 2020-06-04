@@ -90,6 +90,7 @@ public class CubixServer implements Runnable {
 
     @Override
     public void run() {
+        long start = System.currentTimeMillis();
         // This is the main thread
         for(Connection connection : netManager.getConnections()) {
             connection.getPacketHandler().execute();
@@ -103,6 +104,11 @@ public class CubixServer implements Runnable {
         // Tick the worlds
         for(final CubixWorld world : worlds.values()) {
             world.tick();
+        }
+
+        long end = System.currentTimeMillis();
+        if((end - start) > 1) {
+            getLogger().log(Level.INFO, "Tick duration: " + (end - start) + "ms");
         }
     }
 

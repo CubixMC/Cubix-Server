@@ -43,7 +43,6 @@ public class PlayerChunkMap {
                 }
 
                 QueuedChunk queuedChunk = new QueuedChunk(chunk);
-                queuedChunk.build();
                 queuedChunks.add(queuedChunk);
                 chunks.add(chunk.getPosition());
             }
@@ -71,7 +70,6 @@ public class PlayerChunkMap {
                     }
 
                     QueuedChunk queuedChunk = new QueuedChunk(chunk);
-                    queuedChunk.build();
                     loadQueue.add(queuedChunk);
                 }
             }

@@ -41,6 +41,11 @@ public class QueuedChunk {
      * Read data from the chunk and parse it
      */
     public void build() {
+        if(index > 0) {
+            CubixServer.getLogger().log(Level.WARNING, "Queued chunk is already built");
+            return;
+        }
+
         int sectionCount = handle.getSectionCount();
         ChunkSection[] sections = handle.getSections();
 

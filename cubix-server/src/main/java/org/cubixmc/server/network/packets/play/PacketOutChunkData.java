@@ -12,12 +12,15 @@ public class PacketOutChunkData extends PacketOut {
     private boolean groundUpContinuous;
     private int primaryBitMap;
     private byte[] data;
+    private QueuedChunk queuedChunk;
 
     public PacketOutChunkData() {
         super(0x21);
     }
 
     public PacketOutChunkData(QueuedChunk chunk) {
+//        super(0x21);
+//        this.queuedChunk = chunk;
         this(chunk.getX(), chunk.getZ(), true, chunk.getSections(), chunk.getBuffer());
     }
 
@@ -32,6 +35,15 @@ public class PacketOutChunkData extends PacketOut {
 
     @Override
     public void encode(Codec codec) {
+        if(queuedChunk != null) {
+            System.out.println("1");
+            queuedChunk.build();
+            this.chunkX = queuedChunk.getX();
+            this.chunkZ = queuedChunk.getZ();
+            this.groundUpContinuous = true;
+            this.primaryBitMap = queuedChunk.getSections();
+            this.data = queuedChunk.getBuffer();
+        }
         codec.writeInt(chunkX);
         codec.writeInt(chunkZ);
         codec.writeBoolean(groundUpContinuous);

@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import lombok.RequiredArgsConstructor;
+import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -11,6 +12,7 @@ import org.cubixmc.server.network.packets.PacketOut;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Encoding or decoding the packet and make it readable/writable by the software.
@@ -48,5 +50,10 @@ public class CodecHandler extends MessageToMessageCodec<ByteBuf, PacketOut> {
         }
 
         list.add(packet);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        CubixServer.getLogger().log(Level.SEVERE, "Exception occurred in network codec during stage " + connection.getPhase(), cause);
     }
 }
