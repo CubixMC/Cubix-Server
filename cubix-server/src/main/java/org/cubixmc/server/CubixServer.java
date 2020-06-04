@@ -55,6 +55,7 @@ public class CubixServer implements Runnable {
     private final Map<UUID, CubixPlayer> players = Maps.newConcurrentMap();
     private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
+    private CubixTerminal terminal;
 
     public CubixServer() {
         setInstance(this);
@@ -69,6 +70,10 @@ public class CubixServer implements Runnable {
             logger.removeHandler(handler);
         }
         logger.addHandler(new ForwardLogHandler());
+
+        // Start terminal
+        this.terminal = new CubixTerminal();
+        terminal.start();
 
         logger.log(Level.INFO, "Generating key pair...");
         generateKeyPair();
@@ -145,5 +150,16 @@ public class CubixServer implements Runnable {
         } catch(NoSuchAlgorithmException e) {
             CubixServer.getLogger().log(Level.SEVERE, "Failed to generate RSA-Key for encryption");
         }
+    }
+
+    public void stop() {
+        logger.log(Level.INFO, "Stopping server.");
+        terminal.stop();
+        Threads.mainThread.shutdown();
+
+        logger.log(Level.INFO, "Closing network pipeline.");
+        netManager.shutdown();
+
+        logger.log(Level.INFO, "Goodbye!");
     }
 }

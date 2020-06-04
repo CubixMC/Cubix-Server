@@ -31,6 +31,7 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
     private final NioEventLoopGroup workerGroup;
     private final ServerBootstrap bootstrap;
     private final InetSocketAddress address;
+    private Channel channel;
 
     public NetManager(InetSocketAddress address) {
         this.bossGroup = new NioEventLoopGroup(4);
@@ -53,6 +54,7 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
                     CubixServer.getLogger().log(Level.SEVERE, "Failed to bind port " + address.getPort(), future.cause());
                     // TODO: Stop server
                 } else {
+                    NetManager.this.channel = future.channel();
                     CubixServer.getLogger().log(Level.INFO, "Network pipeline running!");
                 }
             }
@@ -92,5 +94,15 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
 
     public void removeConnection(Connection connection) {
         connections.remove(connection);
+    }
+
+    public void shutdown() {
+        try {
+            bossGroup.shutdownGracefully().sync();
+            workerGroup.shutdownGracefully().sync();
+            channel.closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
