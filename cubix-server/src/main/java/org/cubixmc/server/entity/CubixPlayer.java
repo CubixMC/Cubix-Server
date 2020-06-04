@@ -1,7 +1,6 @@
 package org.cubixmc.server.entity;
 
 import com.google.common.collect.Lists;
-import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.Setter;
 import org.cubixmc.GameMode;
@@ -33,9 +32,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
-    private final @Getter Set<Integer> keepAliveIds = new ConcurrentSet<>();
+    private final @Getter Set<Integer> keepAliveIds = ConcurrentHashMap.newKeySet();
     private final @Getter Connection connection;
     private final @Getter PlayerChunkMap playerChunkMap;
     private final @Getter GameProfile profile;

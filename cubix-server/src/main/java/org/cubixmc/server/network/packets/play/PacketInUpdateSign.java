@@ -1,6 +1,7 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
@@ -9,10 +10,10 @@ import org.cubixmc.util.Position;
 @Getter
 public class PacketInUpdateSign extends PacketIn {
     private Position location;
-    private String line1;
-    private String line2;
-    private String line3;
-    private String line4;
+    private BaseComponent[] line1;
+    private BaseComponent[] line2;
+    private BaseComponent[] line3;
+    private BaseComponent[] line4;
 
     public PacketInUpdateSign() {
         super(0x12);

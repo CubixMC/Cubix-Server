@@ -5,6 +5,11 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
+import net.md_5.bungee.chat.TextComponentSerializer;
+import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
@@ -61,6 +66,14 @@ public class Codec {
     public void writeString(String utf) {
         writeVarInt(utf.length());
         byteBuf.writeBytes(utf.getBytes(Charsets.UTF_8));
+    }
+
+    public void writeChat(BaseComponent component) {
+        writeString(ComponentSerializer.toString(component));
+    }
+
+    public void writeChat(BaseComponent... components) {
+        writeString(ComponentSerializer.toString(components));
     }
 
     public void writeChat(String chat) {
@@ -177,8 +190,8 @@ public class Codec {
         return new String(bytes, Charsets.UTF_8);
     }
 
-    public String readChat() {
-        return readString();
+    public BaseComponent[] readChat() {
+        return ComponentSerializer.parse(readString());
     }
 
     public byte[] readBytes() {

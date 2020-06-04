@@ -47,7 +47,7 @@ public class PacketInLoginStart extends PacketIn {
             return;
         }
 
-        if(true) {
+        if(connection.getSpoofedUUID() != null) {
             GameProfile profile = connection.getSpoofedUUID() == null ? createOfflineProfile() : createSpoofedProfile(connection);
 
             PacketOutLoginSuccess success = new PacketOutLoginSuccess();

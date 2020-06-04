@@ -1,5 +1,6 @@
 package org.cubixmc.server;
 
+import co.aikar.timings.TimingsCommand;
 import com.google.common.collect.Maps;
 import io.netty.util.ResourceLeakDetector;
 import lombok.AccessLevel;
