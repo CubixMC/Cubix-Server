@@ -20,6 +20,8 @@
         <netty.version>4.1.50.Final</netty.version>
         <mc.version>1.8.8</mc.version>
 
+        <sonar.projectKey>CubixMC_Cubix-Server</sonar.projectKey>
+        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
         <sonar.organization>cubixmc</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
