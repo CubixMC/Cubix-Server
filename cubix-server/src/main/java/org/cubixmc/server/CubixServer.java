@@ -47,6 +47,7 @@ public class CubixServer implements Runnable {
     public static void main(String[] args) {
         // TODO: Parse args
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
+        System.setProperty("log4j2.contextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
         new CubixServer();
     }
 
