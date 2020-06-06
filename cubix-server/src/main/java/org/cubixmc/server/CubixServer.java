@@ -48,7 +48,13 @@ public class CubixServer implements Runnable {
         // TODO: Parse args
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         System.setProperty("log4j2.contextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
-        new CubixServer();
+
+        int port = 25565;
+        if(args.length >= 2 && args[0].equalsIgnoreCase("--port")) {
+            port = Integer.parseInt(args[1]);
+        }
+
+        new CubixServer(port);
     }
 
     private final Map<String, CubixWorld> worlds = new ConcurrentHashMap<>();
@@ -57,7 +63,7 @@ public class CubixServer implements Runnable {
     private @Getter KeyPair keyPair;
     private CubixTerminal terminal;
 
-    public CubixServer() {
+    public CubixServer(int port) {
         setInstance(this);
         setLogger(Logger.getLogger("Cubix"));
         // Load property file here....
@@ -85,14 +91,9 @@ public class CubixServer implements Runnable {
         logger.log(Level.INFO, "Generating key pair...");
         generateKeyPair();
 
-        try {
-            logger.log(Level.INFO, "Starting a Minecraft protocol server on localhost:25565");
-            this.netManager = new NetManager(new InetSocketAddress(InetAddress.getLocalHost(), 25565));
-            netManager.connect();
-        } catch(UnknownHostException e) {
-            logger.log(Level.SEVERE, "Failed to find host to start server with!", e);
-            throw new RuntimeException("");
-        }
+        logger.log(Level.INFO, "Starting a Minecraft protocol server on port " + port);
+        this.netManager = new NetManager(new InetSocketAddress(port));
+        netManager.connect();
 
         Threads.mainThread.scheduleAtFixedRate(this, 0L, 50L, TimeUnit.MILLISECONDS);
         logger.log(Level.INFO, "Loading world world....");
