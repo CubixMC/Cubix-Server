@@ -1,10 +1,10 @@
 package org.cubixmc.server.network;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -16,9 +16,12 @@ import org.cubixmc.server.network.codecs.CodecHandler;
 import org.cubixmc.server.network.codecs.CompletionHandler;
 import org.cubixmc.server.network.codecs.DummyHandler;
 import org.cubixmc.server.network.codecs.PacketHandler;
+import org.cubixmc.server.threads.Threads;
 
 import java.net.InetSocketAddress;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class NetManager extends ChannelInitializer<SocketChannel> {
@@ -26,39 +29,42 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
     public static final AttributeKey<String> USERNAME = AttributeKey.valueOf("username");
     public static final int NETWORK_LIMIT = 2097152;
 
-    private final Set<Connection> connections = new ConcurrentSet<>();
-    private final NioEventLoopGroup bossGroup;
-    private final NioEventLoopGroup workerGroup;
+    private final Set<Connection> connections = ConcurrentHashMap.newKeySet();
+    private final EventLoopGroup bossGroup;
+    private final EventLoopGroup workerGroup;
     private final ServerBootstrap bootstrap;
     private final InetSocketAddress address;
     private Channel channel;
 
     public NetManager(InetSocketAddress address) {
-        this.bossGroup = new NioEventLoopGroup(4);
-        this.workerGroup = new NioEventLoopGroup(4);
+        if(Epoll.isAvailable()) {
+            CubixServer.getLogger().log(Level.INFO, "Using linux native epoll networking.");
+            this.bossGroup = new EpollEventLoopGroup();
+            this.workerGroup = new EpollEventLoopGroup();
+        } else {
+            this.bossGroup = new NioEventLoopGroup();
+            this.workerGroup = new NioEventLoopGroup();
+        }
         this.bootstrap = new ServerBootstrap();
         this.address = address;
         bootstrap
                 .group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
+                .channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : NioServerSocketChannel.class)
                 .childHandler(this)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
     }
 
     public void connect() {
-        bootstrap.bind(new InetSocketAddress(25565)).addListener(new GenericFutureListener<ChannelFuture>() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if(!future.isSuccess()) {
-                    CubixServer.getLogger().log(Level.SEVERE, "Failed to bind port " + address.getPort(), future.cause());
-                    // TODO: Stop server
-                } else {
-                    NetManager.this.channel = future.channel();
-                    CubixServer.getLogger().log(Level.INFO, "Network pipeline running!");
-                }
+        ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(25565)).addListener((GenericFutureListener<ChannelFuture>) future -> {
+            if(!future.isSuccess()) {
+                CubixServer.getLogger().log(Level.SEVERE, "Failed to bind port " + address.getPort(), future.cause());
+                Threads.mainThread.execute(() -> CubixServer.getInstance().stop());
+            } else {
+                CubixServer.getLogger().log(Level.INFO, "Network pipeline running!");
             }
         });
+        this.channel = channelFuture.channel();
     }
 
     @Override
