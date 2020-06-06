@@ -1,16 +1,17 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
 import org.cubixmc.util.Vector3I;
 
 @Getter
 public class PacketInPlayerDigging extends PacketIn {
     private int status;
-    private Position location;
+    private Vector3D location;
     private int face;
 
     public PacketInPlayerDigging() {

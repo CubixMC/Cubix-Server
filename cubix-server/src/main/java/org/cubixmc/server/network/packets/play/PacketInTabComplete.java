@@ -1,16 +1,18 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
+import org.cubixmc.util.Vector3I;
 
 @Getter
 public class PacketInTabComplete extends PacketIn {
     private String text;
     private boolean hasPosition;
-    private Position lookedAtBlock;
+    private Vector3D lookedAtBlock;
 
     public PacketInTabComplete() {
         super(0x14);

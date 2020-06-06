@@ -15,11 +15,13 @@ public class EmptyChunk extends CubixChunk {
     }
 
     @Override
-    public void load() {
+    public boolean load() {
+        return true;
     }
 
     @Override
-    public void unload() {
+    public boolean unload() {
+        return true;
     }
 
     @Override

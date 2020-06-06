@@ -1,5 +1,6 @@
 package org.cubixmc.server.entity;
 
+import org.bukkit.Location;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.Player;
 import org.cubixmc.server.CubixServer;
@@ -12,7 +13,6 @@ import org.cubixmc.server.util.BoundingBox;
 import org.cubixmc.server.util.Movement;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.MathHelper;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3D;
 import org.cubixmc.util.Vector3F;
 
@@ -28,7 +28,7 @@ public abstract class CubixEntity implements Entity, Runnable {
     protected final Metadata metadata;
     private final UUID uuid;
     protected CubixWorld world;
-    protected Position position;
+    protected Location location;
     protected BoundingBox boundingBox;
 
     private final Movement movement;
@@ -52,21 +52,21 @@ public abstract class CubixEntity implements Entity, Runnable {
     }
 
     public List<CubixEntity> getNearEntities(double radius) {
-        List<CubixEntity> entities = world.getEntitiesInArea(position, radius);
+        List<CubixEntity> entities = world.getEntitiesInArea(location, radius);
         entities.remove(this);
         return entities;
     }
 
     public boolean isSpawned() {
-        return position != null;
+        return location != null;
     }
 
-    public boolean spawn(Position position) {
-        if(this.position != null) {
+    public boolean spawn(Location position) {
+        if(this.location != null) {
             return false;
         }
 
-        this.position = position;
+        this.location = position;
         movement.reset(position); // Reset movement tracking
         if(boundingBox != null) {
             boundingBox.update(); // Update bounding box
@@ -84,21 +84,21 @@ public abstract class CubixEntity implements Entity, Runnable {
     }
 
     public void move(double dx, double dy, double dz) {
-        position.add(dx, dy, dz);
+        location.add(dx, dy, dz);
         this.hasMoved = true;
     }
 
     public void setYaw(float yaw) {
-        setRotation(yaw, position.getPitch());
+        setRotation(yaw, location.getPitch());
     }
 
     public void setPitch(float pitch) {
-        setRotation(position.getYaw(), pitch);
+        setRotation(location.getYaw(), pitch);
     }
 
     public void setRotation(float yaw, float pitch) {
-        position.setYaw(yaw);
-        position.setPitch(pitch);
+        location.setYaw(yaw);
+        location.setPitch(pitch);
         rotChanged = true;
     }
 
@@ -127,7 +127,7 @@ public abstract class CubixEntity implements Entity, Runnable {
             CubixServer.broadcast(packet, world, this);
             if(rotChanged && this instanceof Player) {
                 // For players, update head rot
-                CubixServer.broadcast(new PacketOutEntityHeadLook(entityId, MathHelper.byteToDegree(position.getYaw())), world, this);
+                CubixServer.broadcast(new PacketOutEntityHeadLook(entityId, MathHelper.byteToDegree(location.getYaw())), world, this);
             }
 
             this.hasMoved = rotChanged = false;
@@ -145,22 +145,22 @@ public abstract class CubixEntity implements Entity, Runnable {
     }
 
     @Override
-    public Position getPosition() {
-        return position.clone();
+    public Location getPosition() {
+        return location.clone();
     }
 
     @Override
-    public boolean teleport(Position to) {
-        if(!position.getWorld().equals(to.getWorld())) {
+    public boolean teleport(Location to) {
+        if(!location.getWorld().equals(to.getWorld())) {
             return false;
         }
 
-        position.setX(to.getX());
-        position.setY(to.getY());
-        position.setZ(to.getZ());
-        position.setYaw(to.getYaw());
-        position.setPitch(to.getPitch());
-        movement.reset(position);
+        location.setX(to.getX());
+        location.setY(to.getY());
+        location.setZ(to.getZ());
+        location.setYaw(to.getYaw());
+        location.setPitch(to.getPitch());
+        movement.reset(location);
         return true;
     }
 

@@ -1,8 +1,8 @@
 package org.cubixmc.server.world;
 
+import org.bukkit.World;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.util.Vector3I;
-import org.cubixmc.world.World;
 
 public class CubixBlock {
     private final CubixWorld world;

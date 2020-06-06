@@ -1,9 +1,9 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutPlayerPositionLook extends PacketOut {
@@ -19,7 +19,7 @@ public class PacketOutPlayerPositionLook extends PacketOut {
         super(0x08);
     }
 
-    public PacketOutPlayerPositionLook(Position position) {
+    public PacketOutPlayerPositionLook(Location position) {
         this(position.getX(), position.getY(), position.getZ(), position.getYaw(), position.getPitch());
     }
 

@@ -1,11 +1,11 @@
 package org.cubixmc.server.network.packets.play;
 
+import org.bukkit.Location;
 import org.cubixmc.entity.EntityType;
 import org.cubixmc.server.entity.CubixEntity;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
 import org.cubixmc.util.MathHelper;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3I;
 
 public class PacketOutSpawnObject extends PacketOut {
@@ -58,7 +58,7 @@ public class PacketOutSpawnObject extends PacketOut {
         }
     }
 
-    private static Vector3I toFixedPoint(Position position) {
+    private static Vector3I toFixedPoint(Location position) {
         return new Vector3I(
                 position.getX() * 32.0,
                 position.getY() * 32.0,

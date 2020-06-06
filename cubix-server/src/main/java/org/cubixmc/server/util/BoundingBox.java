@@ -1,7 +1,7 @@
 package org.cubixmc.server.util;
 
+import org.bukkit.Location;
 import org.cubixmc.server.entity.CubixEntity;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3D;
 import org.cubixmc.util.Vector3F;
 
@@ -21,7 +21,7 @@ public class BoundingBox implements Cloneable {
 
     public void update() {
         if(!holder.isSpawned()) return;
-        Position pos = holder.getPosition();
+        Location pos = holder.getPosition();
         minCoords.set(pos.getX() - origin.getX() * dimensions.getX(), pos.getY() - origin.getY() * dimensions.getY(), pos.getZ() - origin.getZ() * dimensions.getZ());
         maxCoords.set(pos.getX() + (1 - origin.getX()) * dimensions.getX(), pos.getY() + (1 - origin.getY()) * dimensions.getY(), pos.getZ() + (1 - origin.getZ()) * dimensions.getZ());
     }

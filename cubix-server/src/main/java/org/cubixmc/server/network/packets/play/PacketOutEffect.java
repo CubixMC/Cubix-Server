@@ -1,14 +1,14 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutEffect extends PacketOut {
     private int effectID;
-    private Position location;
+    private Location location;
     private int data;
     private boolean disableRelativeVolume;
 
@@ -16,7 +16,7 @@ public class PacketOutEffect extends PacketOut {
         super(0x28);
     }
 
-    public PacketOutEffect(int effectID, Position location, int data, boolean disableRelativeVolume) {
+    public PacketOutEffect(int effectID, Location location, int data, boolean disableRelativeVolume) {
         super(0x28);
         this.effectID = effectID;
         this.location = location;

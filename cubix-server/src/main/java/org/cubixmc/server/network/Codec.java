@@ -6,17 +6,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import net.md_5.bungee.chat.TextComponentSerializer;
-import org.cubixmc.chat.ChatMessage;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTStorage;
 import org.cubixmc.util.MathHelper;
-import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
 
 import java.util.UUID;
 
@@ -121,7 +120,7 @@ public class Codec {
         writeCompoundTag(null);
     }
 
-    public void writePosition(Position position) {
+    public void writePosition(Location position) {
         int x = MathHelper.floor(position.getX());
         int y = MathHelper.floor(position.getY());
         int z = MathHelper.floor(position.getZ());
@@ -245,12 +244,12 @@ public class Codec {
         return item;
     }
 
-    public Position readPosition() {
+    public Vector3D readPosition() {
         long value = readLong();
         double x = (double) (value >> 38);
         double y = (double) ((value >> 26) & 0xFFF);
         double z = (double) (value << 38 >> 38);
-        return new Position(null, x, y, z);
+        return new Vector3D(x, y, z);
     }
 
     public UUID readUUID() {

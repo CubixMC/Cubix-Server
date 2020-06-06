@@ -1,12 +1,18 @@
 package org.cubixmc.util;
 
+import org.bukkit.Location;
+
 public class Vector3I {
     private int x;
     private int y;
     private int z;
 
-    public Vector3I(Position position) {
-        this(position.getX(), position.getY(), position.getZ());
+    public Vector3I(Location location) {
+        this(location.getX(), location.getY(), location.getZ());
+    }
+
+    public Vector3I(Vector3D location) {
+        this(location.getX(), location.getY(), location.getZ());
     }
 
     public Vector3I(double x, double y, double z) {

@@ -81,12 +81,12 @@ public abstract class CubixEntityLiving extends CubixEntity implements LivingEnt
         List<PacketOut> list = Lists.newArrayList();
         PacketOutSpawnMob spawn = new PacketOutSpawnMob();
         spawn.setEntityID(entityId);
-        spawn.setX(MathHelper.floor(position.getX() * 32.0));
-        spawn.setY(MathHelper.floor(position.getY() * 32.0));
-        spawn.setZ(MathHelper.floor(position.getZ() * 32.0));
-        spawn.setYaw(MathHelper.byteToDegree(position.getYaw()));
-        spawn.setPitch(MathHelper.byteToDegree(position.getPitch()));
-        spawn.setHeadPitch(MathHelper.byteToDegree(position.getYaw()));
+        spawn.setX(MathHelper.floor(location.getX() * 32.0));
+        spawn.setY(MathHelper.floor(location.getY() * 32.0));
+        spawn.setZ(MathHelper.floor(location.getZ() * 32.0));
+        spawn.setYaw(MathHelper.byteToDegree(location.getYaw()));
+        spawn.setPitch(MathHelper.byteToDegree(location.getPitch()));
+        spawn.setHeadPitch(MathHelper.byteToDegree(location.getYaw()));
         spawn.setType(0); // TODO: Entity type
         spawn.setMetadata(metadata);
         list.add(spawn);

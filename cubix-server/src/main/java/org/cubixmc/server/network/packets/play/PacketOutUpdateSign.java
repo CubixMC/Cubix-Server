@@ -1,13 +1,13 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutUpdateSign extends PacketOut {
-    private Position location;
+    private Location location;
     private String line1;
     private String line2;
     private String line3;
@@ -17,7 +17,7 @@ public class PacketOutUpdateSign extends PacketOut {
         super(0x33);
     }
 
-    public PacketOutUpdateSign(Position location, String line1, String line2, String line3, String line4) {
+    public PacketOutUpdateSign(Location location, String line1, String line2, String line3, String line4) {
         super(0x33);
         this.location = location;
         this.line1 = line1;

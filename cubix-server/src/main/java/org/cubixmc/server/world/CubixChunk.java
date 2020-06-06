@@ -3,6 +3,13 @@ package org.cubixmc.server.world;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import lombok.Getter;
+import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.*;
@@ -11,11 +18,8 @@ import org.cubixmc.server.network.packets.play.PacketOutChunkData;
 import org.cubixmc.server.network.packets.play.PacketOutMultiBlockChange;
 import org.cubixmc.server.util.NibbleArray;
 import org.cubixmc.server.util.QueuedChunk;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector2I;
 import org.cubixmc.util.Vector3I;
-import org.cubixmc.world.Chunk;
-import org.cubixmc.world.World;
 
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -71,7 +75,7 @@ public class CubixChunk implements Chunk {
                 Material type = getType(pos.getX(), pos.getY(), pos.getZ());
                 byte data = getData(pos.getX(), pos.getY(), pos.getZ());
                 int blockId = type.getId() << 4 | data;
-                PacketOutBlockChange packet = new PacketOutBlockChange(new Position(world, pos.getX(), pos.getY(), pos.getZ()), blockId);
+                PacketOutBlockChange packet = new PacketOutBlockChange(new Location(world, pos.getX(), pos.getY(), pos.getZ()), blockId);
                 CubixServer.broadcast(packet, world, null);
             } else if(queuedBlockChanges.size() < 64) {
                 // Send multi block change packet
@@ -378,14 +382,6 @@ public class CubixChunk implements Chunk {
     }
 
     @Override
-    public void load() {
-    }
-
-    @Override
-    public void unload() {
-    }
-
-    @Override
     public int getX() {
         return x;
     }
@@ -395,9 +391,77 @@ public class CubixChunk implements Chunk {
         return z;
     }
 
-    @Override
     public Vector2I getPosition() {
         return new Vector2I(x, z);
+    }
+
+    // TODO: ALL
+
+
+    @Override
+    public Block getBlock(int x, int y, int z) {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ChunkSnapshot getChunkSnapshot() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ChunkSnapshot getChunkSnapshot(boolean includeMaxblocky, boolean includeBiome, boolean includeBiomeTempRain) {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Entity[] getEntities() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public BlockState[] getTileEntities() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isLoaded() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean load(boolean generate) {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean load() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean unload(boolean save, boolean safe) {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean unload(boolean save) {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean unload() {
+        // TODO: Implement method
+        throw new UnsupportedOperationException();
     }
 
     @Override

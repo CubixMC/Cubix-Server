@@ -1,6 +1,6 @@
 package org.cubixmc.entity;
 
-import org.cubixmc.util.Position;
+import org.bukkit.Location;
 
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public interface Entity {
     /**
      * @return Position of the player, including x,y,z coords.
      */
-    Position getPosition();
+    Location getPosition();
 
 
     /**
@@ -33,7 +33,7 @@ public interface Entity {
      * @param position New location to teleport this entity to
      * @return true if the teleport was successful
      */
-    boolean teleport(Position position);
+    boolean teleport(Location position);
 
 
     /**

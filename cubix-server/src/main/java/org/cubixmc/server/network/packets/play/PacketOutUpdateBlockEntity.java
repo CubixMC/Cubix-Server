@@ -1,13 +1,13 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutUpdateBlockEntity extends PacketOut {
-    private Position location;
+    private Location location;
     private int action;
     private byte[] nBTData;
 
@@ -15,7 +15,7 @@ public class PacketOutUpdateBlockEntity extends PacketOut {
         super(0x35);
     }
 
-    public PacketOutUpdateBlockEntity(Position location, int action, byte[] nBTData) {
+    public PacketOutUpdateBlockEntity(Location location, int action, byte[] nBTData) {
         super(0x35);
         this.location = location;
         this.action = action;

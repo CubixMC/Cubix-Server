@@ -1,19 +1,19 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutSpawnPosition extends PacketOut {
-    private Position location;
+    private Location location;
 
     public PacketOutSpawnPosition() {
         super(0x05);
     }
 
-    public PacketOutSpawnPosition(Position location) {
+    public PacketOutSpawnPosition(Location location) {
         super(0x05);
         this.location = location;
     }

@@ -1,13 +1,13 @@
 package org.cubixmc.server.world;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.GameMode;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTException;
 import org.cubixmc.server.nbt.NBTStorage;
 import org.cubixmc.server.nbt.NBTType;
-import org.cubixmc.util.Position;
 
 import java.io.*;
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class CubixWorldData {
     private final UUID uuid;
     private final long seed;
     private GameMode gameType;
-    private Position spawnPosition;
+    private Location spawnPosition;
     private long time;
     private long lastPlayed;
     private long sizeOnDisk;
@@ -50,7 +50,7 @@ public class CubixWorldData {
         int spawnX = compound.getInt("SpawnX");
         int spawnY = compound.getInt("SpawnY");
         int spawnZ = compound.getInt("SpawnZ");
-        this.spawnPosition = new Position(world, spawnX, spawnY, spawnZ);
+        this.spawnPosition = new Location(world, spawnX, spawnY, spawnZ);
         this.time = compound.getLong("Time");
         this.lastPlayed = compound.getLong("LastPlayed");
         this.sizeOnDisk = compound.getLong("SizeOnDisc");

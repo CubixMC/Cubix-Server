@@ -1,4 +1,5 @@
 # Cubix-Server
+[![Build Status](https://ci.codemc.org/buildStatus/icon?job=lenis0012/Cubix-Server)](https://ci.codemc.io/job/lenis0012/job/Cubix-Server/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CubixMC_Cubix-Server&metric=alert_status)](https://sonarcloud.io/dashboard?id=CubixMC_Cubix-Server)
 
 Cubix MC is an open-source minecraft sever. This project under development, 

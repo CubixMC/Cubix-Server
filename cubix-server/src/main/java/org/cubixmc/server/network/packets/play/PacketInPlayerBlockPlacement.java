@@ -1,15 +1,16 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.util.Position;
+import org.cubixmc.util.Vector3D;
 
 @Getter
 public class PacketInPlayerBlockPlacement extends PacketIn {
-    private Position location;
+    private Vector3D location;
     private int direction;
     private ItemStack heldItem;
     private int cursorPositionX;
@@ -33,13 +34,14 @@ public class PacketInPlayerBlockPlacement extends PacketIn {
     @Override
     public void handle(Connection connection) {
         System.out.println("place @" + location + " block " + heldItem);
-        if(direction == 0) location.add(0, -1, 0);
-        if(direction == 1) location.add(0, 1, 0);
-        if(direction == 2) location.add(0, 0, -1);
-        if(direction == 3) location.add(0, 0, 1);
-        if(direction == 4) location.add(-1, 0, 0);
-        if(direction == 5) location.add(1, 0, 0);
-        connection.getPlayer().getWorld().getBlock(location)
+        Location blockLocation = location.toPositon(connection.getPlayer().getWorld());
+        if(direction == 0) blockLocation.add(0, -1, 0);
+        else if(direction == 1) blockLocation.add(0, 1, 0);
+        else if(direction == 2) blockLocation.add(0, 0, -1);
+        else if(direction == 3) blockLocation.add(0, 0, 1);
+        else if(direction == 4) blockLocation.add(-1, 0, 0);
+        else if(direction == 5) blockLocation.add(1, 0, 0);
+        connection.getPlayer().getWorld().getBlock(blockLocation)
                 .setTypeAndData(heldItem.getType(), heldItem.getData());
 //        connection.getPlayer().getWorld().getChunk(location.getChunkCoords().getX(), location.getChunkCoords().getZ())
 //                .setTypeAndData((int) location.getX(), (int) location.getY(), (int) location.getZ(), heldItem.getType(), heldItem.getData());

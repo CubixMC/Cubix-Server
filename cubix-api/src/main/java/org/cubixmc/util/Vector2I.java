@@ -1,11 +1,13 @@
 package org.cubixmc.util;
 
+import org.bukkit.Location;
+
 public class Vector2I {
     private int x;
     private int z;
 
-    public Vector2I(Position position) {
-        this(position.getX(), position.getZ());
+    public Vector2I(Location location) {
+        this(location.getX(), location.getZ());
     }
 
     public Vector2I(double x, double z) {

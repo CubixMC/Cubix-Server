@@ -1,6 +1,7 @@
 package org.cubixmc.util;
 
-import org.cubixmc.world.World;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Vector3F {
     private float x;
@@ -17,8 +18,8 @@ public class Vector3F {
     /**
      * Construct the vector with all components as 0.
      */
-    public Vector3F(Position position) {
-        this(position.getX(), position.getY(), position.getZ());
+    public Vector3F(Location location) {
+        this(location.getX(), location.getY(), location.getZ());
     }
 
     /**
@@ -134,8 +135,8 @@ public class Vector3F {
      * @param world Of the position
      * @return An instance of {@link World World}
      */
-    public Position toPositon(World world) {
-        return new Position(world, x, y, z);
+    public Location toLocation(World world) {
+        return new Location(world, x, y, z);
     }
 
     @Override

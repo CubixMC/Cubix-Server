@@ -6,6 +6,7 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.chat.ComponentSerializer;
+import org.bukkit.Location;
 import org.cubixmc.GameMode;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
@@ -27,7 +28,6 @@ import org.cubixmc.server.util.auth.GameProfile;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.server.world.PlayerChunkMap;
 import org.cubixmc.util.MathHelper;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3D;
 
 import java.net.InetSocketAddress;
@@ -76,11 +76,11 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public void move(double dx, double dy, double dz) {
-        int cx = MathHelper.floor(position.getX()) >> 4;
-        int cz = MathHelper.floor(position.getZ()) >> 4;
+        int cx = MathHelper.floor(location.getX()) >> 4;
+        int cz = MathHelper.floor(location.getZ()) >> 4;
         super.move(dx, dy, dz);
-        int newX = MathHelper.floor(position.getX()) >> 4;
-        int newZ = MathHelper.floor(position.getZ()) >> 4;
+        int newX = MathHelper.floor(location.getX()) >> 4;
+        int newZ = MathHelper.floor(location.getZ()) >> 4;
         if(cx != newX || cz != newZ) {
             playerChunkMap.movePlayer();
         }
@@ -105,7 +105,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
     }
 
     @Override
-    public boolean spawn(final Position position) {
+    public boolean spawn(final Location position) {
         metadata.set(10, (byte) 127);
         if(!super.spawn(position)) {
             return false;
@@ -285,11 +285,11 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         packet.setEntityID(entityId);
         packet.setPlayerUUID(profile.getUuid());
         packet.setCurrentItem((short) 0);
-        packet.setX(MathHelper.floor(position.getX() * 32.0));
-        packet.setY(MathHelper.floor(position.getY() * 32.0));
-        packet.setZ(MathHelper.floor(position.getZ() * 32.0));
-        packet.setYaw(MathHelper.byteToDegree(position.getYaw()));
-        packet.setPitch(MathHelper.byteToDegree(position.getPitch()));
+        packet.setX(MathHelper.floor(location.getX() * 32.0));
+        packet.setY(MathHelper.floor(location.getY() * 32.0));
+        packet.setZ(MathHelper.floor(location.getZ() * 32.0));
+        packet.setYaw(MathHelper.byteToDegree(location.getYaw()));
+        packet.setPitch(MathHelper.byteToDegree(location.getPitch()));
         packet.setMetadata(metadata);
         list.add(packet);
         return list;

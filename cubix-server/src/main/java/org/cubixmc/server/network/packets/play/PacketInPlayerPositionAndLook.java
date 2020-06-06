@@ -1,10 +1,10 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.Connection;
 import org.cubixmc.server.network.packets.PacketIn;
-import org.cubixmc.util.Position;
 
 @Getter
 public class PacketInPlayerPositionAndLook extends PacketIn {
@@ -32,7 +32,7 @@ public class PacketInPlayerPositionAndLook extends PacketIn {
     @Override
     public void handle(Connection connection) {
         // Make the absolute position relative
-        Position pos = connection.getPlayer().getPosition();
+        Location pos = connection.getPlayer().getPosition();
         double dx = x - pos.getX();
         double dy = feetY - pos.getY();
         double dz = z - pos.getZ();

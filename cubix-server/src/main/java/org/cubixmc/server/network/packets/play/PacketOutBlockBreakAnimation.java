@@ -1,21 +1,21 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutBlockBreakAnimation extends PacketOut {
     private int entityID;
-    private Position location;
+    private Location location;
     private int destroyStage;
 
     public PacketOutBlockBreakAnimation() {
         super(0x25);
     }
 
-    public PacketOutBlockBreakAnimation(int entityID, Position location, int destroyStage) {
+    public PacketOutBlockBreakAnimation(int entityID, Location location, int destroyStage) {
         super(0x25);
         this.entityID = entityID;
         this.location = location;

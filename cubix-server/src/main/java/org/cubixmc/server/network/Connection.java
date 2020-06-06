@@ -7,6 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
 import org.cubixmc.server.CubixServer;
@@ -20,7 +21,6 @@ import org.cubixmc.server.network.packets.login.PacketOutDisconnect;
 import org.cubixmc.server.network.packets.login.PacketOutSetCompression;
 import org.cubixmc.server.util.auth.GameProfile;
 import org.cubixmc.server.world.CubixWorld;
-import org.cubixmc.util.Position;
 
 import javax.crypto.SecretKey;
 import java.net.InetSocketAddress;
@@ -60,7 +60,7 @@ public class Connection {
         setPlayer(player);
 
         // Make player spawn in
-        Position spawn = world.getSpawnPosition();
+        Location spawn = world.getSpawnPosition();
         player.spawn(spawn);
     }
 

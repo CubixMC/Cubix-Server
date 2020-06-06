@@ -1,8 +1,8 @@
 package org.cubixmc.server.entity;
 
+import org.bukkit.Location;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.server.network.Codec;
-import org.cubixmc.util.Position;
 import org.cubixmc.util.Vector3I;
 
 public class Metadata {
@@ -63,14 +63,14 @@ public class Metadata {
                     codec.writeSlot((ItemStack) object);
                     break;
                 case "vector3i":
-                case "position":
+                case "location":
                     writeFlag(codec, 6, i);
 
                     Vector3I pos;
                     if(object instanceof Vector3I) {
                         pos = (Vector3I) object;
                     } else {
-                        pos = new Vector3I((Position) object);
+                        pos = new Vector3I((Location) object);
                     }
 
                     codec.writeInt(pos.getX());

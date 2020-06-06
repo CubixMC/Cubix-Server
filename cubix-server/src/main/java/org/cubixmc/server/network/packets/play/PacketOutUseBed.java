@@ -1,20 +1,20 @@
 package org.cubixmc.server.network.packets.play;
 
 import lombok.Data;
+import org.bukkit.Location;
 import org.cubixmc.server.network.Codec;
 import org.cubixmc.server.network.packets.PacketOut;
-import org.cubixmc.util.Position;
 
 @Data
 public class PacketOutUseBed extends PacketOut {
     private int entityID;
-    private Position location;
+    private Location location;
 
     public PacketOutUseBed() {
         super(0x0A);
     }
 
-    public PacketOutUseBed(int entityID, Position location) {
+    public PacketOutUseBed(int entityID, Location location) {
         super(0x0A);
         this.entityID = entityID;
         this.location = location;

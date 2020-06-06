@@ -1,6 +1,7 @@
 package org.cubixmc.util;
 
-import org.cubixmc.world.World;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Vector3D {
     private double x;
@@ -17,8 +18,8 @@ public class Vector3D {
     /**
      * Construct the vector with all components copied from position.
      */
-    public Vector3D(Position position) {
-        this(position.getX(), position.getY(), position.getZ());
+    public Vector3D(Location location) {
+        this(location.getX(), location.getY(), location.getZ());
     }
 
     /**
@@ -138,8 +139,8 @@ public class Vector3D {
      * @param world Of the position
      * @return An instance of {@link World World}
      */
-    public Position toPositon(World world) {
-        return new Position(world, x, y, z);
+    public Location toPositon(World world) {
+        return new Location(world, x, y, z);
     }
 
     @Override
