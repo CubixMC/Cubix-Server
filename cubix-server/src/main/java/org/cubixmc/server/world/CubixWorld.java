@@ -127,8 +127,12 @@ public class CubixWorld implements World {
         return worldData.getSeed();
     }
 
-    public Location getSpawnPosition() {
-        return worldData.getSpawnPosition();
+    public Location getSafeSpawnPoint() {
+        Location location = worldData.getSpawnPosition().clone();
+        while(location.getY() < 256 && getBlock(location).getType().isSolid()) {
+            location.add(0, 1, 0);
+        }
+        return location;
     }
 
     public List<Entity> getCubixEntities() {

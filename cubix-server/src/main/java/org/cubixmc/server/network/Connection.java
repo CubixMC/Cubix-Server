@@ -60,7 +60,7 @@ public class Connection {
         setPlayer(player);
 
         // Make player spawn in
-        Location spawn = world.getSpawnPosition();
+        Location spawn = world.getSafeSpawnPoint();
         player.spawn(spawn);
     }
 

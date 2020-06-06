@@ -114,7 +114,10 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         // Send properties fo world and player
         PacketOutJoinGame join = new PacketOutJoinGame(entityId, 0, 0, 0, 60, "default", false);
         PacketOutSpawnPosition compass = new PacketOutSpawnPosition(position);
-        PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(6, 0.05F, 0.1F);
+        int invulnerable = 0x1;
+        int flying = 0x2;
+        int allowFlying = 0x4;
+        PacketOutPlayerAbilities abilities = new PacketOutPlayerAbilities(allowFlying, 0.05F, 0.1F);
         connection.sendPackets(join, compass, abilities);
 
         // Send the chunks
