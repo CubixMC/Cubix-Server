@@ -102,7 +102,9 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
             workerGroup.shutdownGracefully().sync();
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            CubixServer.getLogger().log(Level.WARNING, "Unexpected interruption while shutting down network pipeline", e);
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
         }
     }
 }

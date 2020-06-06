@@ -65,8 +65,8 @@ public class CubixChunkProvider {
     private void unloadChunk(CubixChunk chunk) {
         // TODO: Async?
         if(!(chunk instanceof EmptyChunk)) {
-//            RegionFile regionFile = regionFileCache.getUnchecked(new Vector2I(chunk.getX() >> 5, chunk.getZ() >> 5));
-//            regionFile.saveChunk(chunk.getX() & 31, chunk.getZ() & 31, chunk.saveToTag());
+            RegionFile regionFile = regionFileCache.getUnchecked(new Vector2I(chunk.getX() >> 5, chunk.getZ() >> 5));
+            regionFile.saveChunk(chunk.getX() & 31, chunk.getZ() & 31, chunk.saveToTag());
         }
         // one last check to see if this chunk is still unused
         if(CubixServer.getInstance().getOnlinePlayers().stream()

@@ -3,6 +3,9 @@ package org.cubixmc.server.entity;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.cubixmc.GameMode;
 import org.cubixmc.chat.ChatColor;
 import org.cubixmc.chat.ChatMessage;
@@ -139,6 +142,14 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
         // Set window
         inventory.syncAllSlots();
+
+        // Announce join
+        BaseComponent[] message = new ComponentBuilder(getName())
+                .color(net.md_5.bungee.api.ChatColor.YELLOW)
+                .append(" has joined the game")
+                .color(net.md_5.bungee.api.ChatColor.GRAY)
+                .create();
+        CubixServer.getInstance().getOnlinePlayers().forEach(p -> p.sendMessage(message));
         return true;
     }
 
@@ -218,6 +229,10 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
         message = ChatColor.replace('&', message);
         ChatMessage chatMessage = ChatMessage.fromString(message);
         connection.sendPacket(new PacketOutChatMessage(chatMessage.toString(), 0));
+    }
+
+    public void sendMessage(BaseComponent... components) {
+        connection.sendPacket(new PacketOutChatMessage(ComponentSerializer.toString(components), 0));
     }
 
     @Override
