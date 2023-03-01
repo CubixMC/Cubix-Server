@@ -1,6 +1,6 @@
 package org.cubixmc.server.entity;
 
-import com.google.common.collect.Lists;
+import org.checkerframework.checker.units.qual.A;
 import org.cubixmc.entity.Damageable;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.entity.LivingEntity;
@@ -9,6 +9,7 @@ import org.cubixmc.server.network.packets.play.PacketOutSpawnMob;
 import org.cubixmc.server.world.CubixWorld;
 import org.cubixmc.util.MathHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CubixEntityLiving extends CubixEntity implements LivingEntity, Damageable {
@@ -78,7 +79,7 @@ public abstract class CubixEntityLiving extends CubixEntity implements LivingEnt
 
     @Override
     public List<PacketOut> getSpawnPackets() {
-        List<PacketOut> list = Lists.newArrayList();
+        List<PacketOut> list = new ArrayList<>();
         PacketOutSpawnMob spawn = new PacketOutSpawnMob();
         spawn.setEntityID(entityId);
         spawn.setX(MathHelper.floor(location.getX() * 32.0));

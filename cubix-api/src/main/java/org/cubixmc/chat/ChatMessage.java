@@ -1,9 +1,9 @@
 package org.cubixmc.chat;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatMessage {
@@ -64,7 +64,7 @@ public class ChatMessage {
     public static ChatMessage fromString(String rawMessage) {
         rawMessage = rawMessage.replace("\n", ChatColor.RESET + "\n") + ChatColor.AQUA;
         boolean inMessage = true;
-        List<ChatColor> colors = Lists.newArrayList();
+        List<ChatColor> colors = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         ChatMessage chatMessage = null;
 

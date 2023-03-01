@@ -1,10 +1,8 @@
 package org.cubixmc.server.world;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
+import com.github.benmanes.caffeine.cache.CacheLoader;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.nbt.CompoundTag;
 import org.cubixmc.server.nbt.NBTException;
@@ -16,6 +14,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -37,8 +37,8 @@ public class CubixChunkProvider {
     /**
      * Concurrent chunk storage to allow multi-threading
      */
-    private final Map<Vector2I, CubixChunk> chunkMap = Maps.newConcurrentMap();
-    private final Queue<Vector2I> unloadQueue = Queues.newConcurrentLinkedQueue();
+    private final Map<Vector2I, CubixChunk> chunkMap = new ConcurrentHashMap<>();
+    private final Queue<Vector2I> unloadQueue = new ConcurrentLinkedQueue<>();
     private final CubixWorld world;
     private final LightingManager lightingManager;
 
@@ -47,7 +47,7 @@ public class CubixChunkProvider {
         this.lightingManager = new LightingManager(world);
         File regionFile = new File(world.getWorldFolder(), "region");
         RegionFileLoader regionFileLoader = new RegionFileLoader(regionFile);
-        this.regionFileCache = CacheBuilder.newBuilder()
+        this.regionFileCache = Caffeine.newBuilder()
                 .expireAfterAccess(CACHE_EXPIRY, TimeUnit.MINUTES)
                 .softValues().build(regionFileLoader);
     }
@@ -65,7 +65,7 @@ public class CubixChunkProvider {
     private void unloadChunk(CubixChunk chunk) {
         // TODO: Async?
         if(!(chunk instanceof EmptyChunk)) {
-            RegionFile regionFile = regionFileCache.getUnchecked(new Vector2I(chunk.getX() >> 5, chunk.getZ() >> 5));
+            RegionFile regionFile = regionFileCache.get(new Vector2I(chunk.getX() >> 5, chunk.getZ() >> 5));
             regionFile.saveChunk(chunk.getX() & 31, chunk.getZ() & 31, chunk.saveToTag());
         }
         // one last check to see if this chunk is still unused
@@ -110,7 +110,7 @@ public class CubixChunkProvider {
             } else {
                 chunk = new EmptyChunk(world, x, z);
             }
-        } catch(ExecutionException e) {
+        } catch(Exception e) {
             CubixServer.getLogger().log(Level.WARNING, "Failed to load region file", e);
         }
 
@@ -129,18 +129,13 @@ public class CubixChunkProvider {
         return true;
     }
 
-    private static class RegionFileLoader extends CacheLoader<Vector2I, RegionFile> {
-        private final File regionFile;
-
-        public RegionFileLoader(File regionFile) {
-            this.regionFile = regionFile;
-        }
+    private record RegionFileLoader(File regionFile) implements CacheLoader<Vector2I, RegionFile> {
 
         @Override
-        public RegionFile load(Vector2I position) throws Exception {
-            String name = "r." + position.getX() + "." + position.getZ() + ".mca";
-            File file = new File(regionFile, name);
-            return new RegionFile(file);
+            public RegionFile load(Vector2I position) throws Exception {
+                String name = "r." + position.getX() + "." + position.getZ() + ".mca";
+                File file = new File(regionFile, name);
+                return new RegionFile(file);
+            }
         }
-    }
 }

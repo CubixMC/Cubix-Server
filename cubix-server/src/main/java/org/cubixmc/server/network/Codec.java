@@ -1,6 +1,5 @@
 package org.cubixmc.server.network;
 
-import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -8,7 +7,6 @@ import io.netty.buffer.ByteBufOutputStream;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.cubixmc.inventory.ItemStack;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.entity.Metadata;
@@ -17,6 +15,7 @@ import org.cubixmc.server.nbt.NBTStorage;
 import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Vector3D;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class Codec {
@@ -64,7 +63,7 @@ public class Codec {
 
     public void writeString(String utf) {
         writeVarInt(utf.length());
-        byteBuf.writeBytes(utf.getBytes(Charsets.UTF_8));
+        byteBuf.writeBytes(utf.getBytes(StandardCharsets.UTF_8));
     }
 
     public void writeChat(BaseComponent component) {
@@ -186,7 +185,7 @@ public class Codec {
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
 
-        return new String(bytes, Charsets.UTF_8);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public BaseComponent[] readChat() {

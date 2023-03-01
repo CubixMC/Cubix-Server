@@ -1,7 +1,5 @@
 package org.cubixmc.server.world;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import lombok.Getter;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -21,6 +19,7 @@ import org.cubixmc.server.util.QueuedChunk;
 import org.cubixmc.util.Vector2I;
 import org.cubixmc.util.Vector3I;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
@@ -44,7 +43,7 @@ public class CubixChunk implements Chunk {
     /**
      * Block change queue
      */
-    private LinkedBlockingDeque<Vector3I> queuedBlockChanges = Queues.newLinkedBlockingDeque(64);
+    private LinkedBlockingDeque<Vector3I> queuedBlockChanges = new LinkedBlockingDeque<>(64);
 
     /**
      * Information on chunk population.
@@ -69,7 +68,7 @@ public class CubixChunk implements Chunk {
 
     public void tick() {
         if(queuedBlockChanges.size() > 0) {
-            // For same reason single block change doesn' t work
+            // For same reason single block change doesn't work
             if(queuedBlockChanges.size() == 0) {
                 Vector3I pos = queuedBlockChanges.poll();
                 Material type = getType(pos.getX(), pos.getY(), pos.getZ());
@@ -79,7 +78,7 @@ public class CubixChunk implements Chunk {
                 CubixServer.broadcast(packet, world, null);
             } else if(queuedBlockChanges.size() < 64) {
                 // Send multi block change packet
-                List<int[]> blocks = Lists.newArrayList();
+                List<int[]> blocks = new ArrayList<>();
                 while(queuedBlockChanges.size() > 0) {
                     Vector3I pos = queuedBlockChanges.poll();
                     int x = rel(pos.getX());

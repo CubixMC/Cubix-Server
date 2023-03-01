@@ -1,10 +1,9 @@
 package org.cubixmc.server.nbt;
 
-import com.google.common.base.Charsets;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,7 +47,7 @@ public class CompoundTag extends NBTTag {
             // Write tag name
 //            output.writeUTF(tagName);
             output.writeShort(tagName.length());
-            output.write(tagName.getBytes(Charsets.UTF_8));
+            output.write(tagName.getBytes(StandardCharsets.UTF_8));
 
             // Write tag data
             tag.encode(output);

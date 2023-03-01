@@ -1,9 +1,9 @@
 package org.cubixmc.server.nbt;
 
-import com.google.common.base.Charsets;
 import org.cubixmc.server.CubixServer;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
@@ -46,7 +46,7 @@ public class NBTStorage {
 
             // Write name
             output.writeShort(compound.getName().length());
-            output.write(compound.getName().getBytes(Charsets.UTF_8));
+            output.write(compound.getName().getBytes(StandardCharsets.UTF_8));
 //            output.writeUTF(compound.getName());
 
             // Write compound data

@@ -1,6 +1,5 @@
 package org.cubixmc.server.entity;
 
-import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -31,10 +30,7 @@ import org.cubixmc.util.MathHelper;
 import org.cubixmc.util.Vector3D;
 
 import java.net.InetSocketAddress;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CubixPlayer extends CubixEntityLiving implements Player {
@@ -283,7 +279,7 @@ public class CubixPlayer extends CubixEntityLiving implements Player {
 
     @Override
     public List<PacketOut> getSpawnPackets() {
-        List<PacketOut> list = Lists.newArrayList();
+        List<PacketOut> list = new ArrayList<>();
         PacketOutSpawnPlayer packet = new PacketOutSpawnPlayer();
         packet.setEntityID(entityId);
         packet.setPlayerUUID(profile.getUuid());

@@ -1,9 +1,8 @@
 package org.cubixmc.server.network;
 
-import com.google.common.reflect.ClassPath;
-import com.google.common.reflect.ClassPath.ClassInfo;
 import org.cubixmc.server.CubixServer;
 import org.cubixmc.server.network.packets.PacketIn;
+import org.reflections.Reflections;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,13 +18,10 @@ public enum Phase {
 
     private Phase() {
         try {
-            ClassPath classPath = ClassPath.from(getClass().getClassLoader());
-            for(ClassInfo classInfo : classPath.getTopLevelClassesRecursive("org.cubixmc.server.network.packets." + toString().toLowerCase())) {
-                Class<?> clazz = Class.forName(classInfo.getName());
-                if(PacketIn.class.isAssignableFrom(clazz)) {
-                    PacketIn test = (PacketIn) clazz.newInstance();
-                    idToClass.put(test.getId(), (Class<? extends PacketIn>) clazz);
-                }
+            Reflections reflections = new Reflections("org.cubixmc.server.network.packets." + toString().toLowerCase());
+            for(Class<? extends PacketIn> clazz : reflections.getSubTypesOf(PacketIn.class)) {
+                PacketIn test = clazz.newInstance();
+                idToClass.put(test.getId(), clazz);
             }
         } catch(Exception e) {
             CubixServer.getLogger().log(Level.SEVERE, "Failed to detect packet classes for phase "+ toString(), e);

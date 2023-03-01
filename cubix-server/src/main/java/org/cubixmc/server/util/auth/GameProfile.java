@@ -1,6 +1,5 @@
 package org.cubixmc.server.util.auth;
 
-import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -8,9 +7,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameProfile {
-    private final Map<String, Property> properties = Maps.newConcurrentMap();
+    private final Map<String, Property> properties = new ConcurrentHashMap<>();
     private final String name;
     private final UUID uuid;
 

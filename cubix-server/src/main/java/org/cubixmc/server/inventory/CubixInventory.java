@@ -1,6 +1,5 @@
 package org.cubixmc.server.inventory;
 
-import com.google.common.collect.Sets;
 import org.cubixmc.entity.Entity;
 import org.cubixmc.inventory.Inventory;
 import org.cubixmc.inventory.InventoryType;
@@ -9,9 +8,10 @@ import org.cubixmc.server.entity.CubixEntity;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CubixInventory implements Inventory {
-    private final Set<Container> containers = Sets.newConcurrentHashSet();
+    private final Set<Container> containers = ConcurrentHashMap.newKeySet();
     protected final CubixEntity holder;
     protected ItemStack[] contents;
     private InventoryType type;

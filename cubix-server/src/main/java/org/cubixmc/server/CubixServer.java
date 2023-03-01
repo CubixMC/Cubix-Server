@@ -1,6 +1,5 @@
 package org.cubixmc.server;
 
-import com.google.common.collect.Maps;
 import io.netty.util.ResourceLeakDetector;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,9 +13,7 @@ import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.ForwardLogHandler;
 import org.cubixmc.server.world.CubixWorld;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +55,7 @@ public class CubixServer implements Runnable {
     }
 
     private final Map<String, CubixWorld> worlds = new ConcurrentHashMap<>();
-    private final Map<UUID, CubixPlayer> players = Maps.newConcurrentMap();
+    private final Map<UUID, CubixPlayer> players = new ConcurrentHashMap<>();
     private final @Getter NetManager netManager;
     private @Getter KeyPair keyPair;
     private CubixTerminal terminal;

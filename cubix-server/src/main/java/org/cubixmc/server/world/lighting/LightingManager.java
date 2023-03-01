@@ -1,15 +1,15 @@
 package org.cubixmc.server.world.lighting;
 
-import com.google.common.collect.Maps;
 import org.cubixmc.inventory.Material;
 import org.cubixmc.server.util.ListUtil;
 import org.cubixmc.server.world.CubixChunk;
 import org.cubixmc.server.world.CubixWorld;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LightingManager {
-    private final Map<Material, Integer> opacityMap = Maps.newConcurrentMap();
+    private final Map<Material, Integer> opacityMap = new ConcurrentHashMap<>();
     private final CubixWorld world;
 
     public LightingManager(CubixWorld world) {

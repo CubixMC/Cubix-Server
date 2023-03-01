@@ -1,7 +1,6 @@
 package org.cubixmc.server.world;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import org.checkerframework.checker.units.qual.A;
 import org.cubixmc.server.entity.CubixPlayer;
 import org.cubixmc.server.network.NetManager;
 import org.cubixmc.server.network.packets.play.PacketOutChunkData;
@@ -14,13 +13,14 @@ import org.cubixmc.util.Vector2I;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerChunkMap {
     private static final int VIEW_DISTANCE = 10;
     private static final int SINGLE_CHUNK_LIMIT = 15;
 
     private final CubixPlayer player;
-    private final Set<Vector2I> chunks = Sets.newConcurrentHashSet();
+    private final Set<Vector2I> chunks = ConcurrentHashMap.newKeySet();
 
     public PlayerChunkMap(CubixPlayer player) {
         this.player = player;
@@ -33,7 +33,7 @@ public class PlayerChunkMap {
     public void sendAll() {
         int cx = ((int) player.getPosition().getX()) >> 4;
         int cz = ((int) player.getPosition().getZ()) >> 4;
-        List<QueuedChunk> queuedChunks = Lists.newArrayList();
+        List<QueuedChunk> queuedChunks = new ArrayList<>();
         for(int dx = -VIEW_DISTANCE; dx <= VIEW_DISTANCE; dx++) {
             for(int dz = -VIEW_DISTANCE; dz <= VIEW_DISTANCE; dz++) {
                 CubixChunk chunk = player.getWorld().getChunk(cx + dx, cz + dz);
@@ -52,8 +52,8 @@ public class PlayerChunkMap {
     }
 
     public void movePlayer() {
-        List<Vector2I> newList = Lists.newArrayList();
-        List<QueuedChunk> loadQueue = Lists.newArrayList();
+        List<Vector2I> newList = new ArrayList<>();
+        List<QueuedChunk> loadQueue = new ArrayList<>();
 
         // Remove used chunks from chunk list and load new chunks
         for(int x = -VIEW_DISTANCE; x <= VIEW_DISTANCE; x++) {
@@ -96,8 +96,8 @@ public class PlayerChunkMap {
     }
 
     private void loadChunkBulk(List<QueuedChunk> chunks) {
-        List<QueuedChunk> queuedChunks = Lists.newArrayList();
-        List<PacketOutMapChunkBulk> chunkPackets = Lists.newArrayList();
+        List<QueuedChunk> queuedChunks = new ArrayList<>();
+        List<PacketOutMapChunkBulk> chunkPackets = new ArrayList<>();
         int bytesLeft = NetManager.NETWORK_LIMIT - 3; // VarInt and bool should fit in 3 bytes
         for(QueuedChunk chunk : chunks) {
             bytesLeft -= chunk.size();

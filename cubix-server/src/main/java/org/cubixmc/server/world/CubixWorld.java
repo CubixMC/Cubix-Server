@@ -1,7 +1,5 @@
 package org.cubixmc.server.world;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -25,10 +23,11 @@ import org.cubixmc.util.Vector3I;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class CubixWorld implements World {
-    private final Set<CubixEntity> entities = Sets.newConcurrentHashSet();
+    private final Set<CubixEntity> entities = ConcurrentHashMap.newKeySet();
     private final String name;
     private final Random random = new Random();
     private CubixWorldData worldData;
@@ -76,11 +75,11 @@ public class CubixWorld implements World {
     }
 
     public List<CubixEntity> getEntityList() {
-        return Lists.newArrayList(entities);
+        return List.copyOf(entities);
     }
 
     public List<CubixEntity> getEntitiesInArea(Location center, double radius) {
-        List<CubixEntity> list = Lists.newArrayList();
+        List<CubixEntity> list = new ArrayList<>();
         for(CubixEntity entity : entities) {
             if(entity.getPosition().distanceSquared(center) > radius * radius) continue;
             list.add(entity);
@@ -136,7 +135,7 @@ public class CubixWorld implements World {
     }
 
     public List<Entity> getCubixEntities() {
-        List<Entity> list = Lists.newArrayListWithCapacity(entities.size());
+        List<Entity> list = new ArrayList<>(entities.size());
         list.addAll(entities);
         return list;
     }
