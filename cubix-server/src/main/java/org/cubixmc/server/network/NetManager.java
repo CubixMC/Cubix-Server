@@ -56,7 +56,7 @@ public class NetManager extends ChannelInitializer<SocketChannel> {
     }
 
     public void connect() {
-        ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(25565)).addListener((GenericFutureListener<ChannelFuture>) future -> {
+        ChannelFuture channelFuture = bootstrap.bind(address).addListener((GenericFutureListener<ChannelFuture>) future -> {
             if(!future.isSuccess()) {
                 CubixServer.getLogger().log(Level.SEVERE, "Failed to bind port " + address.getPort(), future.cause());
                 Threads.mainThread.execute(() -> CubixServer.getInstance().stop());

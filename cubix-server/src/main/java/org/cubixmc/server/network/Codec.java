@@ -124,7 +124,7 @@ public class Codec {
         int x = MathHelper.floor(position.getX());
         int y = MathHelper.floor(position.getY());
         int z = MathHelper.floor(position.getZ());
-        long value = ((x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF);
+        long value = ((long) (x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF);
         writeLong(value);
     }
 
