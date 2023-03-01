@@ -93,6 +93,15 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>jenkins</id>
+            <build>
+                <finalName>${artifactId}-${mc.version}-${env.BUILD_NUMBER}</finalName>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
