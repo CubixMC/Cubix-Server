@@ -99,10 +99,19 @@
             <build>
                 <finalName>${artifactId}-${mc.version}-${env.BUILD_NUMBER}</finalName>
             </build>
+            <properties>
+                <ci.build>${env.BUILD_NUMBER}</ci.build>
+            </properties>
         </profile>
     </profiles>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

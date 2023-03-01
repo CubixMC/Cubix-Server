@@ -13,6 +13,7 @@ import org.cubixmc.server.threads.Threads;
 import org.cubixmc.server.util.ForwardLogHandler;
 import org.cubixmc.server.world.CubixWorld;
 
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -84,6 +85,16 @@ public class CubixServer implements Runnable {
         // Start terminal
         this.terminal = new CubixTerminal();
         new Thread(terminal::start).start();
+
+        Properties properties = new Properties();
+        try(InputStream input = CubixServer.class.getResourceAsStream("/cubix.properties")) {
+            properties.load(input);
+            String mcVersion = properties.getProperty("minecraft.version");
+            String ciBuild = properties.getProperty("ci.build");
+            logger.log(Level.INFO, "Starting CubixMC " + mcVersion + " (Build #" + ciBuild + ")");
+        } catch(Exception e) {
+            logger.log(Level.SEVERE, "Failed to load version metadata", e);
+        }
 
         logger.log(Level.INFO, "Generating key pair...");
         generateKeyPair();
